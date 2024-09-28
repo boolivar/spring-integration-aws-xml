@@ -1,20 +1,18 @@
 plugins {
-    id "java"
+    id "java-library"
     id "jacoco"
     id "pmd"
     id "checkstyle"
     id "com.github.spotbugs"
-    id "io.freefair.lombok"
 }
 
-group = "org.bool"
-
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
     withJavadocJar()
     withSourcesJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.release = 17
 }
 
 tasks.named("test") {

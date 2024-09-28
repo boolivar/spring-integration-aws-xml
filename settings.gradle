@@ -1,3 +1,5 @@
+rootProject.name = "spring-integration-aws-xml"
+
 rootDir.eachFileRecurse groovy.io.FileType.FILES, {
     if (it.name in ["build.gradle", "build.gradle.kts"]) {
         rootDir.relativePath(it.parentFile).tokenize("/").with { path ->

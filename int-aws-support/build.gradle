@@ -1,0 +1,8 @@
+plugins {
+    id "java-conventions"
+}
+
+dependencies {
+    implementation "org.springframework:spring-beans"
+    implementation "org.springframework.integration:spring-integration-aws"
+}

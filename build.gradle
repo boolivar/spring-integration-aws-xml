@@ -15,4 +15,5 @@ scmVersion {
 
 allprojects {
     version = scmVersion.version
+    group = "io.github.boolivar.spring-integration-aws-xml"
 }
