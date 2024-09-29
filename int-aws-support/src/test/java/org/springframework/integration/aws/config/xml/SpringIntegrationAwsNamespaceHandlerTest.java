@@ -1,5 +1,6 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +15,6 @@ class SpringIntegrationAwsNamespaceHandlerTest {
         handler.init();
         assertThat(handler)
             .extracting("parsers", InstanceOfAssertFactories.MAP)
-            .extractingByKey("sqs-outbound-channel-adapter")
-            .isInstanceOf(SqsOutboundChannelAdapterParser.class);
+            .hasEntrySatisfying("sqs-outbound-channel-adapter", new Condition<>(SqsOutboundChannelAdapterParser.class::isInstance, "instance of SqsOutboundChannelAdapterParser"));
     }
 }

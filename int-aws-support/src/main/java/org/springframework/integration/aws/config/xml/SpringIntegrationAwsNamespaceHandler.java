@@ -1,25 +1,40 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class SpringIntegrationAwsNamespaceHandler extends NamespaceHandlerSupport {
+
+    private final Logger log = LoggerFactory.getLogger(SpringIntegrationAwsNamespaceHandler.class);
 
     @Override
     public void init() {
         var classLoader = getClass().getClassLoader();
         var packageName = getClass().getPackageName();
-        try (var in = classLoader.getResourceAsStream(packageName.replace('.', '/'))) {
-            new BufferedReader(new InputStreamReader(in)).lines()
-                .filter(name -> name.endsWith(".class"))
-                .map(className -> loadClass(classLoader, packageName + '.' + className.replace(".class", "")))
-                .filter(BeanDefinitionParser.class::isAssignableFrom)
-                .forEach(type -> registerBeanDefinitionParser(mapName(type), createParser(type)));
+        try {
+            for (var paths = classLoader.getResources(packageName.replace('.', '/')); paths.hasMoreElements();) {
+                var path = paths.nextElement();
+                try {
+                    Files.list(Path.of(path.toURI()))
+                        .filter(Files::isRegularFile)
+                        .map(file -> file.getFileName().toString())
+                        .filter(fileName -> fileName.endsWith("Parser.class"))
+                        .map(fileName -> loadClass(classLoader, packageName + '.' + fileName.replace(".class", "")))
+                        .filter(BeanDefinitionParser.class::isAssignableFrom)
+                        .forEach(type -> registerBeanDefinitionParser(mapName(type), createParser(type)))
+                        ;
+                } catch (URISyntaxException e) {
+                    log.warn("Error reading path {}", path, e);
+                }
+            }
         } catch (IOException e) {
             throw new UncheckedIOException("Error reading classes for package " + packageName, e);
         }
@@ -53,7 +68,7 @@ public class SpringIntegrationAwsNamespaceHandler extends NamespaceHandlerSuppor
         try {
             return (BeanDefinitionParser) type.getConstructor().newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("Error instantiate parser of type " + type);
+            throw new RuntimeException("Error instantiate parser of type " + type, e);
         }
     }
 }
