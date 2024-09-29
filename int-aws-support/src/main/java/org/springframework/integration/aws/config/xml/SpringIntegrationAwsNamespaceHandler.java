@@ -26,10 +26,11 @@ public class SpringIntegrationAwsNamespaceHandler extends NamespaceHandlerSuppor
     }
 
     private String mapName(Class<?> type) {
-        var typeName = type.getSimpleName().replaceAll("Parser$", "");
-        StringBuilder sb = new StringBuilder();
+        var typeName = type.getSimpleName();
+        var length = typeName.length() - "Parser".length();
+        var sb = new StringBuilder();
         sb.append(Character.toLowerCase(typeName.charAt(0)));
-        for (int i = 1; i < typeName.length(); ++i) {
+        for (int i = 1; i < length; ++i) {
             var c = typeName.charAt(i);
             if (Character.isUpperCase(c)) {
                 sb.append('-').append(Character.toLowerCase(c));
@@ -39,7 +40,6 @@ public class SpringIntegrationAwsNamespaceHandler extends NamespaceHandlerSuppor
         }
         return sb.toString();
     }
-
 
     private Class<?> loadClass(ClassLoader classLoader, String name) {
         try {
