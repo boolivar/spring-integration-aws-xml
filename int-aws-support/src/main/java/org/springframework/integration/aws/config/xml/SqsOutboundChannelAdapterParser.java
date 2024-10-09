@@ -1,5 +1,6 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.integration.aws.outbound.SqsMessageHandler;
@@ -19,17 +20,18 @@ public class SqsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
             .setExpressionValueIfAttributeDefined("message-group-id")
             .setExpressionValueIfAttributeDefined("message-deduplication-id")
             .setExpressionValueIfAttributeDefined("send-timeout")
-            .setPropertyReference("outputChannelName", "success-channel")
+            .setPropertyReferenceIfAttributeDefined("message-converter")
+            .setPropertyReferenceIfAttributeDefined("outputChannelName", "success-channel")
             ;
 
         if (element.hasAttribute("sync")) {
             var sync = element.getAttribute("sync");
             if ("true".equalsIgnoreCase(sync)) {
-                builder.getBeanDefinitionBuilder().addPropertyValue("async", "false");
+                builder.getBeanDefinitionBuilder().addPropertyValue("async", new TypedStringValue("false"));
             } else if ("false".equalsIgnoreCase(sync)) {
-                builder.getBeanDefinitionBuilder().addPropertyValue("async", "true");
+                builder.getBeanDefinitionBuilder().addPropertyValue("async", new TypedStringValue("true"));
             } else {
-                builder.error("expected boolean for sync attribute");
+                builder.error("expected boolean for 'sync' attribute");
             }
         }
 
