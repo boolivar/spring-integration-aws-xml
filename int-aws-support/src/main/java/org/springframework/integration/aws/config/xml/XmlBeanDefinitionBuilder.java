@@ -10,6 +10,7 @@ import org.w3c.dom.Element;
 import java.util.function.Consumer;
 
 import static org.springframework.core.Conventions.attributeNameToPropertyName;
+import static org.springframework.integration.config.xml.IntegrationNamespaceUtils.setReferenceIfAttributeDefined;
 import static org.springframework.integration.config.xml.IntegrationNamespaceUtils.setValueIfAttributeDefined;
 
 public class XmlBeanDefinitionBuilder {
@@ -49,16 +50,6 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValue(String attributeName) {
-        builder.addPropertyValue(attributeNameToPropertyName(attributeName), new TypedStringValue(element.getAttribute(attributeName)));
-        return this;
-    }
-
-    public XmlBeanDefinitionBuilder setPropertyValue(String propertyName, String attributeName) {
-        builder.addPropertyValue(propertyName, new TypedStringValue(element.getAttribute(attributeName)));
-        return this;
-    }
-
     public XmlBeanDefinitionBuilder setPropertyReference(String attributeName) {
         builder.addPropertyReference(attributeNameToPropertyName(attributeName), element.getAttribute(attributeName));
         return this;
@@ -66,6 +57,26 @@ public class XmlBeanDefinitionBuilder {
 
     public XmlBeanDefinitionBuilder setPropertyReference(String propertyName, String attributeName) {
         builder.addPropertyReference(propertyName, element.getAttribute(attributeName));
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder setPropertyReferenceIfAttributeDefined(String attributeName) {
+        setReferenceIfAttributeDefined(builder, element, attributeName);
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder setPropertyReferenceIfAttributeDefined(String propertyName, String attributeName) {
+        setReferenceIfAttributeDefined(builder, element, attributeName, propertyName);
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder setPropertyValue(String attributeName) {
+        builder.addPropertyValue(attributeNameToPropertyName(attributeName), new TypedStringValue(element.getAttribute(attributeName)));
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder setPropertyValue(String propertyName, String attributeName) {
+        builder.addPropertyValue(propertyName, new TypedStringValue(element.getAttribute(attributeName)));
         return this;
     }
 

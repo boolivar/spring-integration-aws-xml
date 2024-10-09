@@ -45,10 +45,13 @@ class XmlBeanDefinitionBuilderTest {
         var def = builder
             .addConstructorArgValue("value-property")
             .addConstructorArgReference("ref-property")
-            .setPropertyValue("value-property")
-            .setPropertyValue("property", "value-property")
             .setPropertyReference("ref-property")
             .setPropertyReference("ref", "ref-property")
+            .setPropertyReferenceIfAttributeDefined("undefinedRef")
+            .setPropertyReferenceIfAttributeDefined("definedRef", "ref-property")
+            .setPropertyReferenceIfAttributeDefined("undefinedRef", "undefined-ref")
+            .setPropertyValue("value-property")
+            .setPropertyValue("property", "value-property")
             .setPropertyValueIfAttributeDefined("defined-property")
             .setPropertyValueIfAttributeDefined("undefined-property")
             .setPropertyValueIfAttributeDefined("expected", "defined-property")
@@ -63,10 +66,11 @@ class XmlBeanDefinitionBuilderTest {
 
         assertThat(def.getPropertyValues())
             .containsOnly(
-                new PropertyValue("valueProperty", new TypedStringValue("value")),
-                new PropertyValue("property", new TypedStringValue("value")),
                 new PropertyValue("refProperty", new RuntimeBeanReference("bean")),
                 new PropertyValue("ref", new RuntimeBeanReference("bean")),
+                new PropertyValue("definedRef", new RuntimeBeanReference("bean")),
+                new PropertyValue("valueProperty", new TypedStringValue("value")),
+                new PropertyValue("property", new TypedStringValue("value")),
                 new PropertyValue("definedProperty", new TypedStringValue("test")),
                 new PropertyValue("expected", new TypedStringValue("test"))
             );
