@@ -35,6 +35,10 @@ class XmlBeanDefinitionBuilderTest {
 
     @Test
     void testProperties() {
+        given(element.hasAttribute("undefined-ref"))
+            .willReturn(false);
+        given(element.hasAttribute("ref-property"))
+            .willReturn(true);
         given(element.getAttribute("value-property"))
             .willReturn("value");
         given(element.getAttribute("ref-property"))
@@ -47,7 +51,7 @@ class XmlBeanDefinitionBuilderTest {
             .addConstructorArgReference("ref-property")
             .setPropertyReference("ref-property")
             .setPropertyReference("ref", "ref-property")
-            .setPropertyReferenceIfAttributeDefined("undefinedRef")
+            .setPropertyReferenceIfAttributeDefined("undefined-ref")
             .setPropertyReferenceIfAttributeDefined("definedRef", "ref-property")
             .setPropertyReferenceIfAttributeDefined("undefinedRef", "undefined-ref")
             .setPropertyValue("value-property")
