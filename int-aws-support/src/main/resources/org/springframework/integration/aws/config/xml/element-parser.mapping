@@ -1,1 +1,2 @@
 sqs-outbound-channel-adapter: org.springframework.integration.aws.config.xml.SqsOutboundChannelAdapterParser
+sqs-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.SqsMessageDrivenChannelAdapterParser
