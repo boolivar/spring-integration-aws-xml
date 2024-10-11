@@ -7,13 +7,12 @@ import org.springframework.integration.aws.outbound.SqsMessageHandler;
 import org.springframework.integration.config.xml.AbstractOutboundChannelAdapterParser;
 import org.w3c.dom.Element;
 
-import java.util.List;
-
 public class SqsOutboundChannelAdapterParser extends AbstractOutboundChannelAdapterParser {
 
     @Override
     protected AbstractBeanDefinition parseConsumer(Element element, ParserContext parserContext) {
         var builder = XmlBeanDefinitionBuilder.newInstance(element, parserContext, SqsMessageHandler.class)
+            .unsupportedAttributeWarning("failure-channel", "resource-id-resolver", "error-message-strategy", "async-handler")
             .addConstructorArgReference("sqs")
             .setExpressionValueIfAttributeDefined("queue")
             .setExpressionValueIfAttributeDefined("delay")
@@ -32,12 +31,6 @@ public class SqsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
                 builder.getBeanDefinitionBuilder().addPropertyValue("async", new TypedStringValue("true"));
             } else {
                 builder.error("expected boolean for 'sync' attribute");
-            }
-        }
-
-        for (var attribute : List.of("failure-channel", "resource-id-resolver", "error-message-strategy", "async-handler")) {
-            if (element.hasAttribute(attribute)) {
-                builder.warning("Attribute " + attribute + " not supported");
             }
         }
 

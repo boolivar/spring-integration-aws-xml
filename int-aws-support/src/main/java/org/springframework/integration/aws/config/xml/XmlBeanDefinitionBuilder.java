@@ -108,6 +108,15 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
+    public XmlBeanDefinitionBuilder unsupportedAttributeWarning(String... attributes) {
+        for (var attribute : attributes) {
+            if (element.hasAttribute(attribute)) {
+                warning("'" + attribute + "' attribute not supported");
+            }
+        }
+        return this;
+    }
+
     public XmlBeanDefinitionBuilder warning(String message, Throwable cause) {
         parserContext.getReaderContext().warning(message, element, cause);
         return this;
