@@ -38,6 +38,7 @@ class SqsOutboundChannelAdapterParserTest {
             .extracting(BeanDefinition::getPropertyValues)
                 .matches(properties -> properties.get("async").equals(new TypedStringValue("false")), "async")
                 .matches(properties -> properties.get("messageConverter").equals(new RuntimeBeanReference("msgConv")), "message converter")
+                .matches(properties -> properties.get("outputChannelName").equals(new TypedStringValue("okChannel")), "success channel")
             ;
     }
 }

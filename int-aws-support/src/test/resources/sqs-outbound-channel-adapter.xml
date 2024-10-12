@@ -12,5 +12,6 @@
         sqs="sqsClient"
         sync="true"
         message-converter="msgConv"
-        error-message-strategy="emb"/>
+        error-message-strategy="emb"
+        success-channel="okChannel"/>
 </beans>

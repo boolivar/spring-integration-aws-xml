@@ -20,7 +20,7 @@ public class SqsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
             .setExpressionValueIfAttributeDefined("message-deduplication-id")
             .setExpressionValueIfAttributeDefined("send-timeout")
             .setPropertyReferenceIfAttributeDefined("message-converter")
-            .setPropertyReferenceIfAttributeDefined("outputChannelName", "success-channel")
+            .setPropertyValueIfAttributeDefined("outputChannelName", "success-channel")
             ;
 
         if (element.hasAttribute("sync")) {
