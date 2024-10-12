@@ -191,7 +191,7 @@
         <!--<module name="DescendantToken"/>-->
         <!--<module name="FinalParameters"/>-->  <!-- DISABLED in favor of less restricted ParameterAssignment -->
         <module name="Indentation">
-            <property name="caseIndent" value="0"/>
+            <property name="caseIndent" value="4"/>
         </module>
         <module name="OuterTypeFilename"/>
         <!--<module name="TodoComment"/>-->
