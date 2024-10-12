@@ -24,6 +24,10 @@ public class SqsMessageDrivenChannelAdapterParser extends AbstractChannelAdapter
     }
 
     private AbstractBeanDefinition sqsContainerOptions(Element element, ParserContext parserContext) {
+        if ("NO_REDRIVE".equals(element.getAttribute("message-deletion-policy"))) {
+            parserContext.getReaderContext()
+                .warning("NO_REDRIVE message-deletion-policy is not supported and will be handled as ON_SUCCESS", element);
+        }
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SqsContainerOptionsFactoryBean.class)
             .setPropertyValueIfAttributeDefined("max-number-of-messages")
             .setPropertyValueIfAttributeDefined("visibility-timeout")
