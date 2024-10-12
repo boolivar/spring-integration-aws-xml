@@ -50,9 +50,12 @@ class SqsContainerOptionsFactoryBean implements FactoryBean<SqsContainerOptions>
     }
 
     public void setMessageDeletionPolicy(String policy) {
-        builder.acknowledgementMode("NO_REDRIVE".equals(policy)
-            ? AcknowledgementMode.ON_SUCCESS
-            : AcknowledgementMode.valueOf(policy));
+        var mode = switch (policy) {
+            case "NO_REDRIVE" -> AcknowledgementMode.ON_SUCCESS;
+            case "NEVER" -> AcknowledgementMode.MANUAL;
+            default -> AcknowledgementMode.valueOf(policy);
+        };
+        builder.acknowledgementMode(mode);
     }
 
     public void setFailOnMissingQueue(boolean fail) {
