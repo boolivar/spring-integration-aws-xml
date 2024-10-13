@@ -17,6 +17,9 @@ class SpringIntegrationAwsNamespaceHandlerTest {
             .extracting("parsers", InstanceOfAssertFactories.MAP)
             .hasEntrySatisfying("sqs-outbound-channel-adapter", instanceOf(SqsOutboundChannelAdapterParser.class))
             .hasEntrySatisfying("sqs-message-driven-channel-adapter", instanceOf(SqsMessageDrivenChannelAdapterParser.class))
+            .hasEntrySatisfying("s3-inbound-channel-adapter", instanceOf(S3InboundChannelAdapterParser.class))
+            .hasEntrySatisfying("s3-inbound-streaming-channel-adapter", instanceOf(S3InboundStreamingChannelAdapterParser.class))
+            .hasEntrySatisfying("s3-outbound-channel-adapter", instanceOf(S3OutboundChannelAdapterParser.class))
             ;
     }
 
