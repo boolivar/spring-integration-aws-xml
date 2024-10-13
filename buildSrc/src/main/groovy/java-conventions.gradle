@@ -50,6 +50,10 @@ pmd {
     toolVersion = net.sourceforge.pmd.PMDVersion.VERSION
 }
 
+pmdTest {
+    ruleSets = ["test-ruleset.xml"]
+}
+
 tasks.withType(Pmd).configureEach {
     pmdClasspath += files("$rootDir/gradle/config/pmd")
 }
