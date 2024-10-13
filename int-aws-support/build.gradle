@@ -2,6 +2,10 @@ plugins {
     id "java-conventions"
 }
 
+configurations {
+    testImplementation.extendsFrom compileOnly
+}
+
 dependencies {
     implementation "org.springframework:spring-beans"
     implementation "org.springframework.integration:spring-integration-aws"
