@@ -15,12 +15,12 @@ class SpringIntegrationAwsNamespaceHandlerTest {
         handler.init();
         assertThat(handler)
             .extracting("parsers", InstanceOfAssertFactories.MAP)
-            .hasEntrySatisfying("sqs-outbound-channel-adapter", isInstanceOf(SqsOutboundChannelAdapterParser.class))
-            .hasEntrySatisfying("sqs-message-driven-channel-adapter", isInstanceOf(SqsMessageDrivenChannelAdapterParser.class))
+            .hasEntrySatisfying("sqs-outbound-channel-adapter", instanceOf(SqsOutboundChannelAdapterParser.class))
+            .hasEntrySatisfying("sqs-message-driven-channel-adapter", instanceOf(SqsMessageDrivenChannelAdapterParser.class))
             ;
     }
 
-    private Condition<Object> isInstanceOf(Class<?> type) {
+    private Condition<Object> instanceOf(Class<?> type) {
         return new Condition<>(type::isInstance, "instance of " + type);
     }
 }
