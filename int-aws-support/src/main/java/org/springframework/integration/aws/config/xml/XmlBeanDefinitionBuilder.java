@@ -45,8 +45,30 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
+    public XmlBeanDefinitionBuilder addExclusiveConstructorArgReference(String attribute1, String attribute2) {
+        var value1 = element.getAttribute(attribute1);
+        var value2 = element.getAttribute(attribute2);
+        if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
+            error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
+        } else {
+            builder.addConstructorArgReference(StringUtils.hasText(value1) ? value1 : value2);
+        }
+        return this;
+    }
+
     public XmlBeanDefinitionBuilder addConstructorArgValue(String attributeName) {
         builder.addConstructorArgValue(new TypedStringValue(element.getAttribute(attributeName)));
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder addExclusiveConstructorArgValue(String attribute1, String attribute2, Class<?> type1, Class<?> type2) {
+        var value1 = element.getAttribute(attribute1);
+        var value2 = element.getAttribute(attribute2);
+        if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
+            error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
+        } else {
+            builder.addConstructorArgValue(StringUtils.hasText(value1) ? new TypedStringValue(value1, type1) : new TypedStringValue(value2, type2));
+        }
         return this;
     }
 
