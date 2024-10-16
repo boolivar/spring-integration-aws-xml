@@ -7,7 +7,9 @@ import org.springframework.beans.factory.xml.ParserContext;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import static org.springframework.core.Conventions.attributeNameToPropertyName;
 import static org.springframework.integration.config.xml.IntegrationNamespaceUtils.setReferenceIfAttributeDefined;
@@ -45,29 +47,28 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
-    public XmlBeanDefinitionBuilder addExclusiveConstructorArgReference(String attribute1, String attribute2) {
-        var value1 = element.getAttribute(attribute1);
-        var value2 = element.getAttribute(attribute2);
-        if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
-            error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
-        } else {
-            builder.addConstructorArgReference(StringUtils.hasText(value1) ? value1 : value2);
-        }
-        return this;
-    }
-
     public XmlBeanDefinitionBuilder addConstructorArgValue(String attributeName) {
         builder.addConstructorArgValue(new TypedStringValue(element.getAttribute(attributeName)));
         return this;
     }
 
-    public XmlBeanDefinitionBuilder addExclusiveConstructorArgValue(String attribute1, String attribute2, Class<?> type1, Class<?> type2) {
+    public XmlBeanDefinitionBuilder addExclusiveConstructorArgReference(String attribute1, String attribute2) {
+        return addExclusiveConstructorArg(attribute1, attribute2, BeanDefinitionBuilder::addConstructorArgReference, BeanDefinitionBuilder::addConstructorArgReference);
+    }
+
+    public XmlBeanDefinitionBuilder addExclusiveConstructorArgValue(String attribute1, String attribute2, Function<String, ?> arg1, Function<String, ?> arg2) {
+        return addExclusiveConstructorArg(attribute1, attribute2, (b, v) -> b.addConstructorArgValue(arg1.apply(v)), (b, v) -> b.addConstructorArgValue(arg2.apply(v)));
+    }
+
+    public XmlBeanDefinitionBuilder addExclusiveConstructorArg(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {
         var value1 = element.getAttribute(attribute1);
         var value2 = element.getAttribute(attribute2);
         if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
             error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
+        } else if (StringUtils.hasText(value1)) {
+            arg1.accept(builder, value1);
         } else {
-            builder.addConstructorArgValue(StringUtils.hasText(value1) ? new TypedStringValue(value1, type1) : new TypedStringValue(value2, type2));
+            arg2.accept(builder, value2);
         }
         return this;
     }
