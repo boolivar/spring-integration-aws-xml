@@ -1,6 +1,5 @@
 package org.springframework.integration.aws.config.xml;
 
-import org.springframework.beans.factory.config.TypedStringValue;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
@@ -47,7 +46,7 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder addConstructorArgValue(String attributeName) {
-        builder.addConstructorArgValue(new TypedStringValue(element.getAttribute(attributeName)));
+        builder.addConstructorArgValue(ValueFactory.typedString().apply(element.getAttribute(attributeName)));
         return this;
     }
 
@@ -83,7 +82,7 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setProperty(String attributeName, String propertyName) {
-        return setProperty(attributeName, propertyName, TypedStringValue::new);
+        return setProperty(attributeName, propertyName, ValueFactory.typedString());
     }
 
     public XmlBeanDefinitionBuilder setProperty(String attributeName, String propertyName, Function<String, ?> attributeValueMapper) {
@@ -96,7 +95,7 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setPropertyIfAttributeDefined(String attributeName, String propertyName) {
-        return setPropertyIfAttributeDefined(attributeName, propertyName, TypedStringValue::new);
+        return setPropertyIfAttributeDefined(attributeName, propertyName, ValueFactory.typedString());
     }
 
     public XmlBeanDefinitionBuilder setPropertyIfAttributeDefined(String attributeName, String propertyName, Function<String, ?> attributeValueMapper) {
@@ -120,7 +119,7 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setPropertyOrExpressionIfAttributeDefined(String attribute, String expressionAttribute, String property, String expressionProperty) {
-        return setIfExclusiveAttributeDefined(attribute, expressionAttribute, (b, v) -> b.addPropertyValue(property, new TypedStringValue(v)), (b, v) -> b.addPropertyValue(expressionProperty, new ExpressionBeanDefinitionFactory().createBeanDefinition(v)));
+        return setIfExclusiveAttributeDefined(attribute, expressionAttribute, ValueFactory.typedString().propertyValue(property), ValueFactory.expressionBean().propertyValue(expressionProperty));
     }
 
     public XmlBeanDefinitionBuilder setPropertyIfExclusiveAttributeDefined(String attribute1, String attribute2) {
@@ -128,7 +127,7 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setPropertyIfExclusiveAttributeDefined(String attribute1, String attribute2, String property1, String property2) {
-        return setIfExclusiveAttributeDefined(attribute1, attribute2, (b, v) -> b.addPropertyValue(property1, new TypedStringValue(v)), (b, v) -> b.addPropertyValue(property2, new TypedStringValue(v)));
+        return setIfExclusiveAttributeDefined(attribute1, attribute2, ValueFactory.typedString().propertyValue(property1), ValueFactory.typedString().propertyValue(property2));
     }
 
     public XmlBeanDefinitionBuilder setExclusiveAttribute(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {

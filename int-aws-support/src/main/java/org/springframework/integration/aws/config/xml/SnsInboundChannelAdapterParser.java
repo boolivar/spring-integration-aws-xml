@@ -16,7 +16,7 @@ public class SnsInboundChannelAdapterParser extends AbstractChannelAdapterParser
             .setProperty("handle-notification-status")
             .setPropertyIfAttributeDefined("send-timeout", "requestTimeout")
             .setPropertyIfAttributeDefined("error-channel", "errorChannelName")
-            .setPropertyIfAttributeDefined("payload-expression", "payloadExpression", new ExpressionBeanDefinitionFactory()::createBeanDefinition)
+            .setPropertyIfAttributeDefined("payload-expression", "payloadExpression", ValueFactory.expressionBean())
             .build();
     }
 }

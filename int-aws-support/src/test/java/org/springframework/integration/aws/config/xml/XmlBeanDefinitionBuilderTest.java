@@ -112,7 +112,7 @@ class XmlBeanDefinitionBuilderTest {
                 new PropertyValue("aExpectedProperty", new TypedStringValue("a")),
                 new PropertyValue("bExpectedProperty", new TypedStringValue("b")),
                 new PropertyValue("testProperty", new TypedStringValue("c")),
-                new PropertyValue("testExpression", new ExpressionBeanDefinitionFactory().createBeanDefinition("d"))
+                new PropertyValue("testExpression", ValueFactory.expressionBean().apply("d"))
             );
     }
 
