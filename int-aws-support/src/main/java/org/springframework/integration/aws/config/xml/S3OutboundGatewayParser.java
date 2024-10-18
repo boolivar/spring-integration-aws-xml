@@ -16,8 +16,8 @@ public class S3OutboundGatewayParser extends AbstractConsumerEndpointParser {
     protected BeanDefinitionBuilder parseHandler(Element element, ParserContext parserContext) {
         return new S3MessageHandlerParser(true)
             .parse(element, parserContext)
-            .setPropertyValue("outputChannelName", "reply-channel")
-            .setPropertyValue("sendTimeout", "reply-timeout")
+            .setProperty("reply-channel", "outputChannelName")
+            .setProperty("reply-timeout", "sendTimeout")
             .getBeanDefinitionBuilder()
             ;
     }

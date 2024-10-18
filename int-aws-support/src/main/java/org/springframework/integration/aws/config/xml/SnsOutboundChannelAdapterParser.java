@@ -13,13 +13,13 @@ public class SnsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SnsMessageHandler.class)
             .unsupportedAttributeWarning("failure-channel", "resource-id-resolver", "error-message-strategy", "async-handler")
             .addConstructorArgReference("sns")
-            .setExpressionPropertyIfAttributeDefined("topic-arn")
-            .setExpressionPropertyIfAttributeDefined("subject")
-            .setExpressionPropertyIfAttributeDefined("message-group-id")
-            .setExpressionPropertyIfAttributeDefined("message-deduplication-id")
-            .setExpressionPropertyIfAttributeDefined("body")
-            .setExpressionValueIfAttributeDefined("send-timeout")
-            .setPropertyValueIfAttributeDefined("outputChannelName", "success-channel")
+            .setPropertyOrExpressionIfAttributeDefined("topic-arn")
+            .setPropertyOrExpressionIfAttributeDefined("subject")
+            .setPropertyOrExpressionIfAttributeDefined("message-group-id")
+            .setPropertyOrExpressionIfAttributeDefined("message-deduplication-id")
+            .setPropertyOrExpressionIfAttributeDefined("body")
+            .setPropertyOrExpressionIfAttributeDefined("send-timeout")
+            .setPropertyIfAttributeDefined("success-channel", "outputChannelName")
             .build();
     }
 }

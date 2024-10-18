@@ -50,16 +50,16 @@ class XmlBeanDefinitionBuilderTest {
             .addConstructorArgValue("value-property")
             .addConstructorArgReference("ref-property")
             .setPropertyReference("ref-property")
-            .setPropertyReference("ref", "ref-property")
+            .setPropertyReference("ref-property", "ref")
             .setPropertyReferenceIfAttributeDefined("undefined-ref")
-            .setPropertyReferenceIfAttributeDefined("definedRef", "ref-property")
+            .setPropertyReferenceIfAttributeDefined("ref-property", "definedRef")
             .setPropertyReferenceIfAttributeDefined("undefinedRef", "undefined-ref")
-            .setPropertyValue("value-property")
-            .setPropertyValue("property", "value-property")
-            .setPropertyValueIfAttributeDefined("defined-property")
-            .setPropertyValueIfAttributeDefined("undefined-property")
-            .setPropertyValueIfAttributeDefined("expected", "defined-property")
-            .setPropertyValueIfAttributeDefined("unexpected", "undefined-property")
+            .setProperty("value-property")
+            .setProperty("value-property", "property")
+            .setPropertyIfAttributeDefined("defined-property")
+            .setPropertyIfAttributeDefined("undefined-property")
+            .setPropertyIfAttributeDefined("defined-property", "expected")
+            .setPropertyIfAttributeDefined("undefined-property", "unexpected")
             .build();
 
         assertThat(def.getConstructorArgumentValues())
@@ -88,21 +88,21 @@ class XmlBeanDefinitionBuilderTest {
             .willReturn("a");
         given(element.getAttribute("b-property"))
             .willReturn("b");
-        given(element.getAttribute("value"))
+        given(element.getAttribute("test-property"))
             .willReturn("c");
         given(element.getAttribute("test-expression"))
             .willReturn("d");
 
         var def = builder
-            .setPropertyValueIfExclusiveAttributeDefined("a-property", "x-property")
-            .setPropertyValueIfExclusiveAttributeDefined("y-property", "b-property")
-            .setPropertyValueIfAttributeDefined("m-property", "n-property")
-            .setPropertyValueIfExclusiveAttributeDefined("a-property", "x-property", "aExpectedProperty", "aUnexpectedProperty")
-            .setPropertyValueIfExclusiveAttributeDefined("y-property", "b-property", "bUnexpectedProperty", "bExpectedProperty")
-            .setPropertyValueIfExclusiveAttributeDefined("m-property", "n-property", "mUnexpectedProperty", "nUnexpectedProperty")
-            .setExpressionValueIfAttributeDefined("nonexistent")
-            .setExpressionValueIfAttributeDefined("value")
-            .setExpressionValueIfAttributeDefined("test")
+            .setPropertyIfExclusiveAttributeDefined("a-property", "x-property")
+            .setPropertyIfExclusiveAttributeDefined("y-property", "b-property")
+            .setPropertyIfAttributeDefined("m-property", "n-property")
+            .setPropertyIfExclusiveAttributeDefined("a-property", "x-property", "aExpectedProperty", "aUnexpectedProperty")
+            .setPropertyIfExclusiveAttributeDefined("y-property", "b-property", "bUnexpectedProperty", "bExpectedProperty")
+            .setPropertyIfExclusiveAttributeDefined("m-property", "n-property", "mUnexpectedProperty", "nUnexpectedProperty")
+            .setPropertyOrExpressionIfAttributeDefined("nonexistent")
+            .setPropertyOrExpressionIfAttributeDefined("test-property")
+            .setPropertyOrExpressionIfAttributeDefined("test")
             .build();
 
         assertThat(def.getPropertyValues())
@@ -111,8 +111,8 @@ class XmlBeanDefinitionBuilderTest {
                 new PropertyValue("bProperty", new TypedStringValue("b")),
                 new PropertyValue("aExpectedProperty", new TypedStringValue("a")),
                 new PropertyValue("bExpectedProperty", new TypedStringValue("b")),
-                new PropertyValue("value", new TypedStringValue("c")),
-                new PropertyValue("testExpressionString", new TypedStringValue("d"))
+                new PropertyValue("testProperty", new TypedStringValue("c")),
+                new PropertyValue("testExpression", new ExpressionBeanDefinitionFactory().createBeanDefinition("d"))
             );
     }
 
@@ -135,10 +135,10 @@ class XmlBeanDefinitionBuilderTest {
             .willReturn("f");
 
         var def = builder
-                .setPropertyValueIfExclusiveAttributeDefined("a-property", "b-property")
-                .setPropertyValueIfExclusiveAttributeDefined("c-property", "d-property", "c", "d")
-                .setExpressionValueIfAttributeDefined("test")
-                .build();
+            .setPropertyIfExclusiveAttributeDefined("a-property", "b-property")
+            .setPropertyIfExclusiveAttributeDefined("c-property", "d-property", "c", "d")
+            .setPropertyOrExpressionIfAttributeDefined("test")
+            .build();
 
         assertThat(def.getPropertyValues())
             .isEmpty();

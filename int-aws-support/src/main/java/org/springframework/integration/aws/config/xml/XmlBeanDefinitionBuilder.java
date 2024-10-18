@@ -13,7 +13,6 @@ import java.util.function.Function;
 
 import static org.springframework.core.Conventions.attributeNameToPropertyName;
 import static org.springframework.integration.config.xml.IntegrationNamespaceUtils.setReferenceIfAttributeDefined;
-import static org.springframework.integration.config.xml.IntegrationNamespaceUtils.setValueIfAttributeDefined;
 
 public class XmlBeanDefinitionBuilder {
 
@@ -61,11 +60,10 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setPropertyReference(String attributeName) {
-        builder.addPropertyReference(attributeNameToPropertyName(attributeName), element.getAttribute(attributeName));
-        return this;
+        return setPropertyReference(attributeName, attributeNameToPropertyName(attributeName));
     }
 
-    public XmlBeanDefinitionBuilder setPropertyReference(String propertyName, String attributeName) {
+    public XmlBeanDefinitionBuilder setPropertyReference(String attributeName, String propertyName) {
         builder.addPropertyReference(propertyName, element.getAttribute(attributeName));
         return this;
     }
@@ -75,32 +73,33 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
-    public XmlBeanDefinitionBuilder setPropertyReferenceIfAttributeDefined(String propertyName, String attributeName) {
+    public XmlBeanDefinitionBuilder setPropertyReferenceIfAttributeDefined(String attributeName, String propertyName) {
         setReferenceIfAttributeDefined(builder, element, attributeName, propertyName);
         return this;
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValue(String attributeName) {
-        builder.addPropertyValue(attributeNameToPropertyName(attributeName), new TypedStringValue(element.getAttribute(attributeName)));
+    public XmlBeanDefinitionBuilder setProperty(String attributeName) {
+        return setProperty(attributeName, attributeNameToPropertyName(attributeName));
+    }
+
+    public XmlBeanDefinitionBuilder setProperty(String attributeName, String propertyName) {
+        return setProperty(attributeName, propertyName, TypedStringValue::new);
+    }
+
+    public XmlBeanDefinitionBuilder setProperty(String attributeName, String propertyName, Function<String, ?> attributeValueMapper) {
+        builder.addPropertyValue(propertyName, attributeValueMapper.apply(element.getAttribute(attributeName)));
         return this;
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValue(String propertyName, String attributeName) {
-        builder.addPropertyValue(propertyName, new TypedStringValue(element.getAttribute(attributeName)));
-        return this;
+    public XmlBeanDefinitionBuilder setPropertyIfAttributeDefined(String attributeName) {
+        return setPropertyIfAttributeDefined(attributeName, attributeNameToPropertyName(attributeName));
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValueIfAttributeDefined(String attributeName) {
-        setValueIfAttributeDefined(builder, element, attributeName);
-        return this;
+    public XmlBeanDefinitionBuilder setPropertyIfAttributeDefined(String attributeName, String propertyName) {
+        return setPropertyIfAttributeDefined(attributeName, propertyName, TypedStringValue::new);
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValueIfAttributeDefined(String propertyName, String attributeName) {
-        setValueIfAttributeDefined(builder, element, attributeName, propertyName);
-        return this;
-    }
-
-    public XmlBeanDefinitionBuilder setPropertyValueIfAttributeDefined(String propertyName, String attributeName, Function<String, ?> attributeValueMapper) {
+    public XmlBeanDefinitionBuilder setPropertyIfAttributeDefined(String attributeName, String propertyName, Function<String, ?> attributeValueMapper) {
         var value = element.getAttribute(attributeName);
         if (StringUtils.hasText(value)) {
             builder.addPropertyValue(propertyName, attributeValueMapper.apply(value));
@@ -108,28 +107,28 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
-    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute) {
-        return setExpressionPropertyIfAttributeDefined(attribute, attribute + "-expression");
+    public XmlBeanDefinitionBuilder setPropertyOrExpressionStringIfAttributeDefined(String attribute) {
+        return setPropertyIfExclusiveAttributeDefined(attribute, attribute + "-expression", attributeNameToPropertyName(attribute), attributeNameToPropertyName(attribute + "-expression-string"));
     }
 
-    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute, String expressionAttribute) {
-        return setExpressionPropertyIfAttributeDefined(attribute, expressionAttribute, attributeNameToPropertyName(attribute), attributeNameToPropertyName(expressionAttribute));
+    public XmlBeanDefinitionBuilder setPropertyOrExpressionIfAttributeDefined(String attribute) {
+        return setPropertyOrExpressionIfAttributeDefined(attribute, attribute + "-expression");
     }
 
-    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute, String expressionAttribute, String property, String expressionProperty) {
-        return setIfExclusiveAttributeDefined(attribute, expressionAttribute, (b, v) -> b.addPropertyValue(property, v), (b, v) -> b.addPropertyValue(expressionProperty, new ExpressionBeanDefinitionFactory().createBeanDefinition(v)));
+    public XmlBeanDefinitionBuilder setPropertyOrExpressionIfAttributeDefined(String attribute, String expressionAttribute) {
+        return setPropertyOrExpressionIfAttributeDefined(attribute, expressionAttribute, attributeNameToPropertyName(attribute), attributeNameToPropertyName(expressionAttribute));
     }
 
-    public XmlBeanDefinitionBuilder setExpressionValueIfAttributeDefined(String attribute) {
-        return setPropertyValueIfExclusiveAttributeDefined(attribute, attribute + "-expression", attributeNameToPropertyName(attribute), attributeNameToPropertyName(attribute + "-expression-string"));
+    public XmlBeanDefinitionBuilder setPropertyOrExpressionIfAttributeDefined(String attribute, String expressionAttribute, String property, String expressionProperty) {
+        return setIfExclusiveAttributeDefined(attribute, expressionAttribute, (b, v) -> b.addPropertyValue(property, new TypedStringValue(v)), (b, v) -> b.addPropertyValue(expressionProperty, new ExpressionBeanDefinitionFactory().createBeanDefinition(v)));
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValueIfExclusiveAttributeDefined(String attribute1, String attribute2) {
-        return setPropertyValueIfExclusiveAttributeDefined(attribute1, attribute2, attributeNameToPropertyName(attribute1), attributeNameToPropertyName(attribute2));
+    public XmlBeanDefinitionBuilder setPropertyIfExclusiveAttributeDefined(String attribute1, String attribute2) {
+        return setPropertyIfExclusiveAttributeDefined(attribute1, attribute2, attributeNameToPropertyName(attribute1), attributeNameToPropertyName(attribute2));
     }
 
-    public XmlBeanDefinitionBuilder setPropertyValueIfExclusiveAttributeDefined(String attribute1, String attribute2, String property1, String property2) {
-        return setIfExclusiveAttributeDefined(attribute1, attribute2, (b, v) -> b.addPropertyValue(property1, v), (b, v) -> b.addPropertyValue(property2, v));
+    public XmlBeanDefinitionBuilder setPropertyIfExclusiveAttributeDefined(String attribute1, String attribute2, String property1, String property2) {
+        return setIfExclusiveAttributeDefined(attribute1, attribute2, (b, v) -> b.addPropertyValue(property1, new TypedStringValue(v)), (b, v) -> b.addPropertyValue(property2, new TypedStringValue(v)));
     }
 
     public XmlBeanDefinitionBuilder setExclusiveAttribute(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {

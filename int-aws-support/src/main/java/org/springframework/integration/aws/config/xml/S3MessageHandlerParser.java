@@ -18,10 +18,10 @@ public class S3MessageHandlerParser {
             .addExclusiveConstructorArgReference("s3", "transfer-manager")
             .addExclusiveConstructorArgValue("bucket", "bucket-expression", TypedStringValue::new, new ExpressionBeanDefinitionFactory()::createBeanDefinition)
             .configure(def -> def.addConstructorArgValue(produceReply))
-            .setPropertyValueIfAttributeDefined("key-expression")
-            .setPropertyValueIfAttributeDefined("destination-bucket-expression")
-            .setPropertyValueIfAttributeDefined("destination-key-expression")
-            .setPropertyValueIfExclusiveAttributeDefined("command", "command-expression")
+            .setPropertyOrExpressionIfAttributeDefined("key")
+            .setPropertyOrExpressionIfAttributeDefined("destination-bucket")
+            .setPropertyOrExpressionIfAttributeDefined("destination-key")
+            .setPropertyOrExpressionIfAttributeDefined("command")
             .setPropertyReferenceIfAttributeDefined("upload-metadata-provider")
             ;
     }

@@ -14,13 +14,13 @@ public class SqsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
         var builder = XmlBeanDefinitionBuilder.newInstance(element, parserContext, SqsMessageHandler.class)
             .unsupportedAttributeWarning("failure-channel", "resource-id-resolver", "error-message-strategy", "async-handler")
             .addConstructorArgReference("sqs")
-            .setExpressionValueIfAttributeDefined("queue")
-            .setExpressionValueIfAttributeDefined("delay")
-            .setExpressionValueIfAttributeDefined("message-group-id")
-            .setExpressionValueIfAttributeDefined("message-deduplication-id")
-            .setExpressionValueIfAttributeDefined("send-timeout")
+            .setPropertyOrExpressionStringIfAttributeDefined("queue")
+            .setPropertyOrExpressionStringIfAttributeDefined("delay")
+            .setPropertyOrExpressionStringIfAttributeDefined("message-group-id")
+            .setPropertyOrExpressionStringIfAttributeDefined("message-deduplication-id")
+            .setPropertyOrExpressionStringIfAttributeDefined("send-timeout")
             .setPropertyReferenceIfAttributeDefined("message-converter")
-            .setPropertyValueIfAttributeDefined("outputChannelName", "success-channel")
+            .setPropertyIfAttributeDefined("success-channel", "outputChannelName")
             ;
 
         if (element.hasAttribute("sync")) {

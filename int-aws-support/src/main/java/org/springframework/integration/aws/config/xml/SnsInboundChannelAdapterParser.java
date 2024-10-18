@@ -13,10 +13,10 @@ public class SnsInboundChannelAdapterParser extends AbstractChannelAdapterParser
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SnsInboundChannelAdapter.class)
             .addConstructorArgReference("sns")
             .addConstructorArgValue("path")
-            .setPropertyValue("handle-notification-status")
-            .setPropertyValueIfAttributeDefined("requestTimeout", "send-timeout")
-            .setPropertyValueIfAttributeDefined("errorChannelName", "error-channel")
-            .setPropertyValueIfAttributeDefined("payloadExpression", "payload-expression", new ExpressionBeanDefinitionFactory()::createBeanDefinition)
+            .setProperty("handle-notification-status")
+            .setPropertyIfAttributeDefined("send-timeout", "requestTimeout")
+            .setPropertyIfAttributeDefined("error-channel", "errorChannelName")
+            .setPropertyIfAttributeDefined("payload-expression", "payloadExpression", new ExpressionBeanDefinitionFactory()::createBeanDefinition)
             .build();
     }
 }
