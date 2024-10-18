@@ -149,9 +149,9 @@ public class XmlBeanDefinitionBuilder {
         var value2 = element.getAttribute(attribute2);
         if (StringUtils.hasText(value1) && StringUtils.hasText(value2)) {
             error(attribute1 + " and " + attribute2 + " attributes are mutually exclusive");
-        } if (StringUtils.hasText(value1)) {
+        } else if (StringUtils.hasText(value1)) {
             arg1.accept(builder, value1);
-        } else {
+        } else if (StringUtils.hasText(value2)) {
             arg2.accept(builder, value2);
         }
         return this;
