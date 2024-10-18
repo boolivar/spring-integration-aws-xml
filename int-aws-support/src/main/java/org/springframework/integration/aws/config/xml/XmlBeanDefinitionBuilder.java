@@ -53,24 +53,11 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder addExclusiveConstructorArgReference(String attribute1, String attribute2) {
-        return addExclusiveConstructorArg(attribute1, attribute2, BeanDefinitionBuilder::addConstructorArgReference, BeanDefinitionBuilder::addConstructorArgReference);
+        return setExclusiveAttribute(attribute1, attribute2, BeanDefinitionBuilder::addConstructorArgReference, BeanDefinitionBuilder::addConstructorArgReference);
     }
 
     public XmlBeanDefinitionBuilder addExclusiveConstructorArgValue(String attribute1, String attribute2, Function<String, ?> arg1, Function<String, ?> arg2) {
-        return addExclusiveConstructorArg(attribute1, attribute2, (b, v) -> b.addConstructorArgValue(arg1.apply(v)), (b, v) -> b.addConstructorArgValue(arg2.apply(v)));
-    }
-
-    public XmlBeanDefinitionBuilder addExclusiveConstructorArg(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {
-        var value1 = element.getAttribute(attribute1);
-        var value2 = element.getAttribute(attribute2);
-        if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
-            error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
-        } else if (StringUtils.hasText(value1)) {
-            arg1.accept(builder, value1);
-        } else {
-            arg2.accept(builder, value2);
-        }
-        return this;
+        return setExclusiveAttribute(attribute1, attribute2, (b, v) -> b.addConstructorArgValue(arg1.apply(v)), (b, v) -> b.addConstructorArgValue(arg2.apply(v)));
     }
 
     public XmlBeanDefinitionBuilder setPropertyReference(String attributeName) {
@@ -121,6 +108,18 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
+    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute) {
+        return setExpressionPropertyIfAttributeDefined(attribute, attribute + "-expression");
+    }
+
+    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute, String expressionAttribute) {
+        return setExpressionPropertyIfAttributeDefined(attribute, expressionAttribute, attributeNameToPropertyName(attribute), attributeNameToPropertyName(expressionAttribute));
+    }
+
+    public XmlBeanDefinitionBuilder setExpressionPropertyIfAttributeDefined(String attribute, String expressionAttribute, String property, String expressionProperty) {
+        return setIfExclusiveAttributeDefined(attribute, expressionAttribute, (b, v) -> b.addPropertyValue(property, v), (b, v) -> b.addPropertyValue(expressionProperty, new ExpressionBeanDefinitionFactory().createBeanDefinition(v)));
+    }
+
     public XmlBeanDefinitionBuilder setExpressionValueIfAttributeDefined(String attribute) {
         return setPropertyValueIfExclusiveAttributeDefined(attribute, attribute + "-expression", attributeNameToPropertyName(attribute), attributeNameToPropertyName(attribute + "-expression-string"));
     }
@@ -130,11 +129,31 @@ public class XmlBeanDefinitionBuilder {
     }
 
     public XmlBeanDefinitionBuilder setPropertyValueIfExclusiveAttributeDefined(String attribute1, String attribute2, String property1, String property2) {
-        if (StringUtils.hasText(element.getAttribute(attribute1)) && StringUtils.hasText(element.getAttribute(attribute2))) {
-            error(attribute1 + " and " + attribute2 + " attributes are mutually exclusive");
+        return setIfExclusiveAttributeDefined(attribute1, attribute2, (b, v) -> b.addPropertyValue(property1, v), (b, v) -> b.addPropertyValue(property2, v));
+    }
+
+    public XmlBeanDefinitionBuilder setExclusiveAttribute(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {
+        var value1 = element.getAttribute(attribute1);
+        var value2 = element.getAttribute(attribute2);
+        if (StringUtils.hasText(value1) == StringUtils.hasText(value2)) {
+            error(attribute1 + " or " + attribute2 + " required and mutually exclusive");
+        } else if (StringUtils.hasText(value1)) {
+            arg1.accept(builder, value1);
         } else {
-            setValueIfAttributeDefined(builder, element, attribute1, property1);
-            setValueIfAttributeDefined(builder, element, attribute2, property2);
+            arg2.accept(builder, value2);
+        }
+        return this;
+    }
+
+    public XmlBeanDefinitionBuilder setIfExclusiveAttributeDefined(String attribute1, String attribute2, BiConsumer<BeanDefinitionBuilder, String> arg1, BiConsumer<BeanDefinitionBuilder, String> arg2) {
+        var value1 = element.getAttribute(attribute1);
+        var value2 = element.getAttribute(attribute2);
+        if (StringUtils.hasText(value1) && StringUtils.hasText(value2)) {
+            error(attribute1 + " and " + attribute2 + " attributes are mutually exclusive");
+        } if (StringUtils.hasText(value1)) {
+            arg1.accept(builder, value1);
+        } else {
+            arg2.accept(builder, value2);
         }
         return this;
     }
