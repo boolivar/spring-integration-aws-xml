@@ -4,3 +4,4 @@ s3-outbound-channel-adapter: org.springframework.integration.aws.config.xml.S3Ou
 s3-outbound-gateway: org.springframework.integration.aws.config.xml.S3OutboundGatewayParser
 sqs-outbound-channel-adapter: org.springframework.integration.aws.config.xml.SqsOutboundChannelAdapterParser
 sqs-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.SqsMessageDrivenChannelAdapterParser
+sns-inbound-channel-adapter: org.springframework.integration.aws.config.xml.SnsInboundChannelAdapterParser

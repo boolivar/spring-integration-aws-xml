@@ -10,7 +10,9 @@ dependencies {
     implementation "org.springframework:spring-beans"
     implementation "org.springframework.integration:spring-integration-aws"
 
-    compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
     compileOnly "io.awspring.cloud:spring-cloud-aws-s3"
+    compileOnly "io.awspring.cloud:spring-cloud-aws-sns"
+    compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
     compileOnly "org.springframework.integration:spring-integration-file"
+    compileOnly "org.springframework.integration:spring-integration-http"
 }

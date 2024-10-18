@@ -113,6 +113,14 @@ public class XmlBeanDefinitionBuilder {
         return this;
     }
 
+    public XmlBeanDefinitionBuilder setPropertyValueIfAttributeDefined(String propertyName, String attributeName, Function<String, ?> attributeValueMapper) {
+        var value = element.getAttribute(attributeName);
+        if (StringUtils.hasText(value)) {
+            builder.addPropertyValue(propertyName, attributeValueMapper.apply(value));
+        }
+        return this;
+    }
+
     public XmlBeanDefinitionBuilder setExpressionValueIfAttributeDefined(String attribute) {
         return setPropertyValueIfExclusiveAttributeDefined(attribute, attribute + "-expression", attributeNameToPropertyName(attribute), attributeNameToPropertyName(attribute + "-expression-string"));
     }
