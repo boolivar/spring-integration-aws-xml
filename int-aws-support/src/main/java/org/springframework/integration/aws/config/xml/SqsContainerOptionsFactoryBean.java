@@ -11,7 +11,15 @@ import java.time.Duration;
 
 class SqsContainerOptionsFactoryBean implements FactoryBean<SqsContainerOptions> {
 
-    private final SqsContainerOptionsBuilder builder = SqsContainerOptions.builder();
+    private final SqsContainerOptionsBuilder builder;
+
+    SqsContainerOptionsFactoryBean() {
+        this(SqsContainerOptions.builder());
+    }
+
+    SqsContainerOptionsFactoryBean(SqsContainerOptionsBuilder builder) {
+        this.builder = builder;
+    }
 
     @Override
     public boolean isSingleton() {
