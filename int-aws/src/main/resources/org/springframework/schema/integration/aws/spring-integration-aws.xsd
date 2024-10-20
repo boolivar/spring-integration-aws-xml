@@ -149,6 +149,20 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="s3-inbound-streaming-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Configures a 'SourcePollingChannelAdapter' Endpoint for the
+                'org.springframework.integration.aws.inbound.S3StreamingMessageSource'.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="s3InboundChannelAdapter"/>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:complexType name="pollingInboundChannelAdapter">
         <xsd:all>
             <xsd:element ref="integration:poller" minOccurs="0"/>
