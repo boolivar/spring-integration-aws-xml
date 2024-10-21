@@ -324,6 +324,119 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="sns-outbound-channel-adapter">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Defines an outbound SNS Channel Adapter for publishing messages to the topic.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexContent>
+                <xsd:extension base="outboundChannelAdapter">
+                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+                    <xsd:attributeGroup ref="messageProducingHandlerAttributes"/>
+                    <xsd:attribute name="sns" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The 'software.amazon.awssdk.services.sns.SnsClient' bean reference.
+                            ]]></xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation kind="ref">
+                                    <tool:expected-type type="software.amazon.awssdk.services.sns.SnsClient"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="topic-arn" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The Amazon SNS Topic ARN.
+                                Mutually exclusive with 'topic-arn-expression'.
+                                This attribute isn't mandatory and the topic can be specified on the
+                                'PublishRequest' payload of the request Message.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="topic-arn-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A SpEL expression that resolves to an Amazon SNS Topic ARN.
+                                The 'requestMessage' is the root object for evaluation context.
+                                Mutually exclusive with 'topic-arn'.
+                                This attribute isn't mandatory and the topic can be specified on the
+                                'PublishRequest' payload of the request Message.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="subject" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The Notification Subject.
+                                Mutually exclusive with 'subject-expression'.
+                                This attribute isn't mandatory and the subject can be fully omitted.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="subject-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The SpEL expression for Notification Subject.
+                                The 'requestMessage' is the root object for evaluation context.
+                                Mutually exclusive with 'subject-expression'.
+                                This attribute isn't mandatory and the subject can be fully omitted.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-group-id" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The message group ID.
+                                Mutually exclusive with 'message-group-id-expression'.
+                                SNS FIFO topics require a message group to be specified, either in
+                                the adapter configuration or on a 'PublishRequest' payload
+                                of the request Message.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-group-id-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The SpEL expression for the message group ID.
+                                Mutually exclusive with 'message-group-id'.
+                                SNS FIFO topics require a message group to be specified, either in
+                                the adapter configuration or on a 'PublishRequest' payload
+                                of the request Message.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-deduplication-id-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The SpEL expression for the message deduplication ID.
+                                SNS FIFO topics require a message deduplication ID to be specified, either in
+                                the adapter configuration or on a 'PublishRequest' payload
+                                of the request Message, unless content-based deduplication is enabled
+                                on the topic.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="body-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The SpEL expression evaluating the 'message' object for
+                                the 'PublishRequest'. The 'requestMessage' is the root object for evaluation context.
+                                If it evaluates to 'SnsBodyBuilder' the 'messageStructure' of the 'PublishRequest is
+                                set to json. Otherwise, the 'ConversionService' is used to convert the
+                                evaluation result to the 'String' without setting the 'messageStructure'.
+                                This attribute isn't mandatory and the 'payload' of request Message can be used directly.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:complexType name="pollingInboundChannelAdapter">
         <xsd:all>
             <xsd:element ref="integration:poller" minOccurs="0"/>
@@ -561,6 +674,33 @@
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:attributeGroup name="messageProducingHandlerAttributes">
+        <xsd:attribute name="async" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Allow async replies. If the handler reply is a CompletableFuture Publisher,
+                    send the output when it is satisfied rather than sending the future as the result.
+                    Ignored for return types other than CompletableFuture or Publisher.
+                    Default is false.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="output-channel" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Channel to reply if async is true.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="send-timeout" type="xsd:long">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Set the timeout for sending reply Messages.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
 
     <xsd:simpleType name="s3CommandType">
         <xsd:restriction base="xsd:token">
