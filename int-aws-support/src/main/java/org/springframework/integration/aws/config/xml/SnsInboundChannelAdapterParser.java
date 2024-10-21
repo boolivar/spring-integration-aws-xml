@@ -17,6 +17,8 @@ public class SnsInboundChannelAdapterParser extends AbstractChannelAdapterParser
             .setPropertyIfAttributeDefined("send-timeout", "requestTimeout")
             .setPropertyIfAttributeDefined("error-channel", "errorChannelName")
             .setPropertyIfAttributeDefined("payload-expression", "payloadExpression", ValueFactory.expressionBean())
-            .build();
+            .getBeanDefinitionBuilder()
+            .addPropertyReference("requestChannelName", channelName)
+            .getBeanDefinition();
     }
 }
