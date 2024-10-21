@@ -14,6 +14,7 @@ public class S3MessageHandlerParser {
 
     public XmlBeanDefinitionBuilder parse(Element element, ParserContext parserContext) {
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, S3MessageHandler.class)
+            .unsupportedAttributeWarning("resource-id-resolver", "object-acl-expression", "progress-listener")
             .addExclusiveConstructorArgReference("s3", "transfer-manager")
             .addExclusiveConstructorArgValue("bucket", "bucket-expression", ValueFactory.typedString(), ValueFactory.expressionBean())
             .configure(def -> def.addConstructorArgValue(produceReply))
