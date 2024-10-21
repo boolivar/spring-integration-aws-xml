@@ -163,6 +163,22 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="s3-outbound-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Defines a Consumer Endpoint for the 'org.springframework.integration.aws.outbound.S3MessageHandler'
+                with one-way behaviour to perform Amazon S3 operations .
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="s3OutboundChannelAdapter">
+                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+    
     <xsd:complexType name="pollingInboundChannelAdapter">
         <xsd:all>
             <xsd:element ref="integration:poller" minOccurs="0"/>
@@ -281,4 +297,131 @@
         </xsd:complexContent>
     </xsd:complexType>
 
+    <xsd:complexType name="outboundChannelAdapter">
+        <xsd:sequence>
+            <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="order">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Specifies the order for invocation when this endpoint is connected as a
+                    subscriber to a SubscribableChannel.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="s3OutboundChannelAdapter">
+        <xsd:complexContent>
+            <xsd:extension base="outboundChannelAdapter">
+                <xsd:attribute name="s3" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Reference to an instance of 'software.amazon.awssdk.services.s3.S3AsyncClient'.
+                            Mutually exclusive with the 'transfer-manager'.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="software.amazon.awssdk.services.s3.S3AsyncClient"/>
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="transfer-manager" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Reference to an instance of 'software.amazon.awssdk.transfer.s3.S3TransferManager'.
+                            Mutually exclusive with the 's3'.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="software.amazon.awssdk.transfer.s3.S3TransferManager"/>
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="bucket" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The S3 bucket to use.
+                            Mutually exclusive with 'bucket-expression'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="bucket-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            A SpEL expression to evaluate S3 bucket at runtime against request message.
+                            Mutually exclusive with 'bucket'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="command">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The S3MessageHandler operation command.
+                            Mutually exclusive with 'command-expression'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                    <xsd:simpleType>
+                        <xsd:union memberTypes="s3CommandType xsd:string"/>
+                    </xsd:simpleType>
+                </xsd:attribute>
+                <xsd:attribute name="command-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            A SpEL expression to evaluate S3MessageHandler operation command at runtime against request message.
+                            Mutually exclusive with 'command'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="key-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            A SpEL expression to evaluate S3Object key at runtime against request message.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="destination-bucket-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            A SpEL expression to evaluate destination S3 bucket at runtime against request message
+                            for the 'copy' operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="destination-key-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            A SpEL expression to evaluate destination S3Object key at runtime against request message
+                            for the 'copy' operation.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="upload-metadata-provider" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Reference to an instance of
+                            'java.util.function.BiConsumer<PutObjectRequest.Builder, Message<?>>'.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="java.util.function.BiConsumer"/>
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="s3CommandType">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="UPLOAD"/>
+            <xsd:enumeration value="DOWNLOAD"/>
+            <xsd:enumeration value="COPY"/>
+        </xsd:restriction>
+    </xsd:simpleType>
 </xsd:schema>
