@@ -452,6 +452,22 @@
         </xsd:attribute>
     </xsd:complexType>
 
+    <xsd:complexType name="outboundChannelAdapter">
+        <xsd:sequence>
+            <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="order">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Specifies the order for invocation when this endpoint is connected as a
+                    subscriber to a SubscribableChannel.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:complexType>
+
     <xsd:complexType name="s3InboundChannelAdapter">
         <xsd:complexContent>
             <xsd:extension base="pollingInboundChannelAdapter">
@@ -553,22 +569,6 @@
                 </xsd:attribute>
             </xsd:extension>
         </xsd:complexContent>
-    </xsd:complexType>
-
-    <xsd:complexType name="outboundChannelAdapter">
-        <xsd:sequence>
-            <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
-            <xsd:element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
-            <xsd:element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
-        </xsd:sequence>
-        <xsd:attribute name="order">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Specifies the order for invocation when this endpoint is connected as a
-                    subscriber to a SubscribableChannel.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
     </xsd:complexType>
 
     <xsd:complexType name="s3OutboundChannelAdapter">
