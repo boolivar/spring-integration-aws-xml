@@ -334,7 +334,6 @@
             <xsd:complexContent>
                 <xsd:extension base="outboundChannelAdapter">
                     <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-                    <xsd:attributeGroup ref="messageProducingHandlerAttributes"/>
                     <xsd:attribute name="sns" type="xsd:string" use="required">
                         <xsd:annotation>
                             <xsd:documentation><![CDATA[
@@ -639,7 +638,7 @@
             </xsd:annotation>
             <xsd:complexContent>
                 <xsd:extension base="outboundChannelAdapter">
-                    <xsd:attributeGroup ref="messageProducingHandlerAttributes"/>
+                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
                     <xsd:attribute name="sqs" type="xsd:string" use="required">
                         <xsd:annotation>
                             <xsd:documentation><![CDATA[
@@ -783,6 +782,30 @@
                 <xsd:documentation><![CDATA[
                     Specifies the order for invocation when this endpoint is connected as a
                     subscriber to a SubscribableChannel.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="async" type="xsd:boolean">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Allow async replies. If the handler reply is a CompletableFuture Publisher,
+                    send the output when it is satisfied rather than sending the future as the result.
+                    Ignored for return types other than CompletableFuture or Publisher.
+                    Default is false.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="output-channel" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Channel to reply if async is true.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="send-timeout" type="xsd:long">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Set the timeout for sending reply Messages.
                 ]]></xsd:documentation>
             </xsd:annotation>
         </xsd:attribute>
@@ -994,33 +1017,6 @@
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
-
-    <xsd:attributeGroup name="messageProducingHandlerAttributes">
-        <xsd:attribute name="async" type="xsd:boolean">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Allow async replies. If the handler reply is a CompletableFuture Publisher,
-                    send the output when it is satisfied rather than sending the future as the result.
-                    Ignored for return types other than CompletableFuture or Publisher.
-                    Default is false.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="output-channel" type="xsd:string">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Channel to reply if async is true.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="send-timeout" type="xsd:long">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Set the timeout for sending reply Messages.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-    </xsd:attributeGroup>
 
     <xsd:simpleType name="s3CommandType">
         <xsd:restriction base="xsd:token">
