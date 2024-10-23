@@ -19,6 +19,159 @@
         ]]></xsd:documentation>
     </xsd:annotation>
 
+    <xsd:element name="kinesis-message-driven-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Configures an 'KinesisMessageDrivenChannelAdapter' endpoint
+                receiving data from Amazon Kinesis streams.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
+            <xsd:attribute name="kinesis-client" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'software.amazon.awssdk.services.kinesis.KinesisAsyncClient' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="streams" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Comma-separated list of streams.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="consumer-group" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Name of the group this consumer belongs to.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="bind-source-record" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Bind the source consumer record in the header named
+                        'IntegrationMessageHeaderAccessor.SOURCE_DATA'.
+                        Does not apply to batch listeners.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="checkpoint-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Default is 'batch'.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="kinesisCheckpointMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="checkpoints-interval" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Sets the interval between 2 checkpoints.
+                        Only used when checkpointMode is periodic.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="lock-renewal-timeout" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Configure a timeout in milliseconds
+                        to wait for lock on shard renewal.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="concurrency" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The maximum number of concurrent 'ConsumerInvoker's running.
+                        The 'ShardConsumer' are evenly distributed between 'ConsumerInvoker's.
+                        Messages from within the same shard will be processed sequentially.
+                        In other words each shard is tied with the particular thread.
+                        By default the concurrency is unlimited and shard is processed
+                        in the 'consumerExecutor' directly.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="consumer-backoff" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Sleep timeout in milliseconds if consumer is throttled.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="idle-between-polls" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The sleep interval in milliseconds used in the
+                        main loop between shards polling cycles.
+                        Defaults to 1000. Minimum is 250.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="listener-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Default is 'record'.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="kinesisListenerMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="records-limit" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The maximum record to poll per on get-records request.
+                        Not greater then 10000.
+                        Default is 10000.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="start-timeout" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Max timeout in milliseconds to start.
+                        Default is 60s.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="checkpoint-store" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'org.springframework.integration.metadata.ConcurrentMetadataStore' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.integration.metadata.ConcurrentMetadataStore"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="lock-registry" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'org.springframework.integration.support.locks.LockRegistry'
+                        bean reference for exclusive access to provided streams.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.integration.support.locks.LockRegistry"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:element name="s3-inbound-channel-adapter">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
@@ -1000,6 +1153,22 @@
         </xsd:attribute>
     </xsd:attributeGroup>
 
+    <xsd:simpleType name="kinesisCheckpointMode">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="record"/>
+            <xsd:enumeration value="batch"/>
+            <xsd:enumeration value="manual"/>
+            <xsd:enumeration value="periodic"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="kinesisListenerMode">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="record"/>
+            <xsd:enumeration value="batch"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
     <xsd:simpleType name="s3CommandType">
         <xsd:restriction base="xsd:token">
             <xsd:enumeration value="UPLOAD"/>
