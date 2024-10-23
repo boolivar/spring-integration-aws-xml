@@ -437,6 +437,199 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="sqs-message-driven-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Configures an endpoint ('SqsMessageDrivenChannelAdapter') that will receive
+                Amazon SQS message from the provided 'queues'.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+            <xsd:attribute name="sqs" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'software.amazon.awssdk.services.sqs.SqsAsyncClient' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="software.amazon.awssdk.services.sqs.SqsAsyncClient"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="queues" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Comma-separated SQS queue names or their URLs.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="error-channel" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Message Channel to which error Messages should be sent.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="send-timeout" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Maximum amount of time in milliseconds to wait when sending a message
+                        to the channel if such channel may block.
+                        For example, a Queue Channel can block until space is available
+                        if its maximum capacity has been reached.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="components-task-executor" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the TaskExecutor to be used by this container's components.
+                        It's shared by the 'io.awspring.cloud.sqs.listener.sink.MessageSink'
+                        and any blocking components the container might have.
+                        Due to performance concerns, the provided executor MUST have a
+                        'io.awspring.cloud.sqs.MessageExecutionThreadFactory'.
+                        The container should have enough Threads to supportthe full load,
+                        including if it's shared between containers.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.core.task.TaskExecutor"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="max-concurrent-messages" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the maximum concurrent messages that can be
+                        processed simultaneously for each queue. Default is 10.
+                        Note that if acknowledgement batching is being used,
+                        the actual maximum number of inflight messages might be higher.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="max-messages-per-poll" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the number of messages that should be returned per poll.
+                        If a value greater than 10 is provided, the result
+                        of multiple polls will be combined, which can be useful for
+                        'io.awspring.cloud.sqs.listener.ListenerMode#BATCH'. Default is 10.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="message-visibility" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Configures the duration (in seconds) that the received messages are hidden from
+                        subsequent poll requests after being retrieved from the system.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="listener-shutdown-timeout" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the maximum amount of time that the container should
+                        wait for tasks to finish before shutting down.
+                        Default is 20 seconds.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="poll-timeout" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The duration (in seconds) for which the call waits for
+                        a message to arrive in the queue before returning.
+                        If message is available, the call returns sooner than WaitTimeSeconds.
+                        If no messages areavailable and the wait time expires,
+                        the call does not return a message list. 
+                        https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="max-delay-between-polls" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the maximum time the polling thread should wait
+                        for a full batch of permits to be available before trying to
+                        acquire a partial batch if so configured.
+                        A poll is only actually executed if at least one permit is available.
+                        Default is 10 seconds.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="acknowledgement-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Container AcknowledgementMode.
+                        Default is ON_SUCCESS.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="sqsAcknowledgementMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="acknowledgement-ordering">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Container AcknowledgementOrdering.
+                        Default is PARALLEL.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="sqsAcknowledgementOrdering xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="acknowledgement-interval" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the maximum interval in milliseconds between acknowledgements
+                        for batch acknowledgements. The default depends on the specific
+                        'ContainerComponentFactory' implementation.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="acknowledgement-threshold" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Set the threshold for triggering a batch acknowledgement.
+                        The default depends on the specific 'ContainerComponentFactory'
+                        implementation.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="back-pressure-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Container BackPressureMode.
+                        Default is AUTO.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="sqsBackPressureMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="queue-not-found-strategy">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Container QueueNotFoundStrategy.
+                        Default is CREATE.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="sqsQueueNotFoundStrategy xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:complexType name="pollingInboundChannelAdapter">
         <xsd:all>
             <xsd:element ref="integration:poller" minOccurs="0"/>
@@ -707,6 +900,37 @@
             <xsd:enumeration value="UPLOAD"/>
             <xsd:enumeration value="DOWNLOAD"/>
             <xsd:enumeration value="COPY"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sqsAcknowledgementMode">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="ON_SUCCESS"/>
+            <xsd:enumeration value="ALWAYS"/>
+            <xsd:enumeration value="MANUAL"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sqsAcknowledgementOrdering">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="ORDERED"/>
+            <xsd:enumeration value="ORDERED_BY_GROUP"/>
+            <xsd:enumeration value="PARALLEL"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sqsBackPressureMode">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="AUTO"/>
+            <xsd:enumeration value="ALWAYS_POLL_MAX_MESSAGES"/>
+            <xsd:enumeration value="FIXED_HIGH_THROUGHPUT"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="sqsQueueNotFoundStrategy">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="FAIL"/>
+            <xsd:enumeration value="CREATE"/>
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>
