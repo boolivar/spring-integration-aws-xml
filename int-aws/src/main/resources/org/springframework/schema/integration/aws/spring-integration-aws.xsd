@@ -19,6 +19,166 @@
         ]]></xsd:documentation>
     </xsd:annotation>
 
+    <xsd:element name="kcl-message-driven-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Configures an 'KclMessageDrivenChannelAdapter' endpoint
+                receiving data from Amazon Kinesis streams using AWS KCL.
+            ]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
+            <xsd:attribute name="streams" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Comma-separated list of streams.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="kinesis-client" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'software.amazon.awssdk.services.kinesis.KinesisAsyncClient' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="cloud-watch-client" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'org.springframework.integration.aws.inbound.kinesis.CloudWatchAsyncClient' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.integration.aws.inbound.kinesis.CloudWatchAsyncClient"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="dynamo-db-client" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The 'org.springframework.integration.aws.inbound.kinesis.DynamoDbAsyncClient' bean reference.
+                    ]]></xsd:documentation>
+                    <xsd:appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.integration.aws.inbound.kinesis.DynamoDbAsyncClient"/>
+                        </tool:annotation>
+                    </xsd:appinfo>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="worker-id" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Sets the worker identifier used to distinguish
+                        different workers/processes of a Kinesis application.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="consumer-group" type="xsd:string">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Name of the group this consumer belongs to.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="consumer-backoff" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Sleep timeout in milliseconds if consumer is throttled.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="empty-record-list" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Whether to return an empty record list from consumer to the processor.
+                        Works only in 'ListenerMode.batch' mode.
+                        The message will be sent into the output channel with
+                        an empty List as a payload.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="fan-out" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Specify a retrieval strategy: fan-out (true; default) or polling (false).
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="bind-source-record" type="xsd:boolean">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Bind the source consumer record in the header named
+                        'IntegrationMessageHeaderAccessor.SOURCE_DATA'.
+                        Does not apply to batch listeners.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="checkpoint-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Default is 'batch'.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="kinesisCheckpointMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="checkpoints-interval" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Sets the interval between 2 checkpoints in milliseconds.
+                        Only used when 'checkpoint-mode' is 'periodic'.
+                        Default is 5s.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="listener-mode">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Default is 'record'.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="kinesisListenerMode xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="metrics-level">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        Specify a metrics level to emit.
+                        Defaults to 'MetricsLevel.DETAILED'.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                    <xsd:union memberTypes="kinesisMetricsLevel xsd:string"/>
+                </xsd:simpleType>
+            </xsd:attribute>
+            <xsd:attribute name="polling-idle-time" type="xsd:long">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The idle timeout in milliseconds between
+                        polls when using 'PollingConfig'.
+                        Defaults to 1500ms.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="polling-max-records" type="xsd:int">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+                        The number of records to poll from Kinesis when using 'PollingConfig'.
+                        Defaults to 10000.
+                    ]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+    
     <xsd:element name="kinesis-message-driven-channel-adapter">
         <xsd:annotation>
             <xsd:documentation><![CDATA[
@@ -76,8 +236,9 @@
             <xsd:attribute name="checkpoints-interval" type="xsd:long">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
-                        Sets the interval between 2 checkpoints.
-                        Only used when checkpointMode is periodic.
+                        Sets the interval between 2 checkpoints in milliseconds.
+                        Only used when 'checkpoint-mode' is 'periodic'.
+                        Default is 5s.
                     ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
@@ -86,6 +247,7 @@
                     <xsd:documentation><![CDATA[
                         Configure a timeout in milliseconds
                         to wait for lock on shard renewal.
+                        Default is 10s.
                     ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
@@ -1161,14 +1323,22 @@
             <xsd:enumeration value="periodic"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
     <xsd:simpleType name="kinesisListenerMode">
         <xsd:restriction base="xsd:token">
             <xsd:enumeration value="record"/>
             <xsd:enumeration value="batch"/>
         </xsd:restriction>
     </xsd:simpleType>
-    
+
+    <xsd:simpleType name="kinesisMetricsLevel">
+        <xsd:restriction base="xsd:token">
+            <xsd:enumeration value="NONE"/>
+            <xsd:enumeration value="SUMMARY"/>
+            <xsd:enumeration value="DETAILED"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
     <xsd:simpleType name="s3CommandType">
         <xsd:restriction base="xsd:token">
             <xsd:enumeration value="UPLOAD"/>
