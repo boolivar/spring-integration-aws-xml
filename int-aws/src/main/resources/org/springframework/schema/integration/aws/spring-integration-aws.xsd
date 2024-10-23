@@ -630,6 +630,133 @@
         </xsd:complexType>
     </xsd:element>
 
+    <xsd:element name="sqs-outbound-channel-adapter">
+        <xsd:complexType>
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Defines an outbound SQS Channel Adapter for sending messages to queues.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+            <xsd:complexContent>
+                <xsd:extension base="outboundChannelAdapter">
+                    <xsd:attributeGroup ref="messageProducingHandlerAttributes"/>
+                    <xsd:attribute name="sqs" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The 'software.amazon.awssdk.services.sqs.SqsAsyncClient' bean reference.
+                            ]]></xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation kind="ref">
+                                    <tool:expected-type type="software.amazon.awssdk.services.sqs.SqsAsyncClient"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="queue" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The Amazon queue name or URL.
+                                Mutually exclusive with 'queue-expression'.
+                                This attribute isn't mandatory and the queue can be specified in message headers
+                                with the 'AwsHeaders.QUEUE' header name.
+                                Mutually exclusive with 'queue-expression'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="queue-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A SpEL expression that resolves to an Amazon queue or its URL.
+                                The 'requestMessage' is the root object for evaluation context.
+                                Mutually exclusive with 'queue'.
+                                This attribute isn't mandatory and the queue can be specified in message headers with
+                                the 'AwsHeaders.QUEUE' header name.
+                                Mutually exclusive with 'queue'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="delay" type="xsd:int">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                The length of time, in seconds, for which to delay a specific message.
+                                Valid values: 0 to 900. Maximum: 15 minutes.
+                                Messages with a positive delay value become available for processing after the delay
+                                period is finished.
+                                If not specified, the default value for the queue applies.
+                                Mutually exclusive with 'delay-expression'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="delay-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A SpEL expression that resolves to the length of time, in seconds,
+                                for which to delay a specific message.
+                                Mutually exclusive with 'delay'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-group-id" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                This parameter applies only to FIFO (first-in-first-out) queues. 
+                                The tag that specifies that a message belongs to a specific message group.
+                                Messages that belong to the same message group are processed in a FIFO manner
+                                (however, messages in different message groups might be processed out of order).
+                                To interleave multiple ordered streams within a single queue, use 'MessageGroupId'
+                                values (for example, session data for multiple users).
+                                In this scenario, multiple readers can process the queue, but the session data
+                                of each user is processed in a FIFO fashion.
+                                Mutually exclusive with 'message-group-id-expression'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-group-id-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A SpEL expression that resolves a 'MessageGroupId' token at runtime.
+                                Mutually exclusive with 'message-group-id'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-deduplication-id" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                This parameter applies only to FIFO (first-in-first-out) queues. 
+                                The token used for deduplication of sent messages.
+                                If a message with a particular 'MessageDeduplicationId' is sent successfully,
+                                any messages sent with the same 'MessageDeduplicationId' are accepted successfully
+                                but aren't delivered during the 5-minute deduplication interval.
+                                Mutually exclusive with 'message-deduplication-id-expression'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-deduplication-id-expression" type="xsd:string">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A SpEL expression that resolves a 'MessageDeduplicationId' token at runtime.
+                                Mutually exclusive with 'message-deduplication-id'.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                    <xsd:attribute name="message-converter">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+                                A bean reference to the MessageConverter.
+                            ]]></xsd:documentation>
+                            <xsd:appinfo>
+                                <tool:annotation kind="ref">
+                                    <tool:expected-type
+                                            type="org.springframework.messaging.converter.MessageConverter"/>
+                                </tool:annotation>
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
     <xsd:complexType name="pollingInboundChannelAdapter">
         <xsd:all>
             <xsd:element ref="integration:poller" minOccurs="0"/>
