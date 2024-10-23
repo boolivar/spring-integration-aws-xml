@@ -251,7 +251,7 @@
             ]]></xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
             <xsd:attribute name="sns" type="xsd:string" use="required">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
@@ -272,16 +272,6 @@
                     ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
-            <xsd:attribute name="send-timeout" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
-                        Maximum amount of time in milliseconds to wait when sending
-                        a message to the channel if such channel may block.
-                        For example, a Queue Channel can block until space
-                        is available if its maximum capacity has been reached.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
             <xsd:attribute name="payload-expression" type="xsd:string">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
@@ -294,19 +284,6 @@
                         - #requestHeaders
                         - #matrixVariables
                         - #cookies
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="error-channel" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:appinfo>
-                        <tool:annotation kind="ref">
-                            <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
-                        </tool:annotation>
-                    </xsd:appinfo>
-                    <xsd:documentation><![CDATA[
-                        The MessagingGateway's 'error-channel' where to send an ErrorMessage in case
-                        of Exception is caused from original message flow.
                     ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
@@ -444,7 +421,7 @@
             ]]></xsd:documentation>
         </xsd:annotation>
         <xsd:complexType>
-            <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
             <xsd:attribute name="sqs" type="xsd:string" use="required">
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
@@ -461,28 +438,6 @@
                 <xsd:annotation>
                     <xsd:documentation><![CDATA[
                         Comma-separated SQS queue names or their URLs.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="error-channel" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
-                        Message Channel to which error Messages should be sent.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
-                        <tool:annotation kind="ref">
-                            <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
-                        </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="send-timeout" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
-                        Maximum amount of time in milliseconds to wait when sending a message
-                        to the channel if such channel may block.
-                        For example, a Queue Channel can block until space is available
-                        if its maximum capacity has been reached.
                     ]]></xsd:documentation>
                 </xsd:annotation>
             </xsd:attribute>
@@ -1017,6 +972,33 @@
             </xsd:extension>
         </xsd:complexContent>
     </xsd:complexType>
+
+    <xsd:attributeGroup name="inboundChannelAdapterAttributes">
+        <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+        <xsd:attribute name="send-timeout" type="xsd:long">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Maximum amount of time in milliseconds to wait when sending a message
+                    to the channel if such channel may block.
+                    For example, a Queue Channel can block until space is available
+                    if its maximum capacity has been reached.
+                    May be overridden for individual messages.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="error-channel" type="xsd:string">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+                    Message Channel to which error Messages should be sent.
+                ]]></xsd:documentation>
+                <xsd:appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
+                    </tool:annotation>
+                </xsd:appinfo>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
 
     <xsd:simpleType name="s3CommandType">
         <xsd:restriction base="xsd:token">
