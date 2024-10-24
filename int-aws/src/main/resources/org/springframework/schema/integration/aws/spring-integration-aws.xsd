@@ -731,12 +731,12 @@
     </xsd:element>
 
     <xsd:element name="sns-outbound-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Defines an outbound SNS Channel Adapter for publishing messages to the topic.
+            ]]></xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Defines an outbound SNS Channel Adapter for publishing messages to the topic.
-                ]]></xsd:documentation>
-            </xsd:annotation>
             <xsd:complexContent>
                 <xsd:extension base="outboundChannelAdapter">
                     <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
@@ -1014,12 +1014,12 @@
     </xsd:element>
 
     <xsd:element name="sqs-outbound-channel-adapter">
+        <xsd:annotation>
+            <xsd:documentation><![CDATA[
+                Defines an outbound SQS Channel Adapter for sending messages to queues.
+            ]]></xsd:documentation>
+        </xsd:annotation>
         <xsd:complexType>
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
-                    Defines an outbound SQS Channel Adapter for sending messages to queues.
-                ]]></xsd:documentation>
-            </xsd:annotation>
             <xsd:complexContent>
                 <xsd:extension base="outboundChannelAdapter">
                     <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
