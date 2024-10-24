@@ -343,8 +343,7 @@
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
-                <xsd:extension base="outboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+                <xsd:extension base="kinesisOutboundChannelAdapter">
                     <xsd:attribute name="kinesis-client" type="xsd:string" use="required">
                         <xsd:annotation>
                             <xsd:documentation><![CDATA[
@@ -353,92 +352,6 @@
                             <xsd:appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
-                                </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="stream" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The name of the stream to put the data record into.
-                                Mutually exclusive with 'stream-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="stream-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The name of the stream to put the data record into.
-                                Mutually exclusive with 'stream'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="partition-key" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Determines which shard in the stream the data record is assigned to.
-                                Mutually exclusive with 'partition-key-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="partition-key-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Determines which shard in the stream the data record is assigned to.
-                                Mutually exclusive with 'partition-key'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="explicit-hash-key" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The hash value used to explicitly determine the shard
-                                the data record is assigned to by overriding the partition key hash.
-                                Mutually exclusive with 'explicit-hash-key-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="explicit-hash-key-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The hash value used to explicitly determine the shard
-                                the data record is assigned to by overriding the partition key hash.
-                                Mutually exclusive with 'explicit-hash-key'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="sequence-number-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Guarantees strictly increasing sequence numbers,
-                                for puts from the same client and to the same partition key.
-                                If this parameter is not set, records
-                                are coarsely ordered based on arrival time.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="embedded-headers-mapper" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                'org.springframework.integration.mapping.OutboundMessageMapper<byte[]>' bean reference
-                                for embedding message headers into the record data together with payload.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
-                                <tool:annotation kind="ref">
-                                    <tool:expected-type type="org.springframework.integration.mapping.OutboundMessageMapper"/>
-                                </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-converter" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                'org.springframework.messaging.converter.MessageConverter' bean reference
-                                for converting payload to 'byte[]' for Kinesis record.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
-                                <tool:annotation kind="ref">
-                                    <tool:expected-type type="org.springframework.messaging.converter.MessageConverter"/>
                                 </tool:annotation>
                             </xsd:appinfo>
                         </xsd:annotation>
@@ -458,8 +371,7 @@
         </xsd:annotation>
         <xsd:complexType>
             <xsd:complexContent>
-                <xsd:extension base="outboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+                <xsd:extension base="kinesisOutboundChannelAdapter">
                     <xsd:attribute name="kinesis-producer" type="xsd:string" use="required">
                         <xsd:annotation>
                             <xsd:documentation><![CDATA[
@@ -468,92 +380,6 @@
                             <xsd:appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.integration.aws.outbound.KinesisProducer"/>
-                                </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="stream" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The name of the stream to put the data record into.
-                                Mutually exclusive with 'stream-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="stream-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The name of the stream to put the data record into.
-                                Mutually exclusive with 'stream'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="partition-key" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Determines which shard in the stream the data record is assigned to.
-                                Mutually exclusive with 'partition-key-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="partition-key-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Determines which shard in the stream the data record is assigned to.
-                                Mutually exclusive with 'partition-key'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="explicit-hash-key" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The hash value used to explicitly determine the shard
-                                the data record is assigned to by overriding the partition key hash.
-                                Mutually exclusive with 'explicit-hash-key-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="explicit-hash-key-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                The hash value used to explicitly determine the shard
-                                the data record is assigned to by overriding the partition key hash.
-                                Mutually exclusive with 'explicit-hash-key'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="sequence-number-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                Guarantees strictly increasing sequence numbers,
-                                for puts from the same client and to the same partition key.
-                                If this parameter is not set, records
-                                are coarsely ordered based on arrival time.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="embedded-headers-mapper" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                'org.springframework.integration.mapping.OutboundMessageMapper<byte[]>' bean reference
-                                for embedding message headers into the record data together with payload.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
-                                <tool:annotation kind="ref">
-                                    <tool:expected-type type="org.springframework.integration.mapping.OutboundMessageMapper"/>
-                                </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-converter" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
-                                'org.springframework.messaging.converter.MessageConverter' bean reference
-                                for converting payload to 'byte[]' for Kinesis record.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
-                                <tool:annotation kind="ref">
-                                    <tool:expected-type type="org.springframework.messaging.converter.MessageConverter"/>
                                 </tool:annotation>
                             </xsd:appinfo>
                         </xsd:annotation>
@@ -1560,6 +1386,100 @@
             </xsd:annotation>
         </xsd:attribute>
     </xsd:attributeGroup>
+
+    <xsd:complexType name="kinesisOutboundChannelAdapter">
+        <xsd:complexContent>
+            <xsd:extension base="outboundChannelAdapter">
+                <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
+                <xsd:attribute name="stream" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The name of the stream to put the data record into.
+                            Mutually exclusive with 'stream-expression'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="stream-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The name of the stream to put the data record into.
+                            Mutually exclusive with 'stream'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="partition-key" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Determines which shard in the stream the data record is assigned to.
+                            Mutually exclusive with 'partition-key-expression'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="partition-key-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Determines which shard in the stream the data record is assigned to.
+                            Mutually exclusive with 'partition-key'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="explicit-hash-key" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The hash value used to explicitly determine the shard
+                            the data record is assigned to by overriding the partition key hash.
+                            Mutually exclusive with 'explicit-hash-key-expression'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="explicit-hash-key-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            The hash value used to explicitly determine the shard
+                            the data record is assigned to by overriding the partition key hash.
+                            Mutually exclusive with 'explicit-hash-key'.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="sequence-number-expression" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            Guarantees strictly increasing sequence numbers,
+                            for puts from the same client and to the same partition key.
+                            If this parameter is not set, records
+                            are coarsely ordered based on arrival time.
+                        ]]></xsd:documentation>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="embedded-headers-mapper" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            'org.springframework.integration.mapping.OutboundMessageMapper<byte[]>' bean reference
+                            for embedding message headers into the record data together with payload.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="org.springframework.integration.mapping.OutboundMessageMapper"/>
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+                <xsd:attribute name="message-converter" type="xsd:string">
+                    <xsd:annotation>
+                        <xsd:documentation><![CDATA[
+                            'org.springframework.messaging.converter.MessageConverter' bean reference
+                            for converting payload to 'byte[]' for Kinesis record.
+                        ]]></xsd:documentation>
+                        <xsd:appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="org.springframework.messaging.converter.MessageConverter"/>
+                            </tool:annotation>
+                        </xsd:appinfo>
+                    </xsd:annotation>
+                </xsd:attribute>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
 
     <xsd:simpleType name="kinesisCheckpointMode">
         <xsd:restriction base="xsd:token">
