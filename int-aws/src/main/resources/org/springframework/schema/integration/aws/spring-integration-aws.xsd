@@ -1,443 +1,439 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns="http://www.springframework.org/schema/integration/aws"
-            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns:tool="http://www.springframework.org/schema/tool"
-            xmlns:integration="http://www.springframework.org/schema/integration"
-            targetNamespace="http://www.springframework.org/schema/integration/aws"
-            elementFormDefault="qualified">
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:tool="http://www.springframework.org/schema/tool"
+        xmlns:integration="http://www.springframework.org/schema/integration"
+        xmlns:int-aws="http://www.springframework.org/schema/integration/aws"
+        targetNamespace="http://www.springframework.org/schema/integration/aws"
+        elementFormDefault="qualified">
 
-    <xsd:import namespace="http://www.springframework.org/schema/beans"
-                schemaLocation="https://www.springframework.org/schema/beans/spring-beans-4.3.xsd"/>
-    <xsd:import namespace="http://www.springframework.org/schema/tool"
-                schemaLocation="https://www.springframework.org/schema/tool/spring-tool-4.3.xsd"/>
-    <xsd:import namespace="http://www.springframework.org/schema/integration"
-                schemaLocation="https://www.springframework.org/schema/integration/spring-integration-5.2.xsd"/>
+    <import namespace="http://www.springframework.org/schema/tool"/>
+    <import namespace="http://www.springframework.org/schema/integration"/>
 
-    <xsd:annotation>
-        <xsd:documentation><![CDATA[
+    <annotation>
+        <documentation><![CDATA[
             Defines the configuration elements for Spring Integration's AWS Adapters.
-        ]]></xsd:documentation>
-    </xsd:annotation>
+        ]]></documentation>
+    </annotation>
 
-    <xsd:element name="kcl-message-driven-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="kcl-message-driven-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Configures an 'KclMessageDrivenChannelAdapter' endpoint
                 receiving data from Amazon Kinesis streams using AWS KCL.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
-            <xsd:attribute name="streams" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <attributeGroup ref="int-aws:inboundChannelAdapterAttributes"/>
+            <attribute name="streams" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         Comma-separated list of streams.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="kinesis-client" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="kinesis-client" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'software.amazon.awssdk.services.kinesis.KinesisAsyncClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="cloud-watch-client" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="cloud-watch-client" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'org.springframework.integration.aws.inbound.kinesis.CloudWatchAsyncClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="org.springframework.integration.aws.inbound.kinesis.CloudWatchAsyncClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="dynamo-db-client" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="dynamo-db-client" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'org.springframework.integration.aws.inbound.kinesis.DynamoDbAsyncClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="org.springframework.integration.aws.inbound.kinesis.DynamoDbAsyncClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="worker-id" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="worker-id" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         Sets the worker identifier used to distinguish
                         different workers/processes of a Kinesis application.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="consumer-group" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="consumer-group" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         Name of the group this consumer belongs to.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="consumer-backoff" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="consumer-backoff" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Sleep timeout in milliseconds if consumer is throttled.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="empty-record-list" type="xsd:boolean">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="empty-record-list" type="boolean">
+                <annotation>
+                    <documentation><![CDATA[
                         Whether to return an empty record list from consumer to the processor.
                         Works only in 'ListenerMode.batch' mode.
                         The message will be sent into the output channel with
                         an empty List as a payload.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="fan-out" type="xsd:boolean">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="fan-out" type="boolean">
+                <annotation>
+                    <documentation><![CDATA[
                         Specify a retrieval strategy: fan-out (true; default) or polling (false).
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="bind-source-record" type="xsd:boolean">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="bind-source-record" type="boolean">
+                <annotation>
+                    <documentation><![CDATA[
                         Bind the source consumer record in the header named
                         'IntegrationMessageHeaderAccessor.SOURCE_DATA'.
                         Does not apply to batch listeners.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="checkpoint-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="checkpoint-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Default is 'batch'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="kinesisCheckpointMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="checkpoints-interval" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:kinesisCheckpointMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="checkpoints-interval" type="long">
+                <annotation>
+                    <documentation><![CDATA[
                         Sets the interval between 2 checkpoints in milliseconds.
                         Only used when 'checkpoint-mode' is 'periodic'.
                         Default is 5s.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="listener-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="listener-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Default is 'record'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="kinesisListenerMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="metrics-level">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:kinesisListenerMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="metrics-level">
+                <annotation>
+                    <documentation><![CDATA[
                         Specify a metrics level to emit.
                         Defaults to 'MetricsLevel.DETAILED'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="kinesisMetricsLevel xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="polling-idle-time" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:kinesisMetricsLevel string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="polling-idle-time" type="long">
+                <annotation>
+                    <documentation><![CDATA[
                         The idle timeout in milliseconds between
                         polls when using 'PollingConfig'.
                         Defaults to 1500ms.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="polling-max-records" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="polling-max-records" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         The number of records to poll from Kinesis when using 'PollingConfig'.
                         Defaults to 10000.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-        </xsd:complexType>
-    </xsd:element>
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+        </complexType>
+    </element>
     
-    <xsd:element name="kinesis-message-driven-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="kinesis-message-driven-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Configures an 'KinesisMessageDrivenChannelAdapter' endpoint
                 receiving data from Amazon Kinesis streams.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
-            <xsd:attribute name="kinesis-client" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <attributeGroup ref="int-aws:inboundChannelAdapterAttributes"/>
+            <attribute name="kinesis-client" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'software.amazon.awssdk.services.kinesis.KinesisAsyncClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="streams" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="streams" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         Comma-separated list of streams.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="consumer-group" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="consumer-group" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         Name of the group this consumer belongs to.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="bind-source-record" type="xsd:boolean">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="bind-source-record" type="boolean">
+                <annotation>
+                    <documentation><![CDATA[
                         Bind the source consumer record in the header named
                         'IntegrationMessageHeaderAccessor.SOURCE_DATA'.
                         Does not apply to batch listeners.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="checkpoint-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="checkpoint-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Default is 'batch'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="kinesisCheckpointMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="checkpoints-interval" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:kinesisCheckpointMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="checkpoints-interval" type="long">
+                <annotation>
+                    <documentation><![CDATA[
                         Sets the interval between 2 checkpoints in milliseconds.
                         Only used when 'checkpoint-mode' is 'periodic'.
                         Default is 5s.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="lock-renewal-timeout" type="xsd:long">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="lock-renewal-timeout" type="long">
+                <annotation>
+                    <documentation><![CDATA[
                         Configure a timeout in milliseconds
                         to wait for lock on shard renewal.
                         Default is 10s.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="concurrency" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="concurrency" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         The maximum number of concurrent 'ConsumerInvoker's running.
                         The 'ShardConsumer' are evenly distributed between 'ConsumerInvoker's.
                         Messages from within the same shard will be processed sequentially.
                         In other words each shard is tied with the particular thread.
                         By default the concurrency is unlimited and shard is processed
                         in the 'consumerExecutor' directly.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="consumer-backoff" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="consumer-backoff" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Sleep timeout in milliseconds if consumer is throttled.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="idle-between-polls" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="idle-between-polls" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         The sleep interval in milliseconds used in the
                         main loop between shards polling cycles.
                         Defaults to 1000. Minimum is 250.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="listener-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="listener-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Default is 'record'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="kinesisListenerMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="records-limit" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:kinesisListenerMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="records-limit" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         The maximum record to poll per on get-records request.
                         Not greater then 10000.
                         Default is 10000.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="start-timeout" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="start-timeout" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Max timeout in milliseconds to start.
                         Default is 60s.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="checkpoint-store" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="checkpoint-store" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'org.springframework.integration.metadata.ConcurrentMetadataStore' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="org.springframework.integration.metadata.ConcurrentMetadataStore"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="lock-registry" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="lock-registry" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'org.springframework.integration.support.locks.LockRegistry'
                         bean reference for exclusive access to provided streams.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="org.springframework.integration.support.locks.LockRegistry"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-        </xsd:complexType>
-    </xsd:element>
+                    </appinfo>
+                </annotation>
+            </attribute>
+        </complexType>
+    </element>
 
-    <xsd:element name="kinesis-outbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="kinesis-outbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines an outbound 'KinesisMessageHandler' adapter
                 for sending data to Amazon Kinesis streams.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="kinesisOutboundChannelAdapter">
-                    <xsd:attribute name="kinesis-client" type="xsd:string" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:kinesisOutboundChannelAdapter">
+                    <attribute name="kinesis-client" type="string" use="required">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The 'software.amazon.awssdk.services.kinesis.KinesisAsyncClient' bean reference.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="software.amazon.awssdk.services.kinesis.KinesisAsyncClient"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            </appinfo>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="kpl-outbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="kpl-outbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines an outbound 'KplMessageHandler' adapter
                 for sending data to Amazon Kinesis streams
                 using Amazon Kinesis Producer Library.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="kinesisOutboundChannelAdapter">
-                    <xsd:attribute name="kinesis-producer" type="xsd:string" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:kinesisOutboundChannelAdapter">
+                    <attribute name="kinesis-producer" type="string" use="required">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The 'org.springframework.integration.aws.outbound.KinesisProducer' bean reference.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.integration.aws.outbound.KinesisProducer"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="flush-duration" type="xsd:long">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                        </annotation>
+                    </attribute>
+                    <attribute name="flush-duration" type="long">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Rate in milliseconds how often to
                                 call a 'KinesisProducer.flush()'.
                                 Default is flush every record.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="glue-schema-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="glue-schema-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 SpEL expression for 'org.springframework.integration.aws.outbound.Schema'
                                 to add into a 'UserRecord' built from the request message.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="s3-inbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="s3-inbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Configures a 'SourcePollingChannelAdapter' Endpoint for the
                 'org.springframework.integration.aws.inbound.S3InboundFileSynchronizingMessageSource' that
                 synchronizes a local directory with the contents of a remote Amazon S3 bucket.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="s3InboundChannelAdapter">
-                    <xsd:attribute name="local-directory" type="xsd:string" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:s3InboundChannelAdapter">
+                    <attribute name="local-directory" type="string" use="required">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Identifies the directory path (e.g.,
                                 "/local/mytransfers") where files
                                 will be transferred TO.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="temporary-file-suffix" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="temporary-file-suffix" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Extension used when downloading files.
                                 We change it right after we know it's downloaded.
                                 Default ".writing".
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="local-filename-generator-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="local-filename-generator-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Allows you to provide a SpEL expression to
                                 generate the file name of
                                 the local (transferred) file. The root
@@ -448,17 +444,17 @@
                                 '.a'" where #this represents the
                                 original name of the remote
                                 file.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="local-filter" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="local-filter" type="string">
+                        <annotation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.integration.file.filters.FileListFilter"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                            <documentation><![CDATA[
                                 Allows you to specify a reference to a
                                 [org.springframework.integration.file.filters.FileListFilter]
                                 bean. It is used to determine which files will generate messages
@@ -467,144 +463,144 @@
                                 (files having the 'temporary-file-suffix' suffix).
                                 The default is an FileSystemPersistentAcceptOnceFileListFilter
                                 which filters duplicate file names (processed during the current execution).
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="auto-create-local-directory" type="xsd:boolean">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="auto-create-local-directory" type="boolean">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Tells this adapter if the local directory must
                                 be auto-created if it doesn't exist. Default is TRUE.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="delete-remote-files" type="xsd:boolean">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="delete-remote-files" type="boolean">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Specify whether to delete the remote source file after copying.
                                 By default, the remote files will NOT be deleted.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="preserve-timestamp" type="xsd:boolean">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="preserve-timestamp" type="boolean">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Specify whether to preserve the modified timestamp from the remote source
                                 file on the local file after copying.
                                 By default, the remote timestamp will NOT be preserved.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="remote-file-metadata-store" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="remote-file-metadata-store" type="string">
+                        <annotation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.integration.metadata.MetadataStore"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                            <documentation><![CDATA[
                                 Reference to [org.springframework.integration.metadata.MetadataStore] bean
                                 to hold a remote file info (host, port, remote directory)
                                 for transfer downstream in message headers when local file is pulled.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="metadata-store-prefix" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="metadata-store-prefix" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Specify a prefix for keys in metadata store
                                 to not clash with other keys in the shared store.
                                 By default bean name is used.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="scanner" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="scanner" type="string">
+                        <annotation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.integration.file.DirectoryScanner"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                            <documentation><![CDATA[
                                 Switch the local FileReadingMessageSource to use a custom
 	                            DirectoryScanner.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="s3-inbound-streaming-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="s3-inbound-streaming-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Configures a 'SourcePollingChannelAdapter' Endpoint for the
                 'org.springframework.integration.aws.inbound.S3StreamingMessageSource'.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="s3InboundChannelAdapter"/>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:s3InboundChannelAdapter"/>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="s3-outbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="s3-outbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines a Consumer Endpoint for the 'org.springframework.integration.aws.outbound.S3MessageHandler'
                 with one-way behaviour to perform Amazon S3 operations .
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="s3OutboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:s3OutboundChannelAdapter">
+                    <attributeGroup ref="integration:channelAdapterAttributes"/>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="s3-outbound-gateway">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="s3-outbound-gateway">
+        <annotation>
+            <documentation><![CDATA[
                 Defines a Consumer Endpoint for the 'org.springframework.integration.aws.outbound.S3MessageHandler'
                 with request-reply behaviour to perform Amazon S3 operations.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="s3OutboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:smartLifeCycleAttributeGroup"/>
-                    <xsd:attribute name="id" type="xsd:string"/>
-                    <xsd:attribute name="request-channel" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:appinfo>
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:s3OutboundChannelAdapter">
+                    <attributeGroup ref="integration:smartLifeCycleAttributeGroup"/>
+                    <attribute name="id" type="string"/>
+                    <attribute name="request-channel" type="string">
+                        <annotation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                            <documentation><![CDATA[
                                 Identifies the request channel attached to this gateway.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="reply-channel" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="reply-channel" type="string">
+                        <annotation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                            <documentation><![CDATA[
                                 Identifies the reply channel attached to this gateway.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="reply-timeout" type="xsd:long">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="reply-timeout" type="long">
+                        <annotation>
+                            <documentation><![CDATA[
                                 Allows you to specify how long this gateway will wait for
                                 the reply message to be sent successfully to the reply channel
                                 before throwing an exception. This attribute only applies when the
@@ -623,45 +619,45 @@
                                 The attribute will default, if not specified, to '-1', meaning that
                                 by default, the Gateway will wait indefinitely. The value is
                                 specified in milliseconds.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="sns-inbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="sns-inbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines an SNS inbound HTTP-based Channel Adapter - SnsInboundChannelAdapter.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
-            <xsd:attribute name="sns" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <attributeGroup ref="int-aws:inboundChannelAdapterAttributes"/>
+            <attribute name="sns" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'software.amazon.awssdk.services.sns.SnsClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="software.amazon.awssdk.services.sns.SnsClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="path" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="path" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         Comma-separated URI paths (e.g., /orderId/{order}).
                         Ant-style path patterns are also supported (e.g. /myPath/*.do).
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="payload-expression" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="payload-expression" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         Allows you to specify SpEL expression to construct a Message payload.
                         The root evaluation object will be populated with an HttpEntity instance as the root object
                         and it may contain variables:
@@ -671,166 +667,166 @@
                         - #requestHeaders
                         - #matrixVariables
                         - #cookies
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="handle-notification-status" type="xsd:boolean">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="handle-notification-status" type="boolean">
+                <annotation>
+                    <documentation><![CDATA[
                         Flag to indicate if the 'SubscriptionConfirmation' and 'UnsubscribeConfirmation'
                         SNS messages should sent to the 'channel' or not. If 'true' the
                         'AwsHeaders.NOTIFICATION_STATUS' message header is populated with the 'NotificationStatus'
                         value. In this case it is an application responsibility to 'confirm' subscription or not using
                         that 'NotificationStatus' object. Defaults to 'false'.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-        </xsd:complexType>
-    </xsd:element>
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+        </complexType>
+    </element>
 
-    <xsd:element name="sns-outbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="sns-outbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines an outbound SNS Channel Adapter for publishing messages to the topic.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="outboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-                    <xsd:attribute name="sns" type="xsd:string" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:outboundChannelAdapter">
+                    <attributeGroup ref="integration:channelAdapterAttributes"/>
+                    <attribute name="sns" type="string" use="required">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The 'software.amazon.awssdk.services.sns.SnsClient' bean reference.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="software.amazon.awssdk.services.sns.SnsClient"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="topic-arn" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                        </annotation>
+                    </attribute>
+                    <attribute name="topic-arn" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The Amazon SNS Topic ARN.
                                 Mutually exclusive with 'topic-arn-expression'.
                                 This attribute isn't mandatory and the topic can be specified on the
                                 'PublishRequest' payload of the request Message.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="topic-arn-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="topic-arn-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A SpEL expression that resolves to an Amazon SNS Topic ARN.
                                 The 'requestMessage' is the root object for evaluation context.
                                 Mutually exclusive with 'topic-arn'.
                                 This attribute isn't mandatory and the topic can be specified on the
                                 'PublishRequest' payload of the request Message.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="subject" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="subject" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The Notification Subject.
                                 Mutually exclusive with 'subject-expression'.
                                 This attribute isn't mandatory and the subject can be fully omitted.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="subject-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="subject-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The SpEL expression for Notification Subject.
                                 The 'requestMessage' is the root object for evaluation context.
                                 Mutually exclusive with 'subject-expression'.
                                 This attribute isn't mandatory and the subject can be fully omitted.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-group-id" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-group-id" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The message group ID.
                                 Mutually exclusive with 'message-group-id-expression'.
                                 SNS FIFO topics require a message group to be specified, either in
                                 the adapter configuration or on a 'PublishRequest' payload
                                 of the request Message.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-group-id-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-group-id-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The SpEL expression for the message group ID.
                                 Mutually exclusive with 'message-group-id'.
                                 SNS FIFO topics require a message group to be specified, either in
                                 the adapter configuration or on a 'PublishRequest' payload
                                 of the request Message.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-deduplication-id-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-deduplication-id-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The SpEL expression for the message deduplication ID.
                                 SNS FIFO topics require a message deduplication ID to be specified, either in
                                 the adapter configuration or on a 'PublishRequest' payload
                                 of the request Message, unless content-based deduplication is enabled
                                 on the topic.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="body-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="body-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The SpEL expression evaluating the 'message' object for
                                 the 'PublishRequest'. The 'requestMessage' is the root object for evaluation context.
                                 If it evaluates to 'SnsBodyBuilder' the 'messageStructure' of the 'PublishRequest is
                                 set to json. Otherwise, the 'ConversionService' is used to convert the
                                 evaluation result to the 'String' without setting the 'messageStructure'.
                                 This attribute isn't mandatory and the 'payload' of request Message can be used directly.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:element name="sqs-message-driven-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="sqs-message-driven-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Configures an endpoint ('SqsMessageDrivenChannelAdapter') that will receive
                 Amazon SQS message from the provided 'queues'.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:attributeGroup ref="inboundChannelAdapterAttributes"/>
-            <xsd:attribute name="sqs" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <attributeGroup ref="int-aws:inboundChannelAdapterAttributes"/>
+            <attribute name="sqs" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         The 'software.amazon.awssdk.services.sqs.SqsAsyncClient' bean reference.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="software.amazon.awssdk.services.sqs.SqsAsyncClient"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="queues" type="xsd:string" use="required">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="queues" type="string" use="required">
+                <annotation>
+                    <documentation><![CDATA[
                         Comma-separated SQS queue names or their URLs.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="components-task-executor" type="xsd:string">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="components-task-executor" type="string">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the TaskExecutor to be used by this container's components.
                         It's shared by the 'io.awspring.cloud.sqs.listener.sink.MessageSink'
                         and any blocking components the container might have.
@@ -838,208 +834,208 @@
                         'io.awspring.cloud.sqs.MessageExecutionThreadFactory'.
                         The container should have enough Threads to supportthe full load,
                         including if it's shared between containers.
-                    ]]></xsd:documentation>
-                    <xsd:appinfo>
+                    ]]></documentation>
+                    <appinfo>
                         <tool:annotation kind="ref">
                             <tool:expected-type type="org.springframework.core.task.TaskExecutor"/>
                         </tool:annotation>
-                    </xsd:appinfo>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="max-concurrent-messages" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="max-concurrent-messages" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the maximum concurrent messages that can be
                         processed simultaneously for each queue. Default is 10.
                         Note that if acknowledgement batching is being used,
                         the actual maximum number of inflight messages might be higher.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="max-messages-per-poll" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="max-messages-per-poll" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the number of messages that should be returned per poll.
                         If a value greater than 10 is provided, the result
                         of multiple polls will be combined, which can be useful for
                         'io.awspring.cloud.sqs.listener.ListenerMode#BATCH'. Default is 10.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="message-visibility" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="message-visibility" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Configures the duration (in seconds) that the received messages are hidden from
                         subsequent poll requests after being retrieved from the system.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="listener-shutdown-timeout" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="listener-shutdown-timeout" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the maximum amount of time that the container should
                         wait for tasks to finish before shutting down.
                         Default is 20 seconds.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="poll-timeout" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="poll-timeout" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         The duration (in seconds) for which the call waits for
                         a message to arrive in the queue before returning.
                         If message is available, the call returns sooner than WaitTimeSeconds.
                         If no messages areavailable and the wait time expires,
                         the call does not return a message list. 
                         https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-long-polling.html
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="max-delay-between-polls" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="max-delay-between-polls" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the maximum time the polling thread should wait
                         for a full batch of permits to be available before trying to
                         acquire a partial batch if so configured.
                         A poll is only actually executed if at least one permit is available.
                         Default is 10 seconds.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="acknowledgement-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="acknowledgement-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Container AcknowledgementMode.
                         Default is ON_SUCCESS.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="sqsAcknowledgementMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="acknowledgement-ordering">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsAcknowledgementMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="acknowledgement-ordering">
+                <annotation>
+                    <documentation><![CDATA[
                         Container AcknowledgementOrdering.
                         Default is PARALLEL.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="sqsAcknowledgementOrdering xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="acknowledgement-interval" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsAcknowledgementOrdering string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="acknowledgement-interval" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the maximum interval in milliseconds between acknowledgements
                         for batch acknowledgements. The default depends on the specific
                         'ContainerComponentFactory' implementation.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="acknowledgement-threshold" type="xsd:int">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="acknowledgement-threshold" type="int">
+                <annotation>
+                    <documentation><![CDATA[
                         Set the threshold for triggering a batch acknowledgement.
                         The default depends on the specific 'ContainerComponentFactory'
                         implementation.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-            </xsd:attribute>
-            <xsd:attribute name="back-pressure-mode">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="back-pressure-mode">
+                <annotation>
+                    <documentation><![CDATA[
                         Container BackPressureMode.
                         Default is AUTO.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="sqsBackPressureMode xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-            <xsd:attribute name="queue-not-found-strategy">
-                <xsd:annotation>
-                    <xsd:documentation><![CDATA[
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsBackPressureMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="queue-not-found-strategy">
+                <annotation>
+                    <documentation><![CDATA[
                         Container QueueNotFoundStrategy.
                         Default is CREATE.
-                    ]]></xsd:documentation>
-                </xsd:annotation>
-                <xsd:simpleType>
-                    <xsd:union memberTypes="sqsQueueNotFoundStrategy xsd:string"/>
-                </xsd:simpleType>
-            </xsd:attribute>
-        </xsd:complexType>
-    </xsd:element>
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsQueueNotFoundStrategy string"/>
+                </simpleType>
+            </attribute>
+        </complexType>
+    </element>
 
-    <xsd:element name="sqs-outbound-channel-adapter">
-        <xsd:annotation>
-            <xsd:documentation><![CDATA[
+    <element name="sqs-outbound-channel-adapter">
+        <annotation>
+            <documentation><![CDATA[
                 Defines an outbound SQS Channel Adapter for sending messages to queues.
-            ]]></xsd:documentation>
-        </xsd:annotation>
-        <xsd:complexType>
-            <xsd:complexContent>
-                <xsd:extension base="outboundChannelAdapter">
-                    <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-                    <xsd:attribute name="sqs" type="xsd:string" use="required">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+            ]]></documentation>
+        </annotation>
+        <complexType>
+            <complexContent>
+                <extension base="int-aws:outboundChannelAdapter">
+                    <attributeGroup ref="integration:channelAdapterAttributes"/>
+                    <attribute name="sqs" type="string" use="required">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The 'software.amazon.awssdk.services.sqs.SqsAsyncClient' bean reference.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type type="software.amazon.awssdk.services.sqs.SqsAsyncClient"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="queue" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            </appinfo>
+                        </annotation>
+                    </attribute>
+                    <attribute name="queue" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The Amazon queue name or URL.
                                 Mutually exclusive with 'queue-expression'.
                                 This attribute isn't mandatory and the queue can be specified in message headers
                                 with the 'AwsHeaders.QUEUE' header name.
                                 Mutually exclusive with 'queue-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="queue-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="queue-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A SpEL expression that resolves to an Amazon queue or its URL.
                                 The 'requestMessage' is the root object for evaluation context.
                                 Mutually exclusive with 'queue'.
                                 This attribute isn't mandatory and the queue can be specified in message headers with
                                 the 'AwsHeaders.QUEUE' header name.
                                 Mutually exclusive with 'queue'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="delay" type="xsd:int">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="delay" type="int">
+                        <annotation>
+                            <documentation><![CDATA[
                                 The length of time, in seconds, for which to delay a specific message.
                                 Valid values: 0 to 900. Maximum: 15 minutes.
                                 Messages with a positive delay value become available for processing after the delay
                                 period is finished.
                                 If not specified, the default value for the queue applies.
                                 Mutually exclusive with 'delay-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="delay-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="delay-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A SpEL expression that resolves to the length of time, in seconds,
                                 for which to delay a specific message.
                                 Mutually exclusive with 'delay'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-group-id" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-group-id" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 This parameter applies only to FIFO (first-in-first-out) queues. 
                                 The tag that specifies that a message belongs to a specific message group.
                                 Messages that belong to the same message group are processed in a FIFO manner
@@ -1049,498 +1045,498 @@
                                 In this scenario, multiple readers can process the queue, but the session data
                                 of each user is processed in a FIFO fashion.
                                 Mutually exclusive with 'message-group-id-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-group-id-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-group-id-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A SpEL expression that resolves a 'MessageGroupId' token at runtime.
                                 Mutually exclusive with 'message-group-id'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-deduplication-id" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-deduplication-id" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 This parameter applies only to FIFO (first-in-first-out) queues. 
                                 The token used for deduplication of sent messages.
                                 If a message with a particular 'MessageDeduplicationId' is sent successfully,
                                 any messages sent with the same 'MessageDeduplicationId' are accepted successfully
                                 but aren't delivered during the 5-minute deduplication interval.
                                 Mutually exclusive with 'message-deduplication-id-expression'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-deduplication-id-expression" type="xsd:string">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-deduplication-id-expression" type="string">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A SpEL expression that resolves a 'MessageDeduplicationId' token at runtime.
                                 Mutually exclusive with 'message-deduplication-id'.
-                            ]]></xsd:documentation>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                    <xsd:attribute name="message-converter">
-                        <xsd:annotation>
-                            <xsd:documentation><![CDATA[
+                            ]]></documentation>
+                        </annotation>
+                    </attribute>
+                    <attribute name="message-converter">
+                        <annotation>
+                            <documentation><![CDATA[
                                 A bean reference to the MessageConverter.
-                            ]]></xsd:documentation>
-                            <xsd:appinfo>
+                            ]]></documentation>
+                            <appinfo>
                                 <tool:annotation kind="ref">
                                     <tool:expected-type
                                             type="org.springframework.messaging.converter.MessageConverter"/>
                                 </tool:annotation>
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                    </xsd:attribute>
-                </xsd:extension>
-            </xsd:complexContent>
-        </xsd:complexType>
-    </xsd:element>
+                            </appinfo>
+                        </annotation>
+                    </attribute>
+                </extension>
+            </complexContent>
+        </complexType>
+    </element>
 
-    <xsd:complexType name="pollingInboundChannelAdapter">
-        <xsd:all>
-            <xsd:element ref="integration:poller" minOccurs="0"/>
-        </xsd:all>
-        <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-        <xsd:attribute name="send-timeout" type="xsd:long">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+    <complexType name="pollingInboundChannelAdapter">
+        <all>
+            <element ref="integration:poller" minOccurs="0"/>
+        </all>
+        <attributeGroup ref="integration:channelAdapterAttributes"/>
+        <attribute name="send-timeout" type="long">
+            <annotation>
+                <documentation><![CDATA[
                     Timeout in milliseconds to wait for a Message to be sent to the
                     output channel.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-    </xsd:complexType>
+                ]]></documentation>
+            </annotation>
+        </attribute>
+    </complexType>
 
-    <xsd:complexType name="outboundChannelAdapter">
-        <xsd:sequence>
-            <xsd:element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
-            <xsd:element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
-            <xsd:element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
-        </xsd:sequence>
-        <xsd:attribute name="order">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+    <complexType name="outboundChannelAdapter">
+        <sequence>
+            <element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
+            <element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
+            <element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
+        </sequence>
+        <attribute name="order">
+            <annotation>
+                <documentation><![CDATA[
                     Specifies the order for invocation when this endpoint is connected as a
                     subscriber to a SubscribableChannel.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="async" type="xsd:boolean">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="async" type="boolean">
+            <annotation>
+                <documentation><![CDATA[
                     Allow async replies. If the handler reply is a CompletableFuture Publisher,
                     send the output when it is satisfied rather than sending the future as the result.
                     Ignored for return types other than CompletableFuture or Publisher.
                     Default is false.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="output-channel" type="xsd:string">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="output-channel" type="string">
+            <annotation>
+                <documentation><![CDATA[
                     Channel to reply if async is true.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="send-timeout" type="xsd:long">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="send-timeout" type="long">
+            <annotation>
+                <documentation><![CDATA[
                     Set the timeout for sending reply Messages.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-    </xsd:complexType>
+                ]]></documentation>
+            </annotation>
+        </attribute>
+    </complexType>
 
-    <xsd:complexType name="s3InboundChannelAdapter">
-        <xsd:complexContent>
-            <xsd:extension base="pollingInboundChannelAdapter">
-                <xsd:attribute name="session-factory" type="xsd:string" use="required">
-                    <xsd:annotation>
-                        <xsd:appinfo>
+    <complexType name="s3InboundChannelAdapter">
+        <complexContent>
+            <extension base="int-aws:pollingInboundChannelAdapter">
+                <attribute name="session-factory" type="string" use="required">
+                    <annotation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type
                                         type="org.springframework.integration.file.remote.session.SessionFactory"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                        <xsd:documentation><![CDATA[
+                        </appinfo>
+                        <documentation><![CDATA[
                             Reference to an [org.springframework.integration.file.remote.session.SessionFactory] bean with
                             a [software.amazon.awssdk.services.s3.model.S3Object] generic type parameter.
                             Mutually exclusive with 's3'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="remote-file-separator" type="xsd:string" default="/">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="remote-file-separator" type="string" default="/">
+                    <annotation>
+                        <documentation><![CDATA[
                             Allows you to provide remote file/directory
                             separator character. DEFAULT: '/'
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="remote-directory" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="remote-directory" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Identifies the remote directory path (e.g., "/remote/mytransfers")
                             Mutually exclusive with 'remote-directory-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="remote-directory-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="remote-directory-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Specify a SpEL expression which will be used to evaluate the directory
                             path to where the files will be transferred
                             (e.g., "headers.['remote_dir'] + '/myTransfers'" for outbound endpoints)
                             There is no root object (message) for inbound endpoints
                             (e.g., "@someBean.fetchDirectory");
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="filename-pattern" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="filename-pattern" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Allows you to provide a file name pattern to determine the file names that need to be scanned.
                             This is based on simple pattern matching (e.g., "*.txt, fo*.txt" etc.)
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="filename-regex" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="filename-regex" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Allows you to provide a Regular Expression to determine the file names that need to be scanned.
                             (e.g., "f[o]+\.txt" etc.)
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="filter" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="filter" type="string">
+                    <annotation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="org.springframework.integration.file.filters.FileListFilter"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                        <xsd:documentation><![CDATA[
+                        </appinfo>
+                        <documentation><![CDATA[
                             Allows you to specify a reference to a
                             [org.springframework.integration.file.filters.FileListFilter]
                             bean. This filter is applied to files on the remote server and
                             only files that pass the filter are retrieved.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="filter-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="filter-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Filter SpEL expression.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="comparator" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="comparator" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Specify a Comparator to be used when ordering Files. If none is provided, the
                             order in which files are processed is the order they are received from the S3 server.
                             The generic type of the Comparator is 'java.io.File'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="max-fetch-size" type="xsd:int">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="max-fetch-size" type="int">
+                    <annotation>
+                        <documentation><![CDATA[
                             Limit the number of files to fetch.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
 
-    <xsd:complexType name="s3OutboundChannelAdapter">
-        <xsd:complexContent>
-            <xsd:extension base="outboundChannelAdapter">
-                <xsd:attribute name="s3" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+    <complexType name="s3OutboundChannelAdapter">
+        <complexContent>
+            <extension base="int-aws:outboundChannelAdapter">
+                <attribute name="s3" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Reference to an instance of 'software.amazon.awssdk.services.s3.S3AsyncClient'.
                             Mutually exclusive with the 'transfer-manager'.
-                        ]]></xsd:documentation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="software.amazon.awssdk.services.s3.S3AsyncClient"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="transfer-manager" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        </appinfo>
+                    </annotation>
+                </attribute>
+                <attribute name="transfer-manager" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Reference to an instance of 'software.amazon.awssdk.transfer.s3.S3TransferManager'.
                             Mutually exclusive with the 's3'.
-                        ]]></xsd:documentation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="software.amazon.awssdk.transfer.s3.S3TransferManager"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="bucket" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        </appinfo>
+                    </annotation>
+                </attribute>
+                <attribute name="bucket" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             The S3 bucket to use.
                             Mutually exclusive with 'bucket-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="bucket-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="bucket-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             A SpEL expression to evaluate S3 bucket at runtime against request message.
                             Mutually exclusive with 'bucket'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="command">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="command">
+                    <annotation>
+                        <documentation><![CDATA[
                             The S3MessageHandler operation command.
                             Mutually exclusive with 'command-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                    <xsd:simpleType>
-                        <xsd:union memberTypes="s3CommandType xsd:string"/>
-                    </xsd:simpleType>
-                </xsd:attribute>
-                <xsd:attribute name="command-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                    <simpleType>
+                        <union memberTypes="int-aws:s3CommandType string"/>
+                    </simpleType>
+                </attribute>
+                <attribute name="command-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             A SpEL expression to evaluate S3MessageHandler operation command at runtime against request message.
                             Mutually exclusive with 'command'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="key-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="key-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             A SpEL expression to evaluate S3Object key at runtime against request message.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="destination-bucket-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="destination-bucket-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             A SpEL expression to evaluate destination S3 bucket at runtime against request message
                             for the 'copy' operation.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="destination-key-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="destination-key-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             A SpEL expression to evaluate destination S3Object key at runtime against request message
                             for the 'copy' operation.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="upload-metadata-provider" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="upload-metadata-provider" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Reference to an instance of
                             'java.util.function.BiConsumer<PutObjectRequest.Builder, Message<?>>'.
-                        ]]></xsd:documentation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="java.util.function.BiConsumer"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                    </xsd:annotation>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+                        </appinfo>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
 
-    <xsd:attributeGroup name="inboundChannelAdapterAttributes">
-        <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-        <xsd:attribute name="send-timeout" type="xsd:long">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+    <attributeGroup name="inboundChannelAdapterAttributes">
+        <attributeGroup ref="integration:channelAdapterAttributes"/>
+        <attribute name="send-timeout" type="long">
+            <annotation>
+                <documentation><![CDATA[
                     Maximum amount of time in milliseconds to wait when sending a message
                     to the channel if such channel may block.
                     For example, a Queue Channel can block until space is available
                     if its maximum capacity has been reached.
                     May be overridden for individual messages.
-                ]]></xsd:documentation>
-            </xsd:annotation>
-        </xsd:attribute>
-        <xsd:attribute name="error-channel" type="xsd:string">
-            <xsd:annotation>
-                <xsd:documentation><![CDATA[
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="error-channel" type="string">
+            <annotation>
+                <documentation><![CDATA[
                     Message Channel to which error Messages should be sent.
-                ]]></xsd:documentation>
-                <xsd:appinfo>
+                ]]></documentation>
+                <appinfo>
                     <tool:annotation kind="ref">
                         <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
                     </tool:annotation>
-                </xsd:appinfo>
-            </xsd:annotation>
-        </xsd:attribute>
-    </xsd:attributeGroup>
+                </appinfo>
+            </annotation>
+        </attribute>
+    </attributeGroup>
 
-    <xsd:complexType name="kinesisOutboundChannelAdapter">
-        <xsd:complexContent>
-            <xsd:extension base="outboundChannelAdapter">
-                <xsd:attributeGroup ref="integration:channelAdapterAttributes"/>
-                <xsd:attribute name="stream" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+    <complexType name="kinesisOutboundChannelAdapter">
+        <complexContent>
+            <extension base="int-aws:outboundChannelAdapter">
+                <attributeGroup ref="integration:channelAdapterAttributes"/>
+                <attribute name="stream" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             The name of the stream to put the data record into.
                             Mutually exclusive with 'stream-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="stream-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="stream-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             The name of the stream to put the data record into.
                             Mutually exclusive with 'stream'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="partition-key" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="partition-key" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Determines which shard in the stream the data record is assigned to.
                             Mutually exclusive with 'partition-key-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="partition-key-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="partition-key-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Determines which shard in the stream the data record is assigned to.
                             Mutually exclusive with 'partition-key'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="explicit-hash-key" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="explicit-hash-key" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             The hash value used to explicitly determine the shard
                             the data record is assigned to by overriding the partition key hash.
                             Mutually exclusive with 'explicit-hash-key-expression'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="explicit-hash-key-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="explicit-hash-key-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             The hash value used to explicitly determine the shard
                             the data record is assigned to by overriding the partition key hash.
                             Mutually exclusive with 'explicit-hash-key'.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="sequence-number-expression" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="sequence-number-expression" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             Guarantees strictly increasing sequence numbers,
                             for puts from the same client and to the same partition key.
                             If this parameter is not set, records
                             are coarsely ordered based on arrival time.
-                        ]]></xsd:documentation>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="embedded-headers-mapper" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="embedded-headers-mapper" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             'org.springframework.integration.mapping.OutboundMessageMapper<byte[]>' bean reference
                             for embedding message headers into the record data together with payload.
-                        ]]></xsd:documentation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="org.springframework.integration.mapping.OutboundMessageMapper"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                    </xsd:annotation>
-                </xsd:attribute>
-                <xsd:attribute name="message-converter" type="xsd:string">
-                    <xsd:annotation>
-                        <xsd:documentation><![CDATA[
+                        </appinfo>
+                    </annotation>
+                </attribute>
+                <attribute name="message-converter" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
                             'org.springframework.messaging.converter.MessageConverter' bean reference
                             for converting payload to 'byte[]' for Kinesis record.
-                        ]]></xsd:documentation>
-                        <xsd:appinfo>
+                        ]]></documentation>
+                        <appinfo>
                             <tool:annotation kind="ref">
                                 <tool:expected-type type="org.springframework.messaging.converter.MessageConverter"/>
                             </tool:annotation>
-                        </xsd:appinfo>
-                    </xsd:annotation>
-                </xsd:attribute>
-            </xsd:extension>
-        </xsd:complexContent>
-    </xsd:complexType>
+                        </appinfo>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
 
-    <xsd:simpleType name="kinesisCheckpointMode">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="record"/>
-            <xsd:enumeration value="batch"/>
-            <xsd:enumeration value="manual"/>
-            <xsd:enumeration value="periodic"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="kinesisCheckpointMode">
+        <restriction base="token">
+            <enumeration value="record"/>
+            <enumeration value="batch"/>
+            <enumeration value="manual"/>
+            <enumeration value="periodic"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="kinesisListenerMode">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="record"/>
-            <xsd:enumeration value="batch"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="kinesisListenerMode">
+        <restriction base="token">
+            <enumeration value="record"/>
+            <enumeration value="batch"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="kinesisMetricsLevel">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="NONE"/>
-            <xsd:enumeration value="SUMMARY"/>
-            <xsd:enumeration value="DETAILED"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="kinesisMetricsLevel">
+        <restriction base="token">
+            <enumeration value="NONE"/>
+            <enumeration value="SUMMARY"/>
+            <enumeration value="DETAILED"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="s3CommandType">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="UPLOAD"/>
-            <xsd:enumeration value="DOWNLOAD"/>
-            <xsd:enumeration value="COPY"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="s3CommandType">
+        <restriction base="token">
+            <enumeration value="UPLOAD"/>
+            <enumeration value="DOWNLOAD"/>
+            <enumeration value="COPY"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="sqsAcknowledgementMode">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="ON_SUCCESS"/>
-            <xsd:enumeration value="ALWAYS"/>
-            <xsd:enumeration value="MANUAL"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="sqsAcknowledgementMode">
+        <restriction base="token">
+            <enumeration value="ON_SUCCESS"/>
+            <enumeration value="ALWAYS"/>
+            <enumeration value="MANUAL"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="sqsAcknowledgementOrdering">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="ORDERED"/>
-            <xsd:enumeration value="ORDERED_BY_GROUP"/>
-            <xsd:enumeration value="PARALLEL"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="sqsAcknowledgementOrdering">
+        <restriction base="token">
+            <enumeration value="ORDERED"/>
+            <enumeration value="ORDERED_BY_GROUP"/>
+            <enumeration value="PARALLEL"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="sqsBackPressureMode">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="AUTO"/>
-            <xsd:enumeration value="ALWAYS_POLL_MAX_MESSAGES"/>
-            <xsd:enumeration value="FIXED_HIGH_THROUGHPUT"/>
-        </xsd:restriction>
-    </xsd:simpleType>
+    <simpleType name="sqsBackPressureMode">
+        <restriction base="token">
+            <enumeration value="AUTO"/>
+            <enumeration value="ALWAYS_POLL_MAX_MESSAGES"/>
+            <enumeration value="FIXED_HIGH_THROUGHPUT"/>
+        </restriction>
+    </simpleType>
 
-    <xsd:simpleType name="sqsQueueNotFoundStrategy">
-        <xsd:restriction base="xsd:token">
-            <xsd:enumeration value="FAIL"/>
-            <xsd:enumeration value="CREATE"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-</xsd:schema>
+    <simpleType name="sqsQueueNotFoundStrategy">
+        <restriction base="token">
+            <enumeration value="FAIL"/>
+            <enumeration value="CREATE"/>
+        </restriction>
+    </simpleType>
+</schema>
