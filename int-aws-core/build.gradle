@@ -1,0 +1,15 @@
+plugins {
+    id "java-conventions"
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
+}
+
+dependencies {
+    api "org.springframework:spring-beans"
+
+    implementation "org.springframework.integration:spring-integration-core"
+
+    compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
+}
