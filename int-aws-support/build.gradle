@@ -3,8 +3,8 @@ plugins {
 }
 
 dependencies {
-    implementation "org.springframework:spring-beans"
-    implementation "org.springframework.integration:spring-integration-aws"
+    api project(":int-aws-core")
+    api "org.springframework.integration:spring-integration-aws"
 
     compileOnly "io.awspring.cloud:spring-cloud-aws-s3"
     compileOnly "io.awspring.cloud:spring-cloud-aws-sns"
