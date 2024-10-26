@@ -2,10 +2,6 @@ plugins {
     id "java-conventions"
 }
 
-configurations {
-    testImplementation.extendsFrom compileOnly
-}
-
 dependencies {
     api "org.springframework:spring-beans"
 

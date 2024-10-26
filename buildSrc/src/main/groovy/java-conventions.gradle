@@ -66,6 +66,10 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    testImplementation.extendsFrom compileOnly
+}
+
 dependencies {
     implementation platform(project(":platform"))
 
