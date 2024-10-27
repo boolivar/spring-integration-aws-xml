@@ -1,1 +1,2 @@
 kcl-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.KclMessageDrivenChannelAdapterParser
+kinesis-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.KinesisMessageDrivenChannelAdapterParser
