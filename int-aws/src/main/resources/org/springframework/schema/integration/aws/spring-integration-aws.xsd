@@ -82,6 +82,14 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
+            <attribute name="lease-table-name" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        Set a name of the DynamoDB table name for leases.
+                        Defaults to 'consumerGroup'.
+                    ]]></documentation>
+                </annotation>
+            </attribute>
             <attribute name="consumer-backoff" type="int">
                 <annotation>
                     <documentation><![CDATA[
@@ -170,6 +178,80 @@
                         The number of records to poll from Kinesis when using 'PollingConfig'.
                         Defaults to 10000.
                     ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="graceful-shutdown-timeout" type="long">
+                <annotation>
+                    <documentation><![CDATA[
+                        The timeout for 'Scheduler.startGracefulShutdown()'.
+                        Defaults to 0 with the meaning to call 'Scheduler.shutdown()'.
+                    ]]></documentation>
+                </annotation>
+            </attribute>
+            <attribute name="glue-schema-registry-deserializer" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        'com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryDeserializer' bean.
+                        If this instance is set, KCL will try to decode messages that might be
+                        potentially encoded with Glue Schema Registry Serializer.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryDeserializer"/>
+                        </tool:annotation>
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="executor" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        Specify a 'org.springframework.core.task.TaskExecutor'
+                        bean reference for consuming data from the stream.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.core.task.TaskExecutor"/>
+                        </tool:annotation>
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="converter" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        Specify a 'org.springframework.core.convert.converter.Converter'
+                        bean reference to deserialize the 'byte[]' from record's body.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.core.convert.converter.Converter"/>
+                        </tool:annotation>
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="embedded-headers-mapper" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        Specify an 'org.springframework.integration.mapping.InboundMessageMapper'
+                        bean reference to extract message headers embedded into the record data.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="org.springframework.integration.mapping.InboundMessageMapper"/>
+                        </tool:annotation>
+                    </appinfo>
+                </annotation>
+            </attribute>
+            <attribute name="stream-initial-sequence" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        Specify an 'software.amazon.kinesis.common.InitialPositionInStreamExtended'
+                        bean reference to specify initial position in the stream.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="software.amazon.kinesis.common.InitialPositionInStreamExtended"/>
+                        </tool:annotation>
+                    </appinfo>
                 </annotation>
             </attribute>
         </complexType>
@@ -523,7 +605,7 @@
                             </appinfo>
                             <documentation><![CDATA[
                                 Switch the local FileReadingMessageSource to use a custom
-	                            DirectoryScanner.
+                                DirectoryScanner.
                             ]]></documentation>
                         </annotation>
                     </attribute>
