@@ -1285,6 +1285,17 @@
                             </appinfo>
                         </annotation>
                     </attribute>
+                    <attribute name="queue-not-found-strategy">
+                        <annotation>
+                            <documentation><![CDATA[
+                                Container QueueNotFoundStrategy.
+                                Default is 'FAIL'.
+                            ]]></documentation>
+                        </annotation>
+                        <simpleType>
+                            <union memberTypes="int-aws:sqsQueueNotFoundStrategy string"/>
+                        </simpleType>
+                    </attribute>
                 </extension>
             </complexContent>
         </complexType>
