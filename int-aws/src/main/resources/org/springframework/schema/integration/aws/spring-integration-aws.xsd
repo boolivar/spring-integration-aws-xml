@@ -1124,6 +1124,42 @@
                     <union memberTypes="int-aws:sqsQueueNotFoundStrategy string"/>
                 </simpleType>
             </attribute>
+            <attribute name="listener-mode">
+                <annotation>
+                    <documentation><![CDATA[
+                        'ListenerMode' mode for this container.
+                        Default is 'SINGLE_MESSAGE'
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsListenerMode string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="fifo-batch-grouping-strategy">
+                <annotation>
+                    <documentation><![CDATA[
+                        Set how the messages from FIFO queues should be
+                        grouped when container listener mode is 'BATCH'.
+                        By default, messages are grouped in batches by message group,
+                        which are processed in parallel, maintaining order within each message group.
+                    ]]></documentation>
+                </annotation>
+                <simpleType>
+                    <union memberTypes="int-aws:sqsFifoBatchGroupingStrategy string"/>
+                </simpleType>
+            </attribute>
+            <attribute name="message-converter" type="string">
+                <annotation>
+                    <documentation><![CDATA[
+                        'io.awspring.cloud.sqs.support.converter.MessagingMessageConverter' bean reference.
+                    ]]></documentation>
+                    <appinfo>
+                        <tool:annotation kind="ref">
+                            <tool:expected-type type="io.awspring.cloud.sqs.support.converter.MessagingMessageConverter"/>
+                        </tool:annotation>
+                    </appinfo>
+                </annotation>
+            </attribute>
         </complexType>
     </element>
 
@@ -1697,6 +1733,20 @@
         <restriction base="token">
             <enumeration value="FAIL"/>
             <enumeration value="CREATE"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="sqsListenerMode">
+        <restriction base="token">
+            <enumeration value="SINGLE_MESSAGE"/>
+            <enumeration value="BATCH"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="sqsFifoBatchGroupingStrategy">
+        <restriction base="token">
+            <enumeration value="PROCESS_MESSAGE_GROUPS_IN_PARALLEL_BATCHES"/>
+            <enumeration value="PROCESS_MULTIPLE_GROUPS_IN_SAME_BATCH"/>
         </restriction>
     </simpleType>
 </schema>
