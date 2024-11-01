@@ -1,0 +1,36 @@
+plugins {
+    id "java-conventions"
+}
+
+def awsSupport = objects.sourceDirectorySet("aws-suport", "aws support classes")
+awsSupport.srcDir("$rootDir/int-aws-support/src/main/java")
+awsSupport.setIncludes([
+    "**/S3InboundChannelAdapterParser.java",
+    "**/S3InboundStreamingChannelAdapterParser.java",
+    "**/S3MessageHandlerParser.java",
+    "**/S3OutboundChannelAdapterParser.java",
+    "**/S3OutboundGatewayParser.java",
+    "**/SnsInboundChannelAdapterParser.java",
+    "**/SnsOutboundChannelAdapterParser.java"
+])
+
+sourceSets {
+    main {
+        java {
+            srcDir "$rootDir/int-aws-core/src/main/java"
+            source awsSupport
+        }
+    }
+}
+
+dependencies {
+    api "org.springframework.integration:spring-integration-aws"
+
+    compileOnly "io.awspring.cloud:spring-cloud-aws-s3"
+    compileOnly "io.awspring.cloud:spring-cloud-aws-sns"
+    compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
+    compileOnly "org.springframework.integration:spring-integration-file"
+    compileOnly "org.springframework.integration:spring-integration-http"
+    compileOnly "software.amazon.kinesis:amazon-kinesis-client:2.6.0"
+    compileOnly "com.amazonaws:amazon-kinesis-producer:0.15.12"
+}
