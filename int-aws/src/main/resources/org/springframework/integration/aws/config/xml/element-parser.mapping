@@ -2,4 +2,5 @@ kcl-message-driven-channel-adapter: org.springframework.integration.aws.config.x
 kinesis-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.KinesisMessageDrivenChannelAdapterParser
 kinesis-outbound-channel-adapter: org.springframework.integration.aws.config.xml.KinesisOutboundChannelAdapterParser
 kpl-outbound-channel-adapter: org.springframework.integration.aws.config.xml.KplOutboundChannelAdapterParser
+sqs-outbound-channel-adapter: org.springframework.integration.aws.config.xml.SqsOutboundChannelAdapterParser
 sqs-message-driven-channel-adapter: org.springframework.integration.aws.config.xml.SqsMessageDrivenChannelAdapterParser
