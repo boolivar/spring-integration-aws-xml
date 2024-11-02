@@ -2,23 +2,25 @@ plugins {
     id "java-conventions"
 }
 
-def awsSupport = objects.sourceDirectorySet("aws-suport", "aws support classes")
-awsSupport.srcDir("$rootDir/int-aws-support/src/main/java")
-awsSupport.setIncludes([
-    "**/S3InboundChannelAdapterParser.java",
-    "**/S3InboundStreamingChannelAdapterParser.java",
-    "**/S3MessageHandlerParser.java",
-    "**/S3OutboundChannelAdapterParser.java",
-    "**/S3OutboundGatewayParser.java",
-    "**/SnsInboundChannelAdapterParser.java",
-    "**/SnsOutboundChannelAdapterParser.java"
-])
-
 sourceSets {
     main {
         java {
             srcDir "$rootDir/int-aws-core/src/main/java"
-            source awsSupport
+            source objects.sourceDirectorySet("aws-support", "aws support classes").tap {
+                srcDir "$rootDir/int-aws-support/src/main/java"
+                setIncludes([
+                    "**/S3InboundChannelAdapterParser.java",
+                    "**/S3InboundStreamingChannelAdapterParser.java",
+                    "**/S3MessageHandlerParser.java",
+                    "**/S3OutboundChannelAdapterParser.java",
+                    "**/S3OutboundGatewayParser.java",
+                    "**/SnsInboundChannelAdapterParser.java",
+                    "**/SnsOutboundChannelAdapterParser.java"
+                ])
+            }
+        }
+        resources {
+            srcDir "$rootDir/int-aws-core/src/main/resources"
         }
     }
 }

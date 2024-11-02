@@ -2,8 +2,18 @@ plugins {
     id "java-conventions"
 }
 
+sourceSets {
+    main {
+        java {
+            srcDir "$rootDir/int-aws-core/src/main/java"
+        }
+        resources {
+            srcDir "$rootDir/int-aws-core/src/main/resources"
+        }
+    }
+}
+
 dependencies {
-    api project(":int-aws-core")
     api "org.springframework.integration:spring-integration-aws"
 
     compileOnly "io.awspring.cloud:spring-cloud-aws-s3"
