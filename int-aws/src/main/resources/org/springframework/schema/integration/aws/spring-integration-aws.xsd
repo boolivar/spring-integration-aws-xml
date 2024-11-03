@@ -7,7 +7,8 @@
         elementFormDefault="qualified">
 
     <import namespace="http://www.springframework.org/schema/tool"/>
-    <import namespace="http://www.springframework.org/schema/integration"/>
+    <import namespace="http://www.springframework.org/schema/integration"
+        schemaLocation="https://www.springframework.org/schema/integration/spring-integration.xsd"/>
 
     <annotation>
         <documentation><![CDATA[
@@ -256,7 +257,7 @@
             </attribute>
         </complexType>
     </element>
-    
+
     <element name="kinesis-message-driven-channel-adapter">
         <annotation>
             <documentation><![CDATA[
