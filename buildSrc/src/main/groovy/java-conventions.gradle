@@ -67,11 +67,21 @@ repositories {
 }
 
 configurations {
+    internalPlatform {
+        visible = false
+    }
+    [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath].each {
+        it.extendsFrom internalPlatform
+    }
     testImplementation.extendsFrom compileOnly
 }
 
+rootProject.dependencies {
+    jacocoAggregation project
+}
+
 dependencies {
-    implementation platform(project(":platform"))
+    internalPlatform platform(project(":platform"))
 
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude group: "org.springframework"
