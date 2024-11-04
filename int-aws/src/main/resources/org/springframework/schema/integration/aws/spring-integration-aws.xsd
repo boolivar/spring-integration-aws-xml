@@ -91,14 +91,14 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="consumer-backoff" type="int">
+            <attribute name="consumer-backoff" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Sleep timeout in milliseconds if consumer is throttled.
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="empty-record-list" type="boolean">
+            <attribute name="empty-record-list" type="int-aws:booleanString">
                 <annotation>
                     <documentation><![CDATA[
                         Whether to return an empty record list from consumer to the processor.
@@ -108,14 +108,14 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="fan-out" type="boolean">
+            <attribute name="fan-out" type="int-aws:booleanString">
                 <annotation>
                     <documentation><![CDATA[
                         Specify a retrieval strategy: fan-out (true; default) or polling (false).
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="bind-source-record" type="boolean">
+            <attribute name="bind-source-record" type="int-aws:booleanString">
                 <annotation>
                     <documentation><![CDATA[
                         Bind the source consumer record in the header named
@@ -134,7 +134,7 @@
                     <union memberTypes="int-aws:kinesisCheckpointMode string"/>
                 </simpleType>
             </attribute>
-            <attribute name="checkpoints-interval" type="long">
+            <attribute name="checkpoints-interval" type="int-aws:longString">
                 <annotation>
                     <documentation><![CDATA[
                         Sets the interval between 2 checkpoints in milliseconds.
@@ -164,7 +164,7 @@
                     <union memberTypes="int-aws:kinesisMetricsLevel string"/>
                 </simpleType>
             </attribute>
-            <attribute name="polling-idle-time" type="long">
+            <attribute name="polling-idle-time" type="int-aws:longString">
                 <annotation>
                     <documentation><![CDATA[
                         The idle timeout in milliseconds between
@@ -173,7 +173,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="polling-max-records" type="int">
+            <attribute name="polling-max-records" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         The number of records to poll from Kinesis when using 'PollingConfig'.
@@ -181,7 +181,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="graceful-shutdown-timeout" type="long">
+            <attribute name="graceful-shutdown-timeout" type="int-aws:longString">
                 <annotation>
                     <documentation><![CDATA[
                         The timeout for 'Scheduler.startGracefulShutdown()'.
@@ -293,7 +293,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="bind-source-record" type="boolean">
+            <attribute name="bind-source-record" type="int-aws:booleanString">
                 <annotation>
                     <documentation><![CDATA[
                         Bind the source consumer record in the header named
@@ -312,7 +312,7 @@
                     <union memberTypes="int-aws:kinesisCheckpointMode string"/>
                 </simpleType>
             </attribute>
-            <attribute name="checkpoints-interval" type="long">
+            <attribute name="checkpoints-interval" type="int-aws:longString">
                 <annotation>
                     <documentation><![CDATA[
                         Sets the interval between 2 checkpoints in milliseconds.
@@ -321,7 +321,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="lock-renewal-timeout" type="long">
+            <attribute name="lock-renewal-timeout" type="int-aws:longString">
                 <annotation>
                     <documentation><![CDATA[
                         Configure a timeout in milliseconds
@@ -330,7 +330,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="concurrency" type="int">
+            <attribute name="concurrency" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         The maximum number of concurrent 'ConsumerInvoker's running.
@@ -342,14 +342,14 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="consumer-backoff" type="int">
+            <attribute name="consumer-backoff" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Sleep timeout in milliseconds if consumer is throttled.
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="idle-between-polls" type="int">
+            <attribute name="idle-between-polls" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         The sleep interval in milliseconds used in the
@@ -368,7 +368,7 @@
                     <union memberTypes="int-aws:kinesisListenerMode string"/>
                 </simpleType>
             </attribute>
-            <attribute name="records-limit" type="int">
+            <attribute name="records-limit" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         The maximum record to poll per on get-records request.
@@ -377,7 +377,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="start-timeout" type="int">
+            <attribute name="start-timeout" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Max timeout in milliseconds to start.
@@ -541,7 +541,7 @@
                             </appinfo>
                         </annotation>
                     </attribute>
-                    <attribute name="flush-duration" type="long">
+                    <attribute name="flush-duration" type="int-aws:longString">
                         <annotation>
                             <documentation><![CDATA[
                                 Rate in milliseconds how often to
@@ -627,7 +627,7 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
-                    <attribute name="auto-create-local-directory" type="boolean">
+                    <attribute name="auto-create-local-directory" type="int-aws:booleanString">
                         <annotation>
                             <documentation><![CDATA[
                                 Tells this adapter if the local directory must
@@ -635,7 +635,7 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
-                    <attribute name="delete-remote-files" type="boolean">
+                    <attribute name="delete-remote-files" type="int-aws:booleanString">
                         <annotation>
                             <documentation><![CDATA[
                                 Specify whether to delete the remote source file after copying.
@@ -643,7 +643,7 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
-                    <attribute name="preserve-timestamp" type="boolean">
+                    <attribute name="preserve-timestamp" type="int-aws:booleanString">
                         <annotation>
                             <documentation><![CDATA[
                                 Specify whether to preserve the modified timestamp from the remote source
@@ -759,7 +759,7 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
-                    <attribute name="reply-timeout" type="long">
+                    <attribute name="reply-timeout" type="int-aws:longString">
                         <annotation>
                             <documentation><![CDATA[
                                 Allows you to specify how long this gateway will wait for
@@ -831,7 +831,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="handle-notification-status" type="boolean">
+            <attribute name="handle-notification-status" type="int-aws:booleanString">
                 <annotation>
                     <documentation><![CDATA[
                         Flag to indicate if the 'SubscriptionConfirmation' and 'UnsubscribeConfirmation'
@@ -1003,7 +1003,7 @@
                     </appinfo>
                 </annotation>
             </attribute>
-            <attribute name="max-concurrent-messages" type="int">
+            <attribute name="max-concurrent-messages" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the maximum concurrent messages that can be
@@ -1013,7 +1013,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="max-messages-per-poll" type="int">
+            <attribute name="max-messages-per-poll" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the number of messages that should be returned per poll.
@@ -1023,7 +1023,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="message-visibility" type="int">
+            <attribute name="message-visibility" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Configures the duration (in seconds) that the received messages are hidden from
@@ -1031,7 +1031,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="listener-shutdown-timeout" type="int">
+            <attribute name="listener-shutdown-timeout" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the maximum amount of time that the container should
@@ -1040,7 +1040,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="poll-timeout" type="int">
+            <attribute name="poll-timeout" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         The duration (in seconds) for which the call waits for
@@ -1052,7 +1052,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="max-delay-between-polls" type="int">
+            <attribute name="max-delay-between-polls" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the maximum time the polling thread should wait
@@ -1085,7 +1085,7 @@
                     <union memberTypes="int-aws:sqsAcknowledgementOrdering string"/>
                 </simpleType>
             </attribute>
-            <attribute name="acknowledgement-interval" type="int">
+            <attribute name="acknowledgement-interval" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the maximum interval in milliseconds between acknowledgements
@@ -1094,7 +1094,7 @@
                     ]]></documentation>
                 </annotation>
             </attribute>
-            <attribute name="acknowledgement-threshold" type="int">
+            <attribute name="acknowledgement-threshold" type="int-aws:intString">
                 <annotation>
                     <documentation><![CDATA[
                         Set the threshold for triggering a batch acknowledgement.
@@ -1209,7 +1209,7 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
-                    <attribute name="delay" type="int">
+                    <attribute name="delay" type="int-aws:intString">
                         <annotation>
                             <documentation><![CDATA[
                                 The length of time, in seconds, for which to delay a specific message.
@@ -1307,7 +1307,7 @@
             <element ref="integration:poller" minOccurs="0"/>
         </all>
         <attributeGroup ref="integration:channelAdapterAttributes"/>
-        <attribute name="send-timeout" type="long">
+        <attribute name="send-timeout" type="int-aws:longString">
             <annotation>
                 <documentation><![CDATA[
                     Timeout in milliseconds to wait for a Message to be sent to the
@@ -1331,7 +1331,7 @@
                 ]]></documentation>
             </annotation>
         </attribute>
-        <attribute name="async" type="boolean">
+        <attribute name="async" type="int-aws:booleanString">
             <annotation>
                 <documentation><![CDATA[
                     Allow async replies. If the handler reply is a CompletableFuture Publisher,
@@ -1348,7 +1348,7 @@
                 ]]></documentation>
             </annotation>
         </attribute>
-        <attribute name="send-timeout" type="long">
+        <attribute name="send-timeout" type="int-aws:longString">
             <annotation>
                 <documentation><![CDATA[
                     Set the timeout for sending reply Messages.
@@ -1449,7 +1449,7 @@
                         ]]></documentation>
                     </annotation>
                 </attribute>
-                <attribute name="max-fetch-size" type="int">
+                <attribute name="max-fetch-size" type="int-aws:intString">
                     <annotation>
                         <documentation><![CDATA[
                             Limit the number of files to fetch.
@@ -1566,7 +1566,7 @@
 
     <attributeGroup name="inboundChannelAdapterAttributes">
         <attributeGroup ref="integration:channelAdapterAttributes"/>
-        <attribute name="send-timeout" type="long">
+        <attribute name="send-timeout" type="int-aws:longString">
             <annotation>
                 <documentation><![CDATA[
                     Maximum amount of time in milliseconds to wait when sending a message
@@ -1760,5 +1760,17 @@
             <enumeration value="PROCESS_MESSAGE_GROUPS_IN_PARALLEL_BATCHES"/>
             <enumeration value="PROCESS_MULTIPLE_GROUPS_IN_SAME_BATCH"/>
         </restriction>
+    </simpleType>
+
+    <simpleType name="booleanString">
+        <union memberTypes="boolean string"/>
+    </simpleType>
+
+    <simpleType name="intString">
+        <union memberTypes="int string"/>
+    </simpleType>
+
+    <simpleType name="longString">
+        <union memberTypes="long string"/>
     </simpleType>
 </schema>
