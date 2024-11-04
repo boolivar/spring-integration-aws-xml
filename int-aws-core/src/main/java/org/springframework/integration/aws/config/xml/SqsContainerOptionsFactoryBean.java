@@ -74,8 +74,8 @@ public class SqsContainerOptionsFactoryBean implements FactoryBean<SqsContainerO
         setListenerShutdownTimeout(millis);
     }
 
-    public void setListenerShutdownTimeout(long millis) {
-        builder.listenerShutdownTimeout(Duration.ofMillis(millis));
+    public void setListenerShutdownTimeout(long seconds) {
+        builder.listenerShutdownTimeout(Duration.ofSeconds(seconds));
     }
 
     public void setWaitTimeOut(long seconds) {
