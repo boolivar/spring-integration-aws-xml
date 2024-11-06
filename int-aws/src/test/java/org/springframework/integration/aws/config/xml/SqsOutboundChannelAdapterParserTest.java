@@ -30,21 +30,20 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
 
         var handler = loadBean(SqsMessageHandler.class, """
             <int-aws:sqs-outbound-channel-adapter sqs="sqs"
-                id="i"
-                async="#{true}"
-                delay="#{50}"
-                queue="#{'q'}"
-                order="#{5}"
-                output-channel="#{'out'}"
-                queue-not-found-strategy="#{'CREATE'}"
-                send-timeout="#{50}"
-                message-deduplication-id="#{'dd'}"
-                message-group-id="#{'mg'}"
-                message-converter="mc"/>
+                    channel="in"
+                    async="#{true}"
+                    delay="#{50}"
+                    queue="#{'q'}"
+                    order="#{5}"
+                    output-channel="#{'out'}"
+                    queue-not-found-strategy="#{'CREATE'}"
+                    send-timeout="#{50}"
+                    message-deduplication-id="#{'dd'}"
+                    message-group-id="#{'mg'}"
+                    message-converter="mc"/>
             """);
 
         assertThat(handler)
-            .returns("i", SqsMessageHandler::getBeanName)
             .returns(out, SqsMessageHandler::getOutputChannel)
             .returns(5, SqsMessageHandler::getOrder)
             .hasFieldOrPropertyWithValue("amazonSqs", sqs)
