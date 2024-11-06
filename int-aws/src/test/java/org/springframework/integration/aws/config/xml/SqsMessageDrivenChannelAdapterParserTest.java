@@ -16,9 +16,9 @@ import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapte
 import org.springframework.messaging.MessageChannel;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.Duration;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
