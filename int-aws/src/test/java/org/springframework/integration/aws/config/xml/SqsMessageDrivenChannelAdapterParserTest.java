@@ -68,7 +68,7 @@ class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     listener-shutdown-timeout="#{5}"
                     message-converter="mc"
                     components-task-executor="ex"/>
-        """);
+            """);
 
         assertThat(adapter)
             .returns("i", SqsMessageDrivenChannelAdapter::getBeanName)
