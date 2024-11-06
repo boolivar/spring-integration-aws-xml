@@ -76,10 +76,6 @@ configurations {
     testImplementation.extendsFrom compileOnly
 }
 
-rootProject.dependencies {
-    jacocoAggregation project
-}
-
 dependencies {
     internalPlatform platform(project(":platform"))
 
