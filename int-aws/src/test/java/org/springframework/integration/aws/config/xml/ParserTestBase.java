@@ -4,16 +4,12 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.integration.support.channel.ChannelResolverUtils;
-import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.core.DestinationResolver;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -21,9 +17,6 @@ import java.nio.charset.StandardCharsets;
 
 @ExtendWith(MockitoExtension.class)
 public abstract class ParserTestBase extends BDDMockito {
-
-    @Mock
-    protected DestinationResolver<MessageChannel> channelResolver;
 
     protected final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
@@ -45,7 +38,6 @@ public abstract class ParserTestBase extends BDDMockito {
     @BeforeEach
     void configureBeanFactory() {
         beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver());
-        registerBean(ChannelResolverUtils.CHANNEL_RESOLVER_BEAN_NAME, DestinationResolver.class, channelResolver);
     }
 
     protected <T> void registerBean(String name, Class<? super T> type, T bean) {
