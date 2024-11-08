@@ -46,7 +46,7 @@ public abstract class ParserTestBase extends BDDMockito {
 
     protected <T> T loadBean(Class<T> type, String content) {
         var xml = formatXml(content);
-        reader.loadBeanDefinitions(new ByteArrayResource(xml.getBytes()));
+        reader.loadBeanDefinitions(new ByteArrayResource(xml.getBytes(StandardCharsets.UTF_8)));
         return beanFactory.getBean(type);
     }
 
