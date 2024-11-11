@@ -9,11 +9,15 @@ import org.springframework.integration.config.xml.AbstractChannelAdapterParser;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 
-import java.util.AbstractMap;
-import java.util.List;
-import java.util.Map.Entry;
+import java.util.stream.Stream;
 
 public class KclMessageDrivenChannelAdapterParser extends AbstractChannelAdapterParser {
+
+    private final String[][] constructorAttrs = {
+        { "kinesis-client", "software.amazon.awssdk.services.kinesis.KinesisAsyncClient" },
+        { "cloud-watch-client", "software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient" },
+        { "dynamo-db-client", "software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient" }
+    };
 
     @Override
     protected AbstractBeanDefinition doParse(Element element, ParserContext parserContext, String channelName) {
@@ -46,14 +50,9 @@ public class KclMessageDrivenChannelAdapterParser extends AbstractChannelAdapter
     }
 
     private void addConstructorArgs(BeanDefinitionBuilder builder, Element element) {
-        var args = List.of(
-            new AbstractMap.SimpleEntry<>("kinesis-client", "software.amazon.awssdk.services.kinesis.KinesisAsyncClient"),
-            new AbstractMap.SimpleEntry<>("cloud-watch-client", "software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient"),
-            new AbstractMap.SimpleEntry<>("dynamo-db-client", "software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient")
-        );
-        if (args.stream().map(Entry::getKey).map(element::getAttribute).anyMatch(StringUtils::hasText)) {
-            for (AbstractMap.SimpleEntry<String, String> e : args) {
-                builder.addConstructorArgValue(arg(element.getAttribute(e.getKey()), e.getValue()));
+        if (Stream.of(constructorAttrs).map(a -> element.getAttribute(a[0])).anyMatch(StringUtils::hasText)) {
+            for (var a : constructorAttrs) {
+                builder.addConstructorArgValue(arg(element.getAttribute(a[0]), a[1]));
             }
         }
     }
