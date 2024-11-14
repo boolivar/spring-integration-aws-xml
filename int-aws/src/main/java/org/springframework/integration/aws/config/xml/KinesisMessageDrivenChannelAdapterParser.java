@@ -25,6 +25,7 @@ public class KinesisMessageDrivenChannelAdapterParser extends AbstractChannelAda
             .setPropertyIfAttributeDefined("listener-mode")
             .setPropertyIfAttributeDefined("records-limit")
             .setPropertyIfAttributeDefined("start-timeout")
+            .setPropertyIfAttributeDefined("send-timeout")
             .setPropertyReferenceIfAttributeDefined("consumer-executor")
             .setPropertyReferenceIfAttributeDefined("dispatcher-executor")
             .setPropertyReferenceIfAttributeDefined("checkpoint-store")
