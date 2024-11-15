@@ -67,6 +67,7 @@ class KinesisMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         var adapter = loadBean(KinesisMessageDrivenChannelAdapter.class, """
             <int-aws:kinesis-message-driven-channel-adapter kinesis-client="kc" streams="a,b,c"
                     id="i"
+                    channel="c"
                     bind-source-record="#{true}"
                     checkpoint-mode="#{'batch'}"
                     checkpoint-store="cs"
@@ -88,7 +89,7 @@ class KinesisMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     shard-list-filter="slf"
                     start-timeout="#{50}"
                     stream-initial-sequence="sis"/>
-        """);
+            """);
 
         verify(adapter).setBindSourceRecord(true);
         verify(adapter).setCheckpointMode(CheckpointMode.batch);
