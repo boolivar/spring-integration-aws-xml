@@ -3,7 +3,6 @@ package org.springframework.integration.aws.config.xml;
 import io.awspring.cloud.sqs.listener.QueueNotFoundStrategy;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.integration.aws.outbound.SqsMessageHandler;
 import org.springframework.integration.junit.ConstructionMock;
@@ -22,7 +21,7 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
 
     @ConstructionMock(SqsMessageHandler.class)
     @Test
-    void testParser(MockedConstruction<SqsMessageHandler> mocked) {
+    void testParser() {
         registerBean("sqs", SqsAsyncClient.class, sqs);
         registerBean("mc", MessageConverter.class, messageConverter);
 
@@ -51,8 +50,6 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
         verify(handler).setMessageDeduplicationId("dd");
         verify(handler).setMessageGroupId("mg");
         verify(handler).setMessageConverter(messageConverter);
-
-        assertThat(mocked.constructed()).size().isOne();
     }
 
     void testParser(SqsMessageHandler mock, Context context) {

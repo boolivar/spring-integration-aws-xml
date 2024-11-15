@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockedConstruction;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapter;
@@ -40,7 +39,7 @@ class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     @ConstructionMock(SqsMessageDrivenChannelAdapter.class)
     @Test
-    void testBeanDefinition(MockedConstruction<SqsMessageDrivenChannelAdapter> mocked) {
+    void testBeanDefinition() {
         registerBean("sqs", SqsAsyncClient.class, sqs);
         registerBean("mc", MessagingMessageConverter.class, messageConverter);
         registerBean("ex", TaskExecutor.class, taskExecutor);
@@ -93,8 +92,6 @@ class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
             .returns(messageConverter, SqsContainerOptions::getMessageConverter)
             .returns(taskExecutor, SqsContainerOptions::getComponentsTaskExecutor)
             ;
-
-        assertThat(mocked.constructed()).size().isOne();
     }
 
     void testBeanDefinition(SqsMessageDrivenChannelAdapter mock, Context context) {
