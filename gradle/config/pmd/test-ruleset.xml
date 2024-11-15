@@ -3,5 +3,6 @@
     <description>Test rule set</description>
     <rule ref="ruleset.xml">
         <exclude name="AvoidDuplicateLiterals"/>
+        <exclude name="NcssCount"/>
     </rule>
 </ruleset>
