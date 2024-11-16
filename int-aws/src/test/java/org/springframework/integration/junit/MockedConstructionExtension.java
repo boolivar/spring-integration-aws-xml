@@ -55,9 +55,10 @@ public class MockedConstructionExtension implements ParameterResolver, BeforeTes
 
     @Override
     public void beforeTestExecution(ExtensionContext context) {
-        context.getTestMethod()
-            .flatMap(method -> AnnotationSupport.findAnnotation(method, ConstructionMock.class)).stream()
+        Stream.of(context.getTestClass(), context.getTestMethod())
+            .flatMap(el -> AnnotationSupport.findAnnotation(el, ConstructionMock.class).stream())
             .flatMap(annotation -> Stream.of(annotation.value()))
+            .distinct()
             .forEach(mockType -> context.getStore(namespace).put(mockType, new Mocked<>(mockConstruction(context, mockType))));
     }
 

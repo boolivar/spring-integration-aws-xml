@@ -22,6 +22,7 @@ import software.amazon.kinesis.metrics.MetricsLevel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ConstructionMock(KclMessageDrivenChannelAdapter.class)
 class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     @Mock
@@ -48,7 +49,6 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
     @Mock
     private InitialPositionInStreamExtended streamInitialSequence;
 
-    @ConstructionMock(KclMessageDrivenChannelAdapter.class)
     @Test
     void testDefaults(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
         var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
@@ -64,7 +64,6 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
             .isEqualTo(new String[] {"s"});
     }
 
-    @ConstructionMock(KclMessageDrivenChannelAdapter.class)
     @Test
     void testKinesisClientConfig(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
         registerBean("kc", KinesisAsyncClient.class, kinesisClient);
@@ -90,7 +89,6 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
             .contains(kinesisClient, cloudWatchClient, dynamoDbClient);
     }
 
-    @ConstructionMock(KclMessageDrivenChannelAdapter.class)
     @Test
     void testAdapter() {
         registerBean("kc", KinesisAsyncClient.class, kinesisClient);
