@@ -4,7 +4,9 @@ import com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryDes
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockedConstruction;
 import org.mockito.MockedConstruction.Context;
+import org.mockito.MockedStatic;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
@@ -23,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     @Mock
-    private KinesisAsyncClient kinesisAsyncClient;
+    private KinesisAsyncClient kinesisClient;
 
     @Mock
     private CloudWatchAsyncClient cloudWatchClient;
@@ -48,8 +50,50 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     @ConstructionMock(KclMessageDrivenChannelAdapter.class)
     @Test
-    void testParser() {
-        registerBean("kc", KinesisAsyncClient.class, kinesisAsyncClient);
+    void testDefaults(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
+        var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+                <int-aws:kcl-message-driven-channel-adapter streams="s"
+                        channel="c"/>
+            """);
+        assertThat(mocked.constructed())
+            .singleElement().isSameAs(adapter);
+    }
+
+    void testDefaults(KclMessageDrivenChannelAdapter mock, Context context) {
+        assertThat(context.arguments()).singleElement()
+            .isEqualTo(new String[] {"s"});
+    }
+
+    @ConstructionMock(KclMessageDrivenChannelAdapter.class)
+    @Test
+    void testKinesisClientConfig(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
+        registerBean("kc", KinesisAsyncClient.class, kinesisClient);
+        try (MockedStatic<DynamoDbAsyncClient> dynamoDbMock = mockStatic(DynamoDbAsyncClient.class);
+                MockedStatic<CloudWatchAsyncClient> cloudWatchMock = mockStatic(CloudWatchAsyncClient.class)) {
+
+            dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
+            cloudWatchMock.when(CloudWatchAsyncClient::create).thenReturn(cloudWatchClient);
+
+            var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+                    <int-aws:kcl-message-driven-channel-adapter streams="s"
+                            channel="c"
+                            kinesis-client="kc"/>
+                """);
+
+            assertThat(mocked.constructed())
+                .singleElement().isSameAs(adapter);
+        }
+    }
+
+    void testKinesisClientConfig(KclMessageDrivenChannelAdapter mock, Context context) {
+        assertThat(context.arguments()).asInstanceOf(InstanceOfAssertFactories.LIST)
+            .contains(kinesisClient, cloudWatchClient, dynamoDbClient);
+    }
+
+    @ConstructionMock(KclMessageDrivenChannelAdapter.class)
+    @Test
+    void testAdapter() {
+        registerBean("kc", KinesisAsyncClient.class, kinesisClient);
         registerBean("cw", CloudWatchAsyncClient.class, cloudWatchClient);
         registerBean("dd", DynamoDbAsyncClient.class, dynamoDbClient);
         registerBean("cv", Converter.class, converter);
@@ -87,7 +131,7 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     stream-initial-sequence="sis"
                     worker-id="wid"/>
             """);
-        
+
         verify(adapter).setBindSourceRecord(true);
         verify(adapter).setCheckpointMode(CheckpointMode.batch);
         verify(adapter).setCheckpointsInterval(70L);
@@ -111,6 +155,6 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     void testParser(KclMessageDrivenChannelAdapter mock, Context context) {
         assertThat(context.arguments()).asInstanceOf(InstanceOfAssertFactories.LIST)
-            .contains(new String[] {"s"}, kinesisAsyncClient, cloudWatchClient, dynamoDbClient);
+            .contains(new String[] {"s"}, kinesisClient, cloudWatchClient, dynamoDbClient);
     }
 }
