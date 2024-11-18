@@ -4,8 +4,8 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.platform.commons.support.AnnotationSupport;
 import org.junit.platform.commons.support.ReflectionSupport;
 import org.mockito.MockedConstruction;
-import org.mockito.Mockito;
 import org.mockito.MockedConstruction.Context;
+import org.mockito.Mockito;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
