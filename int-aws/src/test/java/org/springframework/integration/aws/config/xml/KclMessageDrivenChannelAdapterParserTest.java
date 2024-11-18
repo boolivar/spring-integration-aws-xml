@@ -13,6 +13,7 @@ import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.ListenerMode;
 import org.springframework.integration.junit.ConstructionMock;
+import org.springframework.integration.junit.StaticMock;
 import org.springframework.integration.mapping.InboundMessageMapper;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
@@ -64,24 +65,23 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
             .isEqualTo(new String[] {"s"});
     }
 
+    @StaticMock({CloudWatchAsyncClient.class, DynamoDbAsyncClient.class})
     @Test
-    void testKinesisClientConfig(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
+    void testKinesisClientConfig(MockedConstruction<KclMessageDrivenChannelAdapter> mocked,
+            MockedStatic<CloudWatchAsyncClient> cloudWatchMock, MockedStatic<DynamoDbAsyncClient> dynamoDbMock) {
         registerBean("kc", KinesisAsyncClient.class, kinesisClient);
-        try (MockedStatic<DynamoDbAsyncClient> dynamoDbMock = mockStatic(DynamoDbAsyncClient.class);
-                MockedStatic<CloudWatchAsyncClient> cloudWatchMock = mockStatic(CloudWatchAsyncClient.class)) {
 
-            dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
-            cloudWatchMock.when(CloudWatchAsyncClient::create).thenReturn(cloudWatchClient);
+        dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
+        cloudWatchMock.when(CloudWatchAsyncClient::create).thenReturn(cloudWatchClient);
 
-            var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
-                    <int-aws:kcl-message-driven-channel-adapter streams="s"
-                            channel="c"
-                            kinesis-client="kc"/>
-                """);
+        var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+                <int-aws:kcl-message-driven-channel-adapter streams="s"
+                        channel="c"
+                        kinesis-client="kc"/>
+            """);
 
-            assertThat(mocked.constructed())
-                .singleElement().isSameAs(adapter);
-        }
+        assertThat(mocked.constructed())
+            .singleElement().isSameAs(adapter);
     }
 
     void testKinesisClientConfig(KclMessageDrivenChannelAdapter mock, Context context) {

@@ -10,13 +10,13 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.integration.junit.MockedConstructionExtension;
+import org.springframework.integration.junit.MockitoInlineExtension;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
-@ExtendWith(MockedConstructionExtension.class)
+@ExtendWith(MockitoInlineExtension.class)
 @ExtendWith(MockitoExtension.class)
 public abstract class ParserTestBase extends BDDMockito {
 
