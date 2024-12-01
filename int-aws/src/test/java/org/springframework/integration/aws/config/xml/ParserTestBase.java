@@ -1,5 +1,7 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.MockitoInlineExtension;
+
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.integration.junit.MockitoInlineExtension;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

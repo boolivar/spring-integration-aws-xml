@@ -35,4 +35,6 @@ dependencies {
     compileOnly "org.springframework.integration:spring-integration-http"
     compileOnly "software.amazon.kinesis:amazon-kinesis-client:2.6.0"
     compileOnly "com.amazonaws:amazon-kinesis-producer:0.15.12"
+
+    testImplementation "io.github.boolivar:mockito-inline-extension"
 }

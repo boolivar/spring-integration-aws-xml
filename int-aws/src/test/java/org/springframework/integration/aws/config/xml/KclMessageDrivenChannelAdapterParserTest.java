@@ -1,5 +1,8 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.ConstructionMock;
+import org.bool.junit.mockito.inline.StaticMock;
+
 import com.amazonaws.services.schemaregistry.deserializers.GlueSchemaRegistryDeserializer;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
@@ -12,8 +15,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.ListenerMode;
-import org.springframework.integration.junit.ConstructionMock;
-import org.springframework.integration.junit.StaticMock;
 import org.springframework.integration.mapping.InboundMessageMapper;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;

@@ -1,11 +1,12 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.ConstructionMock;
+
 import io.awspring.cloud.sqs.listener.QueueNotFoundStrategy;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.integration.aws.outbound.SqsMessageHandler;
-import org.springframework.integration.junit.ConstructionMock;
 import org.springframework.messaging.converter.MessageConverter;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 

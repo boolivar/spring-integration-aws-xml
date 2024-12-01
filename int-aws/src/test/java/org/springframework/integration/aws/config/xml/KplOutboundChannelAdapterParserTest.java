@@ -1,11 +1,12 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.ConstructionMock;
+
 import com.amazonaws.services.kinesis.producer.KinesisProducer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.integration.aws.outbound.KplMessageHandler;
-import org.springframework.integration.junit.ConstructionMock;
 import org.springframework.integration.mapping.OutboundMessageMapper;
 import org.springframework.messaging.converter.MessageConverter;
 

@@ -13,5 +13,6 @@ dependencies {
         api "commons-io:commons-io:2.15.1"
         api "org.apache.commons:commons-collections4:4.4"
         api "org.springframework.integration:spring-integration-aws:3.0.8"
+        api "io.github.boolivar:mockito-inline-extension:1.0.0"
     }
 }

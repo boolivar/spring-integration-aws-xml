@@ -1,5 +1,7 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.ConstructionMock;
+
 import io.awspring.cloud.sqs.listener.BackPressureMode;
 import io.awspring.cloud.sqs.listener.FifoBatchGroupingStrategy;
 import io.awspring.cloud.sqs.listener.ListenerMode;
@@ -16,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapter;
-import org.springframework.integration.junit.ConstructionMock;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 import java.time.Duration;

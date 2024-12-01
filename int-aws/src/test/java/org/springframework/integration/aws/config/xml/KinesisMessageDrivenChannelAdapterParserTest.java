@@ -1,5 +1,7 @@
 package org.springframework.integration.aws.config.xml;
 
+import org.bool.junit.mockito.inline.ConstructionMock;
+
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -9,7 +11,6 @@ import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KinesisMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.KinesisShardOffset;
 import org.springframework.integration.aws.inbound.kinesis.ListenerMode;
-import org.springframework.integration.junit.ConstructionMock;
 import org.springframework.integration.mapping.InboundMessageMapper;
 import org.springframework.integration.metadata.ConcurrentMetadataStore;
 import org.springframework.integration.support.locks.LockRegistry;
