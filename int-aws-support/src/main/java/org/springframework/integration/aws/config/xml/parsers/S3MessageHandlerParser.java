@@ -1,6 +1,8 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.integration.aws.config.xml.ValueFactory;
+import org.springframework.integration.aws.config.xml.XmlBeanDefinitionBuilder;
 import org.springframework.integration.aws.outbound.S3MessageHandler;
 import org.w3c.dom.Element;
 

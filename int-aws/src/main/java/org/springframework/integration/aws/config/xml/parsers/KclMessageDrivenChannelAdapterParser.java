@@ -1,9 +1,10 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.integration.aws.config.xml.XmlBeanDefinitionBuilder;
 import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChannelAdapter;
 import org.springframework.integration.config.xml.AbstractChannelAdapterParser;
 import org.springframework.util.StringUtils;

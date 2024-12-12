@@ -1,4 +1,4 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;

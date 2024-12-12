@@ -1,7 +1,8 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.integration.aws.config.xml.XmlBeanDefinitionBuilder;
 import org.springframework.integration.aws.outbound.SnsMessageHandler;
 import org.springframework.integration.config.xml.AbstractOutboundChannelAdapterParser;
 import org.w3c.dom.Element;

@@ -1,4 +1,4 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizer;
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizingMessageSource;

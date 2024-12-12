@@ -1,7 +1,9 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.config.xml.parsers;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.integration.aws.config.xml.SqsContainerOptionsFactoryBean;
+import org.springframework.integration.aws.config.xml.XmlBeanDefinitionBuilder;
 import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapter;
 import org.springframework.integration.config.xml.AbstractChannelAdapterParser;
 import org.w3c.dom.Element;
@@ -11,7 +13,6 @@ public class SqsMessageDrivenChannelAdapterParser extends AbstractChannelAdapter
     @Override
     protected AbstractBeanDefinition doParse(Element element, ParserContext parserContext, String channelName) {
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SqsMessageDrivenChannelAdapter.class)
-            .unsupportedAttributeWarning("resource-id-resolver")
             .addConstructorArgReference("sqs")
             .addConstructorArgValue("queues")
             .setPropertyIfAttributeDefined("send-timeout")
@@ -24,18 +25,23 @@ public class SqsMessageDrivenChannelAdapterParser extends AbstractChannelAdapter
     }
 
     private AbstractBeanDefinition sqsContainerOptions(Element element, ParserContext parserContext) {
-        if ("NO_REDRIVE".equals(element.getAttribute("message-deletion-policy"))) {
-            parserContext.getReaderContext()
-                .warning("NO_REDRIVE message-deletion-policy is not supported and will be handled as ON_SUCCESS", element);
-        }
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SqsContainerOptionsFactoryBean.class)
-            .setPropertyIfAttributeDefined("max-number-of-messages")
-            .setPropertyIfAttributeDefined("visibility-timeout")
-            .setPropertyIfAttributeDefined("queue-stop-timeout")
-            .setPropertyIfAttributeDefined("wait-time-out")
-            .setPropertyIfAttributeDefined("message-deletion-policy")
-            .setPropertyIfAttributeDefined("fail-on-missing-queue")
-            .setPropertyReferenceIfAttributeDefined("task-executor")
+            .setPropertyReferenceIfAttributeDefined("components-task-executor")
+            .setPropertyReferenceIfAttributeDefined("message-converter")
+            .setPropertyIfAttributeDefined("acknowledgement-interval")
+            .setPropertyIfAttributeDefined("acknowledgement-mode")
+            .setPropertyIfAttributeDefined("acknowledgement-ordering")
+            .setPropertyIfAttributeDefined("acknowledgement-threshold")
+            .setPropertyIfAttributeDefined("back-pressure-mode")
+            .setPropertyIfAttributeDefined("fifo-batch-grouping-strategy")
+            .setPropertyIfAttributeDefined("listener-mode")
+            .setPropertyIfAttributeDefined("listener-shutdown-timeout")
+            .setPropertyIfAttributeDefined("max-concurrent-messages")
+            .setPropertyIfAttributeDefined("max-delay-between-polls")
+            .setPropertyIfAttributeDefined("max-messages-per-poll")
+            .setPropertyIfAttributeDefined("message-visibility")
+            .setPropertyIfAttributeDefined("poll-timeout")
+            .setPropertyIfAttributeDefined("queue-not-found-strategy")
             .getBeanDefinitionBuilder()
             .applyCustomizers(bean -> bean.setAutowireCandidate(false))
             .getBeanDefinition();
