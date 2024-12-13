@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class SpringIntegrationAwsNamespaceHandlerTest {
 
-    private final SpringIntegrationAwsNamespaceHandler handler = new SpringIntegrationAwsNamespaceHandler();
+    private final SpringIntegrationAwsNamespaceHandler handler = new SpringIntegrationAwsSupportNamespaceHandler();
 
     @Test
     void test() {

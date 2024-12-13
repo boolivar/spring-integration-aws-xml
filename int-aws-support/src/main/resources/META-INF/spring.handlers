@@ -1,2 +1,2 @@
-http\://www.springframework.org/schema/integration/aws=org.springframework.integration.aws.config.xml.SpringIntegrationAwsNamespaceHandler
-https\://www.springframework.org/schema/integration/aws=org.springframework.integration.aws.config.xml.SpringIntegrationAwsNamespaceHandler
+http\://www.springframework.org/schema/integration/aws=org.springframework.integration.aws.support.config.xml.SpringIntegrationAwsSupportNamespaceHandler
+https\://www.springframework.org/schema/integration/aws=org.springframework.integration.aws.support.config.xml.SpringIntegrationAwsSupportNamespaceHandler

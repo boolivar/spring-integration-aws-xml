@@ -11,12 +11,22 @@ import java.util.Properties;
 
 public class SpringIntegrationAwsNamespaceHandler extends NamespaceHandlerSupport {
 
+    private final String mappingOverride;
+
+    SpringIntegrationAwsNamespaceHandler() {
+        this("META-INF/spring-integration-aws-element-parser.mapping");
+    }
+
+    public SpringIntegrationAwsNamespaceHandler(String mappingOverrides) {
+        this.mappingOverride = mappingOverrides;
+    }
+
     @Override
     public void init() {
         var mapping = new Properties();
         try (var defaults = getClass().getResourceAsStream("element-parser.mapping")) {
             mapping.load(defaults);
-            mapping.putAll(PropertiesLoaderUtils.loadAllProperties("META-INF/spring-integration-aws-element-parser.mapping"));
+            mapping.putAll(PropertiesLoaderUtils.loadAllProperties(mappingOverride));
         } catch (IOException e) {
             throw new UncheckedIOException("Error load spring-integration-aws element-parser mapping", e);
         }
