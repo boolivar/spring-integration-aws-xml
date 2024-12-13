@@ -1,2 +1,0 @@
-alpha: org.springframework.integration.aws.config.xml.AlphaTestBeanDefinitionParser
-beta: org.springframework.integration.aws.config.xml.LambdaParser
