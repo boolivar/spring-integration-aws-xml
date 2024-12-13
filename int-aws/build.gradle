@@ -5,12 +5,9 @@ plugins {
 sourceSets {
     main {
         java {
-            srcDir "$rootDir/int-aws-core/src/main/java"
             source objects.sourceDirectorySet("aws-support", "aws support classes").tap {
                 srcDir "$rootDir/int-aws-support/src/main/java"
                 setIncludes([
-                    "**/S3InboundChannelAdapterParser.java",
-                    "**/S3InboundStreamingChannelAdapterParser.java",
                     "**/S3MessageHandlerParser.java",
                     "**/S3OutboundChannelAdapterParser.java",
                     "**/S3OutboundGatewayParser.java",
@@ -18,9 +15,6 @@ sourceSets {
                     "**/SnsOutboundChannelAdapterParser.java"
                 ])
             }
-        }
-        resources {
-            srcDir "$rootDir/int-aws-core/src/main/resources"
         }
     }
 }
