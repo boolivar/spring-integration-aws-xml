@@ -1,0 +1,8 @@
+s3-inbound-channel-adapter: org.springframework.integration.aws.config.xml.parsers.S3InboundChannelAdapterParser
+s3-inbound-streaming-channel-adapter: org.springframework.integration.aws.config.xml.parsers.S3InboundStreamingChannelAdapterParser
+s3-outbound-channel-adapter: org.springframework.integration.aws.support.config.xml.parsers.S3OutboundChannelAdapterParser
+s3-outbound-gateway: org.springframework.integration.aws.support.config.xml.parsers.S3OutboundGatewayParser
+sqs-outbound-channel-adapter: org.springframework.integration.aws.support.config.xml.parsers.SqsOutboundChannelAdapterParser
+sqs-message-driven-channel-adapter: org.springframework.integration.aws.support.config.xml.parsers.SqsMessageDrivenChannelAdapterParser
+sns-inbound-channel-adapter: org.springframework.integration.aws.support.config.xml.parsers.SnsInboundChannelAdapterParser
+sns-outbound-channel-adapter: org.springframework.integration.aws.support.config.xml.parsers.SnsOutboundChannelAdapterParser

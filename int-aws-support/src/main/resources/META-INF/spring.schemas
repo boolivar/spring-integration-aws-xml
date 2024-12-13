@@ -1,2 +1,2 @@
-http\://www.springframework.org/schema/integration/aws/spring-integration-aws.xsd=org/springframework/schema/integration/aws/spring-integration-aws.xsd
-https\://www.springframework.org/schema/integration/aws/spring-integration-aws.xsd=org/springframework/schema/integration/aws/spring-integration-aws.xsd
+http\://www.springframework.org/schema/integration/aws/spring-integration-aws.xsd=org/springframework/schema/integration/aws/support/spring-integration-aws.xsd
+https\://www.springframework.org/schema/integration/aws/spring-integration-aws.xsd=org/springframework/schema/integration/aws/support/spring-integration-aws.xsd

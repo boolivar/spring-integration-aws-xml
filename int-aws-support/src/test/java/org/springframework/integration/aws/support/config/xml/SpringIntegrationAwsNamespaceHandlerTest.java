@@ -1,16 +1,17 @@
-package org.springframework.integration.aws.config.xml;
+package org.springframework.integration.aws.support.config.xml;
 
 import org.assertj.core.api.Condition;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
+import org.springframework.integration.aws.config.xml.SpringIntegrationAwsNamespaceHandler;
 import org.springframework.integration.aws.config.xml.parsers.S3InboundChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.S3InboundStreamingChannelAdapterParser;
-import org.springframework.integration.aws.config.xml.parsers.S3OutboundChannelAdapterParser;
-import org.springframework.integration.aws.config.xml.parsers.S3OutboundGatewayParser;
-import org.springframework.integration.aws.config.xml.parsers.SnsInboundChannelAdapterParser;
-import org.springframework.integration.aws.config.xml.parsers.SnsOutboundChannelAdapterParser;
-import org.springframework.integration.aws.config.xml.parsers.SqsMessageDrivenChannelAdapterParser;
-import org.springframework.integration.aws.config.xml.parsers.SqsOutboundChannelAdapterParser;
+import org.springframework.integration.aws.support.config.xml.parsers.S3OutboundChannelAdapterParser;
+import org.springframework.integration.aws.support.config.xml.parsers.S3OutboundGatewayParser;
+import org.springframework.integration.aws.support.config.xml.parsers.SnsInboundChannelAdapterParser;
+import org.springframework.integration.aws.support.config.xml.parsers.SnsOutboundChannelAdapterParser;
+import org.springframework.integration.aws.support.config.xml.parsers.SqsMessageDrivenChannelAdapterParser;
+import org.springframework.integration.aws.support.config.xml.parsers.SqsOutboundChannelAdapterParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
