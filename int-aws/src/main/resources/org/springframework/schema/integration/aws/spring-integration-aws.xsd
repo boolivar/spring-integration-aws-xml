@@ -2,8 +2,8 @@
 <schema xmlns="http://www.w3.org/2001/XMLSchema"
         xmlns:tool="http://www.springframework.org/schema/tool"
         xmlns:integration="http://www.springframework.org/schema/integration"
-        xmlns:int-aws="http://www.springframework.org/schema/integration/aws"
-        targetNamespace="http://www.springframework.org/schema/integration/aws"
+        xmlns:int-aws="http://www.springframework.org/schema/integration/aws/v3"
+        targetNamespace="http://www.springframework.org/schema/integration/aws/v3"
         elementFormDefault="qualified">
 
     <import namespace="http://www.springframework.org/schema/tool"
