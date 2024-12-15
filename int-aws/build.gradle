@@ -8,8 +8,6 @@ sourceSets {
             source objects.sourceDirectorySet("aws-support", "aws support classes").tap {
                 srcDir "$rootDir/int-aws-support/src/main/java"
                 setIncludes([
-                    "**/S3MessageHandlerParser.java",
-                    "**/S3OutboundChannelAdapterParser.java",
                     "**/S3OutboundGatewayParser.java",
                     "**/SnsInboundChannelAdapterParser.java",
                     "**/SnsOutboundChannelAdapterParser.java"
@@ -27,6 +25,7 @@ dependencies {
     compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
     compileOnly "org.springframework.integration:spring-integration-file"
     compileOnly "org.springframework.integration:spring-integration-http"
+    compileOnly "software.amazon.awssdk:s3-transfer-manager"
     compileOnly "software.amazon.kinesis:amazon-kinesis-client:2.6.0"
     compileOnly "com.amazonaws:amazon-kinesis-producer:0.15.12"
 
