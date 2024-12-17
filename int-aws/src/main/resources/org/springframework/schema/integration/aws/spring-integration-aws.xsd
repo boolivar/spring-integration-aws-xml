@@ -717,8 +717,8 @@
         </annotation>
         <complexType>
             <complexContent>
-                <extension base="int-aws:s3OutboundChannelAdapter">
-                    <attributeGroup ref="integration:channelAdapterAttributes"/>
+                <extension base="int-aws:outboundChannelAdapterType">
+                    <attributeGroup ref="int-aws:s3OutboundChannelAdapterAttributes"/>
                 </extension>
             </complexContent>
         </complexType>
@@ -733,9 +733,7 @@
         </annotation>
         <complexType>
             <complexContent>
-                <extension base="int-aws:s3OutboundChannelAdapter">
-                    <attributeGroup ref="integration:smartLifeCycleAttributeGroup"/>
-                    <attribute name="id" type="string"/>
+                <extension base="int-aws:consumerEndpoint">
                     <attribute name="request-channel" type="string">
                         <annotation>
                             <appinfo>
@@ -784,6 +782,8 @@
                             ]]></documentation>
                         </annotation>
                     </attribute>
+                    <attributeGroup ref="int-aws:asyncOutboundAdapterAttributes"/>
+                    <attributeGroup ref="int-aws:s3OutboundChannelAdapterAttributes"/>
                 </extension>
             </complexContent>
         </complexType>
@@ -855,7 +855,6 @@
         <complexType>
             <complexContent>
                 <extension base="int-aws:outboundChannelAdapter">
-                    <attributeGroup ref="integration:channelAdapterAttributes"/>
                     <attribute name="sns" type="string" use="required">
                         <annotation>
                             <documentation><![CDATA[
@@ -1174,7 +1173,6 @@
         <complexType>
             <complexContent>
                 <extension base="int-aws:outboundChannelAdapter">
-                    <attributeGroup ref="integration:channelAdapterAttributes"/>
                     <attribute name="sqs" type="string" use="required">
                         <annotation>
                             <documentation><![CDATA[
@@ -1318,44 +1316,73 @@
         </attribute>
     </complexType>
 
-    <complexType name="outboundChannelAdapter">
-        <sequence>
+    <complexType name="consumerEndpoint">
+        <choice minOccurs="0" maxOccurs="2">
             <element ref="integration:poller" minOccurs="0" maxOccurs="1"/>
-            <element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
             <element name="transactional" type="integration:transactionalType" minOccurs="0" maxOccurs="1"/>
-        </sequence>
+            <element name="request-handler-advice-chain" type="integration:handlerAdviceChainType" minOccurs="0" maxOccurs="1"/>
+        </choice>
+        <attribute name="id" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    Identifies the underlying Spring bean definition (EventDrivenConsumer)
+                ]]></documentation>
+            </annotation>
+        </attribute>
         <attribute name="order">
             <annotation>
                 <documentation><![CDATA[
                     Specifies the order for invocation when this endpoint is connected as a
-                    subscriber to a SubscribableChannel.
+                    subscriber to a channel. This is particularly relevant when that channel
+                    is using a "failover" dispatching strategy. It has no effect when this
+                    endpoint itself is a Polling Consumer for a channel with a queue.
                 ]]></documentation>
             </annotation>
         </attribute>
-        <attribute name="async" type="int-aws:booleanString">
-            <annotation>
-                <documentation><![CDATA[
-                    Allow async replies. If the handler reply is a CompletableFuture Publisher,
-                    send the output when it is satisfied rather than sending the future as the result.
-                    Ignored for return types other than CompletableFuture or Publisher.
-                    Default is false.
-                ]]></documentation>
-            </annotation>
-        </attribute>
-        <attribute name="output-channel" type="string">
-            <annotation>
-                <documentation><![CDATA[
-                    Channel to reply if async is true.
-                ]]></documentation>
-            </annotation>
-        </attribute>
-        <attribute name="send-timeout" type="int-aws:longString">
-            <annotation>
-                <documentation><![CDATA[
-                    Set the timeout for sending reply Messages.
-                ]]></documentation>
-            </annotation>
-        </attribute>
+        <attributeGroup ref="integration:smartLifeCycleAttributeGroup"/>
+    </complexType>
+
+    <complexType name="outboundChannelAdapterType">
+        <complexContent>
+            <extension base="int-aws:consumerEndpoint">
+                <attribute name="channel" type="string">
+                    <annotation>
+                        <appinfo>
+                            <tool:annotation kind="ref">
+                                <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
+                            </tool:annotation>
+                        </appinfo>
+                        <documentation><![CDATA[
+                            Identifies channel attached to this adapter. Depending on the type of the adapter
+                            this channel could be the receiving channel (e.g., outbound-channel-adapter) or channel where
+                            messages will be sent to by this adapter (e.g., inbound-channel-adapter).
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
+    </complexType>
+
+    <complexType name="outboundChannelAdapter">
+        <complexContent>
+            <extension base="int-aws:outboundChannelAdapterType">
+                <attributeGroup ref="int-aws:asyncOutboundAdapterAttributes"/>
+                <attribute name="output-channel" type="string">
+                    <annotation>
+                        <documentation><![CDATA[
+                            Channel to reply if async is true.
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+                <attribute name="send-timeout" type="int-aws:longString">
+                    <annotation>
+                        <documentation><![CDATA[
+                            Set the timeout for sending reply Messages.
+                        ]]></documentation>
+                    </annotation>
+                </attribute>
+            </extension>
+        </complexContent>
     </complexType>
 
     <complexType name="s3InboundChannelAdapter">
@@ -1461,141 +1488,9 @@
         </complexContent>
     </complexType>
 
-    <complexType name="s3OutboundChannelAdapter">
-        <complexContent>
-            <extension base="int-aws:outboundChannelAdapter">
-                <attribute name="s3" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            Reference to an instance of 'software.amazon.awssdk.services.s3.S3AsyncClient'.
-                            Mutually exclusive with the 'transfer-manager'.
-                        ]]></documentation>
-                        <appinfo>
-                            <tool:annotation kind="ref">
-                                <tool:expected-type type="software.amazon.awssdk.services.s3.S3AsyncClient"/>
-                            </tool:annotation>
-                        </appinfo>
-                    </annotation>
-                </attribute>
-                <attribute name="transfer-manager" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            Reference to an instance of 'software.amazon.awssdk.transfer.s3.S3TransferManager'.
-                            Mutually exclusive with the 's3'.
-                        ]]></documentation>
-                        <appinfo>
-                            <tool:annotation kind="ref">
-                                <tool:expected-type type="software.amazon.awssdk.transfer.s3.S3TransferManager"/>
-                            </tool:annotation>
-                        </appinfo>
-                    </annotation>
-                </attribute>
-                <attribute name="bucket" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            The S3 bucket to use.
-                            Mutually exclusive with 'bucket-expression'.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="bucket-expression" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            A SpEL expression to evaluate S3 bucket at runtime against request message.
-                            Mutually exclusive with 'bucket'.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="command">
-                    <annotation>
-                        <documentation><![CDATA[
-                            The S3MessageHandler operation command.
-                            Mutually exclusive with 'command-expression'.
-                        ]]></documentation>
-                    </annotation>
-                    <simpleType>
-                        <union memberTypes="int-aws:s3CommandType string"/>
-                    </simpleType>
-                </attribute>
-                <attribute name="command-expression" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            A SpEL expression to evaluate S3MessageHandler operation command at runtime against request message.
-                            Mutually exclusive with 'command'.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="key-expression" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            A SpEL expression to evaluate S3Object key at runtime against request message.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="destination-bucket-expression" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            A SpEL expression to evaluate destination S3 bucket at runtime against request message
-                            for the 'copy' operation.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="destination-key-expression" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            A SpEL expression to evaluate destination S3Object key at runtime against request message
-                            for the 'copy' operation.
-                        ]]></documentation>
-                    </annotation>
-                </attribute>
-                <attribute name="upload-metadata-provider" type="string">
-                    <annotation>
-                        <documentation><![CDATA[
-                            Reference to an instance of
-                            'java.util.function.BiConsumer<PutObjectRequest.Builder, Message<?>>'.
-                        ]]></documentation>
-                        <appinfo>
-                            <tool:annotation kind="ref">
-                                <tool:expected-type type="java.util.function.BiConsumer"/>
-                            </tool:annotation>
-                        </appinfo>
-                    </annotation>
-                </attribute>
-            </extension>
-        </complexContent>
-    </complexType>
-
-    <attributeGroup name="inboundChannelAdapterAttributes">
-        <attributeGroup ref="integration:channelAdapterAttributes"/>
-        <attribute name="send-timeout" type="int-aws:longString">
-            <annotation>
-                <documentation><![CDATA[
-                    Maximum amount of time in milliseconds to wait when sending a message
-                    to the channel if such channel may block.
-                    For example, a Queue Channel can block until space is available
-                    if its maximum capacity has been reached.
-                    May be overridden for individual messages.
-                ]]></documentation>
-            </annotation>
-        </attribute>
-        <attribute name="error-channel" type="string">
-            <annotation>
-                <documentation><![CDATA[
-                    Message Channel to which error Messages should be sent.
-                ]]></documentation>
-                <appinfo>
-                    <tool:annotation kind="ref">
-                        <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
-                    </tool:annotation>
-                </appinfo>
-            </annotation>
-        </attribute>
-    </attributeGroup>
-
     <complexType name="kinesisOutboundChannelAdapter">
         <complexContent>
             <extension base="int-aws:outboundChannelAdapter">
-                <attributeGroup ref="integration:channelAdapterAttributes"/>
                 <attribute name="stream" type="string">
                     <annotation>
                         <documentation><![CDATA[
@@ -1685,6 +1580,146 @@
             </extension>
         </complexContent>
     </complexType>
+
+    <attributeGroup name="asyncOutboundAdapterAttributes">
+        <attribute name="async" type="int-aws:booleanString">
+            <annotation>
+                <documentation><![CDATA[
+                    Allow async replies. If the handler reply is a CompletableFuture Publisher,
+                    send the output when it is satisfied rather than sending the future as the result.
+                    Ignored for return types other than CompletableFuture or Publisher.
+                    Default is false.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+    </attributeGroup>
+
+    <attributeGroup name="inboundChannelAdapterAttributes">
+        <attributeGroup ref="integration:channelAdapterAttributes"/>
+        <attribute name="send-timeout" type="int-aws:longString">
+            <annotation>
+                <documentation><![CDATA[
+                    Maximum amount of time in milliseconds to wait when sending a message
+                    to the channel if such channel may block.
+                    For example, a Queue Channel can block until space is available
+                    if its maximum capacity has been reached.
+                    May be overridden for individual messages.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="error-channel" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    Message Channel to which error Messages should be sent.
+                ]]></documentation>
+                <appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="org.springframework.messaging.MessageChannel"/>
+                    </tool:annotation>
+                </appinfo>
+            </annotation>
+        </attribute>
+    </attributeGroup>
+
+    <attributeGroup name="s3OutboundChannelAdapterAttributes">
+        <attribute name="s3" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    Reference to an instance of 'software.amazon.awssdk.services.s3.S3AsyncClient'.
+                    Mutually exclusive with the 'transfer-manager'.
+                ]]></documentation>
+                <appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="software.amazon.awssdk.services.s3.S3AsyncClient"/>
+                    </tool:annotation>
+                </appinfo>
+            </annotation>
+        </attribute>
+        <attribute name="transfer-manager" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    Reference to an instance of 'software.amazon.awssdk.transfer.s3.S3TransferManager'.
+                    Mutually exclusive with the 's3'.
+                ]]></documentation>
+                <appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="software.amazon.awssdk.transfer.s3.S3TransferManager"/>
+                    </tool:annotation>
+                </appinfo>
+            </annotation>
+        </attribute>
+        <attribute name="bucket" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    The S3 bucket to use.
+                    Mutually exclusive with 'bucket-expression'.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="bucket-expression" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    A SpEL expression to evaluate S3 bucket at runtime against request message.
+                    Mutually exclusive with 'bucket'.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="command">
+            <annotation>
+                <documentation><![CDATA[
+                    The S3MessageHandler operation command.
+                    Mutually exclusive with 'command-expression'.
+                ]]></documentation>
+            </annotation>
+            <simpleType>
+                <union memberTypes="int-aws:s3CommandType string"/>
+            </simpleType>
+        </attribute>
+        <attribute name="command-expression" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    A SpEL expression to evaluate S3MessageHandler operation command at runtime against request message.
+                    Mutually exclusive with 'command'.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="key-expression" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    A SpEL expression to evaluate S3Object key at runtime against request message.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="destination-bucket-expression" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    A SpEL expression to evaluate destination S3 bucket at runtime against request message
+                    for the 'copy' operation.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="destination-key-expression" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    A SpEL expression to evaluate destination S3Object key at runtime against request message
+                    for the 'copy' operation.
+                ]]></documentation>
+            </annotation>
+        </attribute>
+        <attribute name="upload-metadata-provider" type="string">
+            <annotation>
+                <documentation><![CDATA[
+                    Reference to an instance of
+                    'java.util.function.BiConsumer<PutObjectRequest.Builder, Message<?>>'.
+                ]]></documentation>
+                <appinfo>
+                    <tool:annotation kind="ref">
+                        <tool:expected-type type="java.util.function.BiConsumer"/>
+                    </tool:annotation>
+                </appinfo>
+            </annotation>
+        </attribute>
+    </attributeGroup>
 
     <simpleType name="kinesisCheckpointMode">
         <restriction base="token">
