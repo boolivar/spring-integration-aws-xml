@@ -1,5 +1,6 @@
 spring-integration-aws-xml
 ---
+[![CI](https://github.com/boolivar/spring-integration-aws-xml/workflows/CI/badge.svg)](https://github.com/boolivar/spring-integration-aws-xml/actions/workflows/ci.yml)
 
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=boolivar_spring-integration-aws-xml&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=boolivar_spring-integration-aws-xml)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=boolivar_spring-integration-aws-xml&metric=coverage)](https://sonarcloud.io/summary/new_code?id=boolivar_spring-integration-aws-xml)
