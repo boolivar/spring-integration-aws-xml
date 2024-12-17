@@ -35,27 +35,21 @@ public class S3OutboundChannelAdapterParserTest extends ParserTestBase {
                     id="s3out"
                     channel="c"
                     s3="sss"
-                    async="#{true}"
                     bucket="#{'bkt'}"
                     command="#{'COPY'}"
                     key-expression="key.exp"
                     destination-key-expression="dest.key.exp"
                     destination-bucket-expression="dest.bkt.exp"
                     order="#{5}"
-                    send-timeout="#{50}"
-                    output-channel="out"
                     upload-metadata-provider="ump"
                     />
             """);
 
-        verify(handler).setAsync(true);
         verify(handler).setCommand(Command.COPY);
         verify(handler).setKeyExpression(argThat(e -> e.getExpressionString().equals("key.exp")));
         verify(handler).setDestinationKeyExpression(argThat(e -> e.getExpressionString().equals("dest.key.exp")));
         verify(handler).setDestinationBucketExpression(argThat(e -> e.getExpressionString().equals("dest.bkt.exp")));
         verify(handler).setOrder(5);
-        verify(handler).setSendTimeout(50L);
-        verify(handler).setOutputChannelName("out");
         verify(handler).setUploadMetadataProvider(uploadMetadataProvider);
     }
 
