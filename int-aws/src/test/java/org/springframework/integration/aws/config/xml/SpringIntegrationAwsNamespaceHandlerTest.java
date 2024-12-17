@@ -10,9 +10,9 @@ import org.springframework.integration.aws.config.xml.parsers.KplOutboundChannel
 import org.springframework.integration.aws.config.xml.parsers.S3InboundChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.S3InboundStreamingChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.S3OutboundChannelAdapterParser;
+import org.springframework.integration.aws.config.xml.parsers.S3OutboundGatewayParser;
 import org.springframework.integration.aws.config.xml.parsers.SqsMessageDrivenChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.SqsOutboundChannelAdapterParser;
-import org.springframework.integration.aws.support.config.xml.parsers.S3OutboundGatewayParser;
 import org.springframework.integration.aws.support.config.xml.parsers.SnsInboundChannelAdapterParser;
 import org.springframework.integration.aws.support.config.xml.parsers.SnsOutboundChannelAdapterParser;
 
