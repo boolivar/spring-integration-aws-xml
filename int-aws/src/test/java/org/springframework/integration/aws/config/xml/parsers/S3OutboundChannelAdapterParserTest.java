@@ -16,7 +16,7 @@ import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class S3OutboundChannelAdapterParserTest extends ParserTestBase {
+class S3OutboundChannelAdapterParserTest extends ParserTestBase {
 
     @Mock
     private S3AsyncClient s3Client;
@@ -46,9 +46,9 @@ public class S3OutboundChannelAdapterParserTest extends ParserTestBase {
             """);
 
         verify(handler).setCommand(Command.COPY);
-        verify(handler).setKeyExpression(argThat(e -> e.getExpressionString().equals("key.exp")));
-        verify(handler).setDestinationKeyExpression(argThat(e -> e.getExpressionString().equals("dest.key.exp")));
-        verify(handler).setDestinationBucketExpression(argThat(e -> e.getExpressionString().equals("dest.bkt.exp")));
+        verify(handler).setKeyExpression(argThat(e -> "key.exp".equals(e.getExpressionString())));
+        verify(handler).setDestinationKeyExpression(argThat(e -> "dest.key.exp".equals(e.getExpressionString())));
+        verify(handler).setDestinationBucketExpression(argThat(e -> "dest.bkt.exp".equals(e.getExpressionString())));
         verify(handler).setOrder(5);
         verify(handler).setUploadMetadataProvider(uploadMetadataProvider);
     }
