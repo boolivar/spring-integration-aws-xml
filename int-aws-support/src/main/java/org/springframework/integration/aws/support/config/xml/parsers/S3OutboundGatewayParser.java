@@ -18,8 +18,6 @@ public class S3OutboundGatewayParser extends AbstractConsumerEndpointParser {
         return new S3MessageHandlerParser(true)
             .parse(element, parserContext)
             .unsupportedAttributeWarning("resource-id-resolver", "object-acl-expression", "progress-listener")
-            .setProperty("reply-channel", "outputChannelName")
-            .setProperty("reply-timeout", "sendTimeout")
             .getBeanDefinitionBuilder()
             ;
     }
