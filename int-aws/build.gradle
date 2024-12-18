@@ -2,20 +2,6 @@ plugins {
     id "java-conventions"
 }
 
-sourceSets {
-    main {
-        java {
-            source objects.sourceDirectorySet("aws-support", "aws support classes").tap {
-                srcDir "$rootDir/int-aws-support/src/main/java"
-                setIncludes([
-                    "**/SnsInboundChannelAdapterParser.java",
-                    "**/SnsOutboundChannelAdapterParser.java"
-                ])
-            }
-        }
-    }
-}
-
 dependencies {
     api "org.springframework.integration:spring-integration-aws"
 

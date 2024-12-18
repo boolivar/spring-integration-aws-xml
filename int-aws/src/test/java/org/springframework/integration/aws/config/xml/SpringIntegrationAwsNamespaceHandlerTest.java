@@ -11,10 +11,10 @@ import org.springframework.integration.aws.config.xml.parsers.S3InboundChannelAd
 import org.springframework.integration.aws.config.xml.parsers.S3InboundStreamingChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.S3OutboundChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.S3OutboundGatewayParser;
+import org.springframework.integration.aws.config.xml.parsers.SnsInboundChannelAdapterParser;
+import org.springframework.integration.aws.config.xml.parsers.SnsOutboundChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.SqsMessageDrivenChannelAdapterParser;
 import org.springframework.integration.aws.config.xml.parsers.SqsOutboundChannelAdapterParser;
-import org.springframework.integration.aws.support.config.xml.parsers.SnsInboundChannelAdapterParser;
-import org.springframework.integration.aws.support.config.xml.parsers.SnsOutboundChannelAdapterParser;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
