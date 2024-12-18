@@ -5,14 +5,16 @@ plugins {
 dependencies {
     api "org.springframework.integration:spring-integration-aws"
 
+    compileOnly "com.amazonaws:amazon-kinesis-producer:0.15.12"
     compileOnly "io.awspring.cloud:spring-cloud-aws-s3"
     compileOnly "io.awspring.cloud:spring-cloud-aws-sns"
     compileOnly "io.awspring.cloud:spring-cloud-aws-sqs"
-    compileOnly "org.springframework.integration:spring-integration-file"
     compileOnly "org.springframework.integration:spring-integration-http"
-    compileOnly "software.amazon.awssdk:s3-transfer-manager"
+    compileOnly "org.springframework.integration:spring-integration-file"
     compileOnly "software.amazon.kinesis:amazon-kinesis-client:2.6.0"
-    compileOnly "com.amazonaws:amazon-kinesis-producer:0.15.12"
 
     testImplementation "io.github.boolivar:mockito-inline-extension"
+
+    testRuntimeOnly "software.amazon.awssdk:s3-transfer-manager"
+    testRuntimeOnly "jakarta.servlet:jakarta.servlet-api:6.1.0"
 }

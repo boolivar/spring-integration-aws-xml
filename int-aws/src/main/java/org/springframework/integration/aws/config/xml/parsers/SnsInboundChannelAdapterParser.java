@@ -20,7 +20,7 @@ public class SnsInboundChannelAdapterParser extends AbstractChannelAdapterParser
             .setPropertyIfAttributeDefined("error-channel", "errorChannelName")
             .setPropertyIfAttributeDefined("payload-expression", "payloadExpression", ValueFactory.expressionBean())
             .getBeanDefinitionBuilder()
-            .addPropertyReference("requestChannelName", channelName)
+            .addPropertyValue("requestChannelName", channelName)
             .getBeanDefinition();
     }
 }
