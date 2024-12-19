@@ -858,11 +858,11 @@
                     <attribute name="sns" type="string" use="required">
                         <annotation>
                             <documentation><![CDATA[
-                                The 'software.amazon.awssdk.services.sns.SnsClient' bean reference.
+                                The 'software.amazon.awssdk.services.sns.SnsAsyncClient' bean reference.
                             ]]></documentation>
                             <appinfo>
                                 <tool:annotation kind="ref">
-                                    <tool:expected-type type="software.amazon.awssdk.services.sns.SnsClient"/>
+                                    <tool:expected-type type="software.amazon.awssdk.services.sns.SnsAsyncClient"/>
                                 </tool:annotation>
                             </appinfo>
                         </annotation>
