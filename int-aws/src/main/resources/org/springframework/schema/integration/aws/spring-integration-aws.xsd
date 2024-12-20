@@ -1399,7 +1399,6 @@
                         <documentation><![CDATA[
                             Reference to an [org.springframework.integration.file.remote.session.SessionFactory] bean with
                             a [software.amazon.awssdk.services.s3.model.S3Object] generic type parameter.
-                            Mutually exclusive with 's3'.
                         ]]></documentation>
                     </annotation>
                 </attribute>
