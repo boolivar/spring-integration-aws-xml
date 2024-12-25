@@ -12,4 +12,5 @@ dependencies {
     compileOnly "org.springframework.integration:spring-integration-http"
 
     testImplementation "io.github.boolivar:mockito-inline-extension"
+    testImplementation "software.amazon.awssdk:s3-transfer-manager"
 }
