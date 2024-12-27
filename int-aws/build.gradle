@@ -16,5 +16,5 @@ dependencies {
     testImplementation "io.github.boolivar:mockito-inline-extension"
 
     testRuntimeOnly "software.amazon.awssdk:s3-transfer-manager"
-    testRuntimeOnly "jakarta.servlet:jakarta.servlet-api:6.1.0"
+    testRuntimeOnly "jakarta.servlet:jakarta.servlet-api"
 }
