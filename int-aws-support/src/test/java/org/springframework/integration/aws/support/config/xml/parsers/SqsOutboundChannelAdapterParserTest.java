@@ -1,44 +1,65 @@
 package org.springframework.integration.aws.support.config.xml.parsers;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.RuntimeBeanReference;
-import org.springframework.beans.factory.config.TypedStringValue;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.beans.factory.support.SimpleBeanDefinitionRegistry;
-import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
-import org.springframework.integration.aws.outbound.SqsMessageHandler;
+import org.bool.junit.mockito.inline.ConstructionMock;
 
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import org.assertj.core.api.InstanceOfAssertFactories;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.outbound.SqsMessageHandler;
+import org.springframework.messaging.converter.MessageConverter;
+import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class SqsOutboundChannelAdapterParserTest {
+@ConstructionMock(SqsMessageHandler.class)
+class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
 
-    private final BeanDefinitionRegistry registry = new SimpleBeanDefinitionRegistry();
+    @Mock
+    private SqsAsyncClient sqs;
 
-    private final XmlBeanDefinitionReader xmlBeanDefinitionReader = new XmlBeanDefinitionReader(registry);
+    @Mock
+    private MessageConverter messageConverter;
 
     @Test
-    void testReader() {
-        int beansLoaded = xmlBeanDefinitionReader.loadBeanDefinitions("classpath:/sqs-outbound-channel-adapter.xml");
-        var beans = Stream.of(registry.getBeanDefinitionNames()).collect(Collectors.toMap(k -> k, registry::getBeanDefinition));
+    void testMessageHandler() {
+        registerBean("sqs", sqs);
+        registerBean("mc", messageConverter);
 
-        assertThat(beans)
-            .hasSize(beansLoaded)
-            .containsKey("adapter");
+        parse("""
+            <int-aws:sqs-outbound-channel-adapter
+                    id="soca"
+                    channel="c"
+                    sqs="sqs"
+                    sync="false"
+                    message-converter="mc"
+                    error-message-strategy="ems"
+                    success-channel="sc"
+                    queue="q"
+                    send-timeout="#{50}"
+                    delay="#{5}"
+                    message-deduplication-id-expression="mdi.exp"
+                    message-group-id-expression="mgi.exp"
+                    failure-channel="unknownChannel"
+                    resource-id-resolver="unknownResolver"
+                    async-handler="unknownHandler"
+                    />
+            """);
 
-        var def = beans.values().stream()
-            .filter(bd -> bd.getBeanClassName().equals(SqsMessageHandler.class.getName()))
-            .findAny().orElseThrow();
-        
-        assertThat(def)
-            .matches(bd -> bd.getConstructorArgumentValues().getArgumentValue(0, null).getValue().equals(new RuntimeBeanReference("sqsClient")))
-            .extracting(BeanDefinition::getPropertyValues)
-                .matches(properties -> properties.get("async").equals(new TypedStringValue("false")), "async")
-                .matches(properties -> properties.get("messageConverter").equals(new RuntimeBeanReference("msgConv")), "message converter")
-                .matches(properties -> properties.get("outputChannelName").equals(new TypedStringValue("okChannel")), "success channel")
-            ;
+        var handler = beanFactory.getBean(SqsMessageHandler.class);
+
+        verify(handler).setQueue("q");
+        verify(handler).setAsync(true);
+        verify(handler).setMessageConverter(messageConverter);
+        verify(handler).setOutputChannelName("sc");
+        verify(handler).setMessageDeduplicationIdExpressionString("mdi.exp");
+        verify(handler).setMessageGroupIdExpressionString("mgi.exp");
+        verify(handler).setDelay(5);
+        verify(handler).setSendTimeout(50L);
+    }
+
+    void testMessageHandler(SqsMessageHandler mock, Context context) {
+        assertThat(context.arguments()).asInstanceOf(InstanceOfAssertFactories.LIST)
+            .contains(sqs);
     }
 }
