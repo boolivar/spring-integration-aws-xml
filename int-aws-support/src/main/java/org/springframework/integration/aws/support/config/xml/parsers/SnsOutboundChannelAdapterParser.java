@@ -2,8 +2,10 @@ package org.springframework.integration.aws.support.config.xml.parsers;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.xml.ParserContext;
+import org.springframework.integration.aws.config.xml.ValueFactory;
 import org.springframework.integration.aws.config.xml.XmlBeanDefinitionBuilder;
 import org.springframework.integration.aws.outbound.SnsMessageHandler;
+import org.springframework.integration.aws.support.config.xml.InvertedBooleanFactoryBean;
 import org.springframework.integration.config.xml.AbstractOutboundChannelAdapterParser;
 import org.w3c.dom.Element;
 
@@ -14,7 +16,7 @@ public class SnsOutboundChannelAdapterParser extends AbstractOutboundChannelAdap
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, SnsMessageHandler.class)
             .unsupportedAttributeWarning("failure-channel", "resource-id-resolver", "error-message-strategy", "async-handler")
             .addConstructorArgReference("sns")
-            .setPropertyIfAttributeDefined("async")
+            .setPropertyIfAttributeDefined("sync", "async", ValueFactory.bean(InvertedBooleanFactoryBean.class))
             .setPropertyOrExpressionIfAttributeDefined("topic-arn")
             .setPropertyOrExpressionIfAttributeDefined("subject")
             .setPropertyOrExpressionIfAttributeDefined("message-group-id")
