@@ -19,7 +19,11 @@ public interface ValueFactory<T> extends Function<String, T> {
     }
 
     static ValueFactory<AbstractBeanDefinition> expressionBean() {
-        return value -> BeanDefinitionBuilder.genericBeanDefinition(ExpressionFactoryBean.class)
+        return bean(ExpressionFactoryBean.class);
+    }
+
+    static ValueFactory<AbstractBeanDefinition> bean(Class<?> type) {
+        return value -> BeanDefinitionBuilder.genericBeanDefinition(type)
             .addConstructorArgValue(value)
             .applyCustomizers(def -> def.setAutowireCandidate(false))
             .getBeanDefinition();
