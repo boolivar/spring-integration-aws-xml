@@ -40,7 +40,8 @@ class SnsOutboundChannelAdapterParserTest extends ParserTestBase {
         verify(handler).setTopicArn("arn");
         verify(handler).setSubject("subj");
         verify(handler).setMessageGroupId("groupid");
-        verify(handler).setMessageDeduplicationIdExpression(argThat(e -> "mdi.exp".equals(e.getExpressionString())));
+        verify(handler).setBodyExpression(assertArg(e -> assertThat(e.getExpressionString()).isEqualTo("body.exp")));
+        verify(handler).setMessageDeduplicationIdExpression(assertArg(e -> assertThat(e.getExpressionString()).isEqualTo("mdi.exp")));
         verify(handler).setOrder(5);
         verify(handler).setOutputChannelName("out");
         verify(handler).setSendTimeout(50L);
