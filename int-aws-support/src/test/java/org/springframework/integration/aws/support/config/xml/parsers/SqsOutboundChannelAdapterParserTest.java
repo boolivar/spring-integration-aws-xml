@@ -31,7 +31,7 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
                     id="soca"
                     channel="c"
                     sqs="sqs"
-                    sync="false"
+                    sync="#{false}"
                     message-converter="mc"
                     error-message-strategy="ems"
                     success-channel="sc"
