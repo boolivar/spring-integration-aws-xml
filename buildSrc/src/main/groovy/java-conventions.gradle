@@ -4,6 +4,7 @@ plugins {
     id "pmd"
     id "checkstyle"
     id "com.github.spotbugs"
+    id "io.github.boolivar.jdoctest.jdoc-spock"
 }
 
 java {
@@ -43,6 +44,7 @@ tasks.named("jacocoTestCoverageVerification") {
 
 tasks.named("check") {
     dependsOn "jacocoTestCoverageVerification"
+    dependsOn "jdocSpockTest"
 }
 
 tasks.named("jar") {
@@ -80,7 +82,7 @@ configurations {
     internalPlatform {
         visible = false
     }
-    [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath].each {
+    [compileClasspath, runtimeClasspath, testCompileClasspath, testRuntimeClasspath, jdocSpockCompileClasspath, jdocSpockRuntimeClasspath].each {
         it.extendsFrom internalPlatform
     }
     testImplementation.extendsFrom compileOnly
