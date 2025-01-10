@@ -1,9 +1,8 @@
-package org.springframework.integration.aws.support.config.xml.parsers;
+package org.springframework.integration.aws.config.xml.parsers.test;
 
 import org.bool.junit.mockito.inline.MockitoInlineExtension;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.BDDMockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,29 +18,32 @@ import java.nio.charset.StandardCharsets;
 
 @ExtendWith(MockitoInlineExtension.class)
 @ExtendWith(MockitoExtension.class)
-class ParserTestBase extends BDDMockito {
+public abstract class ParserTestBase extends BDDMockito {
 
-    final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
+    protected final DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
 
-    @BeforeEach
-    void configureBeanFactory() {
+    protected ParserTestBase() {
         beanFactory.setBeanExpressionResolver(new StandardBeanExpressionResolver());
     }
 
-    void registerBean(String name, Object bean) {
+    protected void registerBean(String name, Object bean) {
         registerBean(name, bean.getClass(), bean);
     }
 
-    <T> void registerBean(String name, Class<T> type, Object bean) {
+    protected <T> void registerBean(String name, Class<T> type, Object bean) {
         beanFactory.registerBeanDefinition(name, BeanDefinitionBuilder.genericBeanDefinition(type, () -> type.cast(bean)).getBeanDefinition());
     }
 
-    int parse(String content) {
+    protected <T> T getBean(Class<T> type) {
+        return beanFactory.getBean(type);
+    }
+
+    protected int parse(String content) {
         return new XmlBeanDefinitionReader(beanFactory)
             .loadBeanDefinitions(new ByteArrayResource(formatXml(content).getBytes(StandardCharsets.UTF_8)));
     }
 
-    private String formatXml(String content) {
+    protected String formatXml(String content) {
         try {
             return IOUtils.resourceToString("/template.xml", StandardCharsets.UTF_8)
                 .replace("<!-- template -->", content);

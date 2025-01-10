@@ -6,6 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.S3MessageHandler;
 import org.springframework.integration.aws.outbound.S3MessageHandler.Command;
 import org.springframework.integration.channel.DirectChannel;
