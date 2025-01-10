@@ -6,6 +6,7 @@ import io.awspring.cloud.sqs.listener.QueueNotFoundStrategy;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.SqsMessageHandler;
 import org.springframework.messaging.converter.MessageConverter;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
@@ -26,7 +27,7 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
         registerBean("sqs", SqsAsyncClient.class, sqs);
         registerBean("mc", MessageConverter.class, messageConverter);
 
-        var handler = loadBean(SqsMessageHandler.class, """
+        parse("""
             <int-aws:sqs-outbound-channel-adapter sqs="sqs"
                     channel="in"
                     async="#{true}"
@@ -40,6 +41,8 @@ class SqsOutboundChannelAdapterParserTest extends ParserTestBase {
                     message-group-id="#{'mg'}"
                     message-converter="mc"/>
             """);
+
+        var handler = getBean(SqsMessageHandler.class);
 
         verify(handler).setAsync(true);
         verify(handler).setDelay(50);

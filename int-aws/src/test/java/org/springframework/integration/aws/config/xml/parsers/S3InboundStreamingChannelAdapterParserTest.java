@@ -6,6 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.S3StreamingMessageSource;
 import org.springframework.integration.aws.support.S3RemoteFileTemplate;
 import org.springframework.integration.aws.support.S3SessionFactory;
@@ -32,7 +33,7 @@ class S3InboundStreamingChannelAdapterParserTest extends ParserTestBase {
         registerBean("sf", S3SessionFactory.class, sessionFactory);
         registerBean("cmp", Comparator.class, comparator);
 
-        var messageSource = loadBean(S3StreamingMessageSource.class, """
+        parse("""
             <int-aws:s3-inbound-streaming-channel-adapter
                     id="s3isca"
                     channel="c"
@@ -45,6 +46,8 @@ class S3InboundStreamingChannelAdapterParserTest extends ParserTestBase {
                     send-timeout="#{50}"
                     />
             """);
+
+        var messageSource = getBean(S3StreamingMessageSource.class);
 
         verify(messageSource).setMaxFetchSize(10);
         verify(messageSource).setRemoteDirectoryExpression(assertArg(e -> assertThat(e.getExpressionString()).isEqualTo("remote")));

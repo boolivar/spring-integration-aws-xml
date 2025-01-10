@@ -6,6 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizer;
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizingMessageSource;
 import org.springframework.integration.channel.DirectChannel;
@@ -52,7 +53,7 @@ class S3InboundChannelAdapterParserTest extends ParserTestBase {
         registerBean("cmp", Comparator.class, comparator);
         registerBean("scn", DirectoryScanner.class, scanner);
 
-        var messageSource = loadBean(S3InboundFileSynchronizingMessageSource.class, """
+        parse("""
             <int-aws:s3-inbound-channel-adapter
                     id="s3ica"
                     channel="c"
@@ -73,6 +74,8 @@ class S3InboundChannelAdapterParserTest extends ParserTestBase {
                     auto-create-local-directory="#{true}"
                     comparator="cmp"/>
             """);
+
+        var messageSource = getBean(S3InboundFileSynchronizingMessageSource.class);
 
         verify(messageSource).setLocalDirectory(new File("local"));
         verify(messageSource).setScanner(scanner);

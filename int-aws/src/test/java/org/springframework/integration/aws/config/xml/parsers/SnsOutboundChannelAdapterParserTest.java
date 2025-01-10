@@ -6,6 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.SnsMessageHandler;
 import software.amazon.awssdk.services.sns.SnsAsyncClient;
 
@@ -21,7 +22,7 @@ class SnsOutboundChannelAdapterParserTest extends ParserTestBase {
     void testHandler() {
         registerBean("sns", SnsAsyncClient.class, sns);
 
-        var handler = loadBean(SnsMessageHandler.class, """
+        parse("""
             <int-aws:sns-outbound-channel-adapter
                     id="snsoca"
                     channel="c"
@@ -36,6 +37,8 @@ class SnsOutboundChannelAdapterParserTest extends ParserTestBase {
                     output-channel="out"
                     send-timeout="#{50}"/>
             """);
+
+        var handler = getBean(SnsMessageHandler.class);
 
         verify(handler).setTopicArn("arn");
         verify(handler).setSubject("subj");

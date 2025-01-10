@@ -6,6 +6,7 @@ import com.amazonaws.services.kinesis.producer.KinesisProducer;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.KplMessageHandler;
 import org.springframework.integration.mapping.OutboundMessageMapper;
 import org.springframework.messaging.converter.MessageConverter;
@@ -32,7 +33,7 @@ class KplOutboundChannelAdapterParserTest extends ParserTestBase {
         registerBean("ehm", OutboundMessageMapper.class, messageMapper);
         registerBean("mc", MessageConverter.class, messageConverter);
 
-        var handler = loadBean(KplMessageHandler.class, """
+        parse("""
             <int-aws:kpl-outbound-channel-adapter kinesis-producer="kp"
                     id="i"
                     channel="c"
@@ -49,6 +50,8 @@ class KplOutboundChannelAdapterParserTest extends ParserTestBase {
                     glue-schema-expression="payload.schema"
                     sequence-number-expression="headers.exp"/>
             """);
+
+        var handler = getBean(KplMessageHandler.class);
 
         verify(handler).setStream("s");
         verify(handler).setAsync(true);

@@ -6,6 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.S3MessageHandler;
 import org.springframework.integration.aws.outbound.S3MessageHandler.Command;
 import org.springframework.messaging.Message;
@@ -30,7 +31,7 @@ class S3OutboundChannelAdapterParserTest extends ParserTestBase {
         registerBean("sss", S3AsyncClient.class, s3Client);
         registerBean("ump", BiConsumer.class, uploadMetadataProvider);
 
-        var handler = loadBean(S3MessageHandler.class, """
+        parse("""
             <int-aws:s3-outbound-channel-adapter
                     id="s3out"
                     channel="c"
@@ -44,6 +45,8 @@ class S3OutboundChannelAdapterParserTest extends ParserTestBase {
                     upload-metadata-provider="ump"
                     />
             """);
+
+        var handler = getBean(S3MessageHandler.class);
 
         verify(handler).setCommand(Command.COPY);
         verify(handler).setKeyExpression(argThat(e -> "key.exp".equals(e.getExpressionString())));

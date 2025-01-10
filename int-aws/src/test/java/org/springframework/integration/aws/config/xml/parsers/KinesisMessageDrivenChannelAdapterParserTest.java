@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KinesisMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.KinesisShardOffset;
@@ -65,7 +66,7 @@ class KinesisMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         registerBean("slf", Function.class, shardListFilter);
         registerBean("sis", KinesisShardOffset.class, streamInitialSequence);
 
-        var adapter = loadBean(KinesisMessageDrivenChannelAdapter.class, """
+        parse("""
             <int-aws:kinesis-message-driven-channel-adapter kinesis-client="kc" streams="a,b,c"
                     id="i"
                     channel="c"
@@ -91,6 +92,8 @@ class KinesisMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     start-timeout="#{50}"
                     stream-initial-sequence="sis"/>
             """);
+
+        var adapter = getBean(KinesisMessageDrivenChannelAdapter.class);
 
         verify(adapter).setBindSourceRecord(true);
         verify(adapter).setCheckpointMode(CheckpointMode.batch);

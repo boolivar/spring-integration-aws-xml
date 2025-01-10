@@ -12,6 +12,7 @@ import org.mockito.MockedConstruction.Context;
 import org.mockito.MockedStatic;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.ListenerMode;
@@ -53,10 +54,13 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
     @Test
     void testDefaults(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
-        var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+        parse("""
                 <int-aws:kcl-message-driven-channel-adapter streams="s"
                         channel="c"/>
             """);
+
+        var adapter = getBean(KclMessageDrivenChannelAdapter.class);
+
         assertThat(mocked.constructed())
             .singleElement().isSameAs(adapter);
     }
@@ -75,11 +79,13 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
         cloudWatchMock.when(CloudWatchAsyncClient::create).thenReturn(cloudWatchClient);
 
-        var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+        parse("""
                 <int-aws:kcl-message-driven-channel-adapter streams="s"
                         channel="c"
                         kinesis-client="kc"/>
             """);
+
+        var adapter = getBean(KclMessageDrivenChannelAdapter.class);
 
         assertThat(mocked.constructed())
             .singleElement().isSameAs(adapter);
@@ -101,7 +107,7 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         registerBean("gsrd", GlueSchemaRegistryDeserializer.class, glueSchemaRegistryDeserializer);
         registerBean("sis", InitialPositionInStreamExtended.class, streamInitialSequence);
 
-        var adapter = loadBean(KclMessageDrivenChannelAdapter.class, """
+        parse("""
             <int-aws:kcl-message-driven-channel-adapter streams="s"
                     id="i"
                     channel="c"
@@ -130,6 +136,8 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     stream-initial-sequence="sis"
                     worker-id="wid"/>
             """);
+
+        var adapter = getBean(KclMessageDrivenChannelAdapter.class);
 
         verify(adapter).setBindSourceRecord(true);
         verify(adapter).setCheckpointMode(CheckpointMode.batch);

@@ -17,6 +17,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapter;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 
@@ -45,7 +46,7 @@ class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         registerBean("mc", MessagingMessageConverter.class, messageConverter);
         registerBean("ex", TaskExecutor.class, taskExecutor);
 
-        var adapter = loadBean(SqsMessageDrivenChannelAdapter.class, """
+        parse("""
             <int-aws:sqs-message-driven-channel-adapter queues="q" sqs="sqs"
                     id="i"
                     channel="c"
@@ -68,6 +69,8 @@ class SqsMessageDrivenChannelAdapterParserTest extends ParserTestBase {
                     message-converter="mc"
                     components-task-executor="ex"/>
             """);
+
+        var adapter = getBean(SqsMessageDrivenChannelAdapter.class);
 
         verify(adapter).setBeanName("i");
         verify(adapter).setOutputChannelName("c");
