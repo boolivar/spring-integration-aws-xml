@@ -1,3 +1,5 @@
+enableFeaturePreview "STABLE_CONFIGURATION_CACHE"
+
 rootProject.name = "spring-integration-aws-xml"
 
 rootDir.eachFileRecurse groovy.io.FileType.FILES, {
