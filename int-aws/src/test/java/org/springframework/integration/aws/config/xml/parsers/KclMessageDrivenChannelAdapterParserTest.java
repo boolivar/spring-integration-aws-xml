@@ -12,7 +12,7 @@ import org.mockito.MockedConstruction.Context;
 import org.mockito.MockedStatic;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
+import org.springframework.integration.aws.config.xml.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.ListenerMode;

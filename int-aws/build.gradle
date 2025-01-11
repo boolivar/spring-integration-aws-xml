@@ -1,5 +1,6 @@
 plugins {
     id "java-conventions"
+    id "java-test-fixtures"
 }
 
 dependencies {
@@ -13,7 +14,12 @@ dependencies {
     compileOnly "org.springframework.integration:spring-integration-file"
     compileOnly "software.amazon.kinesis:amazon-kinesis-client:2.6.0"
 
-    testImplementation project(":parser-test")
+    testFixturesApi "io.github.boolivar:mockito-inline-extension"
+    testFixturesApi "org.mockito:mockito-junit-jupiter"
+
+    testFixturesImplementation platform(project(":platform"))
+    testFixturesImplementation "commons-io:commons-io"
+    testFixturesImplementation "org.springframework:spring-context"
 
     testRuntimeOnly "software.amazon.awssdk:s3-transfer-manager"
     testRuntimeOnly "jakarta.servlet:jakarta.servlet-api"

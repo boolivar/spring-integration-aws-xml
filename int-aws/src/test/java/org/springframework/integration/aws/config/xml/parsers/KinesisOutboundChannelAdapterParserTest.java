@@ -5,7 +5,7 @@ import org.bool.junit.mockito.inline.ConstructionMock;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
-import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
+import org.springframework.integration.aws.config.xml.test.ParserTestBase;
 import org.springframework.integration.aws.outbound.KinesisMessageHandler;
 import org.springframework.integration.mapping.OutboundMessageMapper;
 import org.springframework.messaging.converter.MessageConverter;

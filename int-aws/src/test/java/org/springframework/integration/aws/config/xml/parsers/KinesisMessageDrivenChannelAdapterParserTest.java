@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
+import org.springframework.integration.aws.config.xml.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.kinesis.CheckpointMode;
 import org.springframework.integration.aws.inbound.kinesis.KinesisMessageDrivenChannelAdapter;
 import org.springframework.integration.aws.inbound.kinesis.KinesisShardOffset;

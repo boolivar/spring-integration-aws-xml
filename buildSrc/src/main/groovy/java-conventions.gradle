@@ -47,10 +47,6 @@ tasks.named("check") {
     dependsOn "jdocSpockTest"
 }
 
-tasks.named("jar") {
-    dependsOn "check"
-}
-
 checkstyle {
     configDirectory = file("$rootDir/gradle/config/checkstyle")
     toolVersion = com.puppycrawl.tools.checkstyle.Checker.package.implementationVersion

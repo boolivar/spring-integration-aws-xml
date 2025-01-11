@@ -11,7 +11,7 @@ dependencies {
     compileOnly "org.springframework.integration:spring-integration-file"
     compileOnly "org.springframework.integration:spring-integration-http"
 
-    testImplementation project(":parser-test")
+    testImplementation testFixtures(project(":int-aws"))
     testImplementation "software.amazon.awssdk:s3-transfer-manager"
 
     testRuntimeOnly "jakarta.servlet:jakarta.servlet-api"

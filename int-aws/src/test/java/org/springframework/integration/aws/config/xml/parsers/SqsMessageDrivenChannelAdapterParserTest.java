@@ -17,7 +17,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
 import org.springframework.core.task.TaskExecutor;
-import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
+import org.springframework.integration.aws.config.xml.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.SqsMessageDrivenChannelAdapter;
 import software.amazon.awssdk.services.sqs.SqsAsyncClient;
 

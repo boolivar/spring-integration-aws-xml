@@ -1,4 +1,4 @@
-package org.springframework.integration.aws.config.xml.parsers.test;
+package org.springframework.integration.aws.config.xml.test;
 
 import org.bool.junit.mockito.inline.MockitoInlineExtension;
 

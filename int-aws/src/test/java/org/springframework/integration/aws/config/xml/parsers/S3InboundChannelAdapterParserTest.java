@@ -6,7 +6,7 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockedConstruction.Context;
-import org.springframework.integration.aws.config.xml.parsers.test.ParserTestBase;
+import org.springframework.integration.aws.config.xml.test.ParserTestBase;
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizer;
 import org.springframework.integration.aws.inbound.S3InboundFileSynchronizingMessageSource;
 import org.springframework.integration.channel.DirectChannel;
