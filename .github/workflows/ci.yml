@@ -1,5 +1,9 @@
 name: CI
-on: push
+on:
+  push:
+    branches-ignore:
+    - dependabot/**
+    - gh-pages
 permissions:
   contents: write
   pull-requests: write
