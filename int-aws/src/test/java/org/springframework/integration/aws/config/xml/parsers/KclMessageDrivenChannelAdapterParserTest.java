@@ -25,6 +25,7 @@ import software.amazon.kinesis.metrics.MetricsLevel;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@StaticMock({KinesisAsyncClient.class, CloudWatchAsyncClient.class, DynamoDbAsyncClient.class})
 @ConstructionMock(KclMessageDrivenChannelAdapter.class)
 class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
 
@@ -53,7 +54,15 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
     private InitialPositionInStreamExtended streamInitialSequence;
 
     @Test
-    void testDefaults(MockedConstruction<KclMessageDrivenChannelAdapter> mocked) {
+    void testDefaults(MockedConstruction<KclMessageDrivenChannelAdapter> mocked,
+            MockedStatic<KinesisAsyncClient> kinesisClientMock,
+            MockedStatic<CloudWatchAsyncClient> cloudWatchMock,
+            MockedStatic<DynamoDbAsyncClient> dynamoDbMock) {
+
+        kinesisClientMock.when(KinesisAsyncClient::create).thenReturn(kinesisClient);
+        dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
+        cloudWatchMock.when(CloudWatchAsyncClient::create).thenReturn(cloudWatchClient);
+
         parse("""
                 <int-aws:kcl-message-driven-channel-adapter streams="s"
                         channel="c"/>
@@ -66,14 +75,13 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
     }
 
     void testDefaults(KclMessageDrivenChannelAdapter mock, Context context) {
-        assertThat(context.arguments()).singleElement()
-            .isEqualTo(new String[] {"s"});
+        verifyConstructorArgs(mock, context);
     }
 
-    @StaticMock({CloudWatchAsyncClient.class, DynamoDbAsyncClient.class})
     @Test
     void testKinesisClientConfig(MockedConstruction<KclMessageDrivenChannelAdapter> mocked,
-            MockedStatic<CloudWatchAsyncClient> cloudWatchMock, MockedStatic<DynamoDbAsyncClient> dynamoDbMock) {
+            MockedStatic<CloudWatchAsyncClient> cloudWatchMock,
+            MockedStatic<DynamoDbAsyncClient> dynamoDbMock) {
         registerBean("kc", KinesisAsyncClient.class, kinesisClient);
 
         dynamoDbMock.when(DynamoDbAsyncClient::create).thenReturn(dynamoDbClient);
@@ -92,8 +100,7 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
     }
 
     void testKinesisClientConfig(KclMessageDrivenChannelAdapter mock, Context context) {
-        assertThat(context.arguments()).asInstanceOf(InstanceOfAssertFactories.LIST)
-            .contains(kinesisClient, cloudWatchClient, dynamoDbClient);
+        verifyConstructorArgs(mock, context);
     }
 
     @Test
@@ -160,8 +167,12 @@ class KclMessageDrivenChannelAdapterParserTest extends ParserTestBase {
         verify(adapter).setWorkerId("wid");
     }
 
-    void testParser(KclMessageDrivenChannelAdapter mock, Context context) {
+    void testAdapter(KclMessageDrivenChannelAdapter mock, Context context) {
+        verifyConstructorArgs(mock, context);
+    }
+
+    void verifyConstructorArgs(KclMessageDrivenChannelAdapter mock, Context context) {
         assertThat(context.arguments()).asInstanceOf(InstanceOfAssertFactories.LIST)
-            .contains(new String[] {"s"}, kinesisClient, cloudWatchClient, dynamoDbClient);
+            .containsExactly(kinesisClient, cloudWatchClient, dynamoDbClient, new String[] {"s"});
     }
 }

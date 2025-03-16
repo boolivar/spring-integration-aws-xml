@@ -9,21 +9,19 @@ import org.springframework.integration.aws.inbound.kinesis.KclMessageDrivenChann
 import org.springframework.integration.config.xml.AbstractChannelAdapterParser;
 import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
-
-import java.util.stream.Stream;
+import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient;
+import software.amazon.awssdk.services.kinesis.KinesisAsyncClient;
 
 public class KclMessageDrivenChannelAdapterParser extends AbstractChannelAdapterParser {
-
-    private final String[][] constructorAttrs = {
-        { "kinesis-client", "software.amazon.awssdk.services.kinesis.KinesisAsyncClient" },
-        { "cloud-watch-client", "software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient" },
-        { "dynamo-db-client", "software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient" }
-    };
 
     @Override
     protected AbstractBeanDefinition doParse(Element element, ParserContext parserContext, String channelName) {
         return XmlBeanDefinitionBuilder.newInstance(element, parserContext, KclMessageDrivenChannelAdapter.class)
-            .configure(builder -> addConstructorArgs(builder, element))
+            .configure(builder -> builder
+                .addConstructorArgValue(arg(element, "kinesis-client", KinesisAsyncClient.class))
+                .addConstructorArgValue(arg(element, "cloud-watch-client", CloudWatchAsyncClient.class))
+                .addConstructorArgValue(arg(element, "dynamo-db-client", DynamoDbAsyncClient.class)))
             .addConstructorArgValue("streams")
             .setPropertyIfAttributeDefined("error-channel", "errorChannelName")
             .setPropertyIfAttributeDefined("worker-id")
@@ -50,15 +48,8 @@ public class KclMessageDrivenChannelAdapterParser extends AbstractChannelAdapter
             .getBeanDefinition();
     }
 
-    private void addConstructorArgs(BeanDefinitionBuilder builder, Element element) {
-        if (Stream.of(constructorAttrs).map(a -> element.getAttribute(a[0])).anyMatch(StringUtils::hasText)) {
-            for (var a : constructorAttrs) {
-                builder.addConstructorArgValue(arg(element.getAttribute(a[0]), a[1]));
-            }
-        }
-    }
-
-    private Object arg(String ref, String beanClass) {
+    private Object arg(Element element, String attr, Class<?> beanClass) {
+        var ref = element.getAttribute(attr);
         return StringUtils.hasText(ref)
             ? new RuntimeBeanReference(ref)
             : BeanDefinitionBuilder.genericBeanDefinition(beanClass)
