@@ -8,7 +8,7 @@ repositories {
 
 dependencies {
     implementation "com.github.spotbugs.snom:spotbugs-gradle-plugin:6.0.22"
-    implementation "com.puppycrawl.tools:checkstyle:10.26.1"
+    implementation "com.puppycrawl.tools:checkstyle:11.0.0"
     implementation "io.freefair.gradle:lombok-plugin:8.14"
     implementation "io.github.boolivar.jdoctest.jdoc-spock:io.github.boolivar.jdoctest.jdoc-spock.gradle.plugin:0.11.0"
     implementation "net.sourceforge.pmd:pmd-java:7.11.0"
