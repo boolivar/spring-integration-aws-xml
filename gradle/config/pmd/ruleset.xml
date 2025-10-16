@@ -10,6 +10,7 @@
         <exclude name="GuardLogStatement"/>
         <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
         <exclude name="UnitTestContainsTooManyAsserts"/>
+        <exclude name="ImplicitFunctionalInterface"/>
     </rule>
     <rule ref="category/java/bestpractices.xml/UnitTestShouldIncludeAssert">
         <properties>
