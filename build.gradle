@@ -1,6 +1,6 @@
 plugins {
     id "org.sonarqube" version "6.3.1.5724"
-    id "pl.allegro.tech.build.axion-release" version "1.20.1"
+    id "pl.allegro.tech.build.axion-release" version "1.21.0"
 }
 
 scmVersion {
